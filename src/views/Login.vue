@@ -69,7 +69,7 @@
             submitLogin: function () {
                 console.log(this);
                 let v_instance = this;
-                this.axios.post('/users/sign_in', {
+                this.axios.post('/api/login', {
                     user: {
                         email: this.$refs.userEmail.value,
                         password: this.$refs.userPassword.value,
