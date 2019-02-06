@@ -13,14 +13,14 @@ export default new Vuex.Store({
       window.$cookies.set('jwt', token);
       window.$cookies.set('userId',userId);
       let self = this;
-      this.$axios.get('/users/'+userId+'/courses').then(function(response){
+      this.$axios.get('/api/users/'+userId+'/courses',{ 'headers': { 'Authorization': token }}).then(function(response){
         let userRole = response.data.some(x => x.role == "tutor") ? 'tutor': 'student';
         self.commit('signedIn',[token,userRole])
       });
     },
     signedOut(state){
       let self = this;
-      this.$axios.delete('/users/sign_out').then(function(response){
+      this.$axios.delete('/api/logout').then(function(response){
         self.commit('signedOut');
       })
     }

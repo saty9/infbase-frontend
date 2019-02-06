@@ -28,7 +28,7 @@ Vue.use(VueAxios, {
 })
 
 document.addEventListener('DOMContentLoaded', () => {
-  new Vue({
+  let v = new Vue({
     store,
     router,
     securedAxiosInstance,
@@ -36,4 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     components: { App },
     template: '<App/>'
   }).$mount("#app");
+  store.$axios = v.axios;
+  if (window.$cookies.get('userId') && window.$cookies.get('jwt')){
+    v.$store.dispatch('signedIn',[window.$cookies.get('jwt'),window.$cookies.get('userId')])
+  }
 })
