@@ -1,4 +1,4 @@
-import Vue from 'vue/dist/vue.min.js'
+import Vue from 'vue/dist/vue.js'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import Vuex from "vuex";

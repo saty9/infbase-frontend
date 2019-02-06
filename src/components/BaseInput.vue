@@ -26,12 +26,12 @@
         </div>
         <slot v-bind="slotData">
             <input
+                    :value="value"
                     v-on="listeners"
                     v-bind="$attrs"
                     class="form-control"
                     :class="[{'is-valid': valid === true}, {'is-invalid': valid === false}, inputClasses]"
-                    aria-describedby="addon-right addon-left"
-                    v-model="text">
+                    aria-describedby="addon-right addon-left">
         </slot>
         <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
           <span class="input-group-text">
@@ -82,6 +82,10 @@ export default {
       type: String,
       description: "Input css classes"
     },
+    value: {
+      type: [String, Number],
+      description: "Input value"
+    },
     addonRightIcon: {
       type: String,
       description: "Addon right icon"
@@ -93,8 +97,7 @@ export default {
   },
   data() {
     return {
-      focused: false,
-      value: null,
+      focused: false
     };
   },
   computed: {
@@ -120,15 +123,6 @@ export default {
         this.addonRightIcon !== undefined ||
         this.addonLeftIcon !== undefined
       );
-    },
-    text: {
-        get() {
-            return this.value;
-        },
-        set(text) {
-            this.value = text;
-            this.$emit("input", text);
-        }
     }
   },
   methods: {
