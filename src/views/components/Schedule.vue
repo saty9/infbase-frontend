@@ -1,34 +1,36 @@
 <template>
-  <card class="border-0" shadow body-classes="py-5">
     <table class="table text-center border-0 schedule">
-      <tr>
-        <th @click="previous_period()">
-          <font-awesome-icon icon="caret-left" size="2x" />
-        </th>
-        <th v-for="day in days" :key="day">
-          <span
-            class="btn btn-sm"
-            :class="{ 'btn-primary': day.join() == get_today().join() }"
-          >
-            {{ formatted_date(day) }}
-          </span>
-        </th>
-        <th @click="next_period()">
-          <font-awesome-icon icon="caret-right" size="2x" />
-        </th>
-      </tr>
-      <tr v-for="hour in existing_hours(hours)" :key="hour">
-        <td class="align-middle">{{ hour }}</td>
-        <td v-for="day in days" :key="day + hour">
-          <time-slot
-            v-if="find_session(day, hour)"
-            :session="find_session(day, hour)"
-          ></time-slot>
-        </td>
-        <td></td>
-      </tr>
+      <thead>
+        <tr>
+          <th @click="previous_period()">
+            <font-awesome-icon icon="caret-left" class="mb-2" size="2x" />
+          </th>
+          <th v-for="day in days" :key="day">
+            <span
+              class="btn btn-sm mb-3 align-top"
+              :class="{ 'btn-primary': day.join() == get_today().join() }"
+            >
+              {{ formatted_date(day) }}
+            </span>
+          </th>
+          <th @click="next_period()">
+            <font-awesome-icon icon="caret-right" class="mb-2" size="2x" />
+          </th>
+        </tr>   
+      </thead>
+      <tbody>
+        <tr v-for="hour in existing_hours(hours)" :key="hour">
+          <td class="align-middle">{{ hour }}</td>
+          <td v-for="day in days" :key="day + hour">
+            <time-slot
+              v-if="find_session(day, hour)"
+              :session="find_session(day, hour)"
+            ></time-slot>
+          </td>
+          <td></td>
+        </tr>      
+      </tbody>
     </table>
-  </card>
 </template>
 
 <script>

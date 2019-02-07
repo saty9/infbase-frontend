@@ -1,6 +1,6 @@
 <template>
 	<div id="tutors">
-		<h4>Tutors</h4>
+		<h4 class="text-primary mb-5">Tutors</h4>
 		<section v-if="errored">
 			<p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
 		</section>
@@ -8,9 +8,20 @@
 			<div v-if="loading">
 				Loading...
 			</div>
-			<user v-else v-for="tutor in tutors" :user="tutor" :key="tutor.id"/>
+			<table class="table table-hover">
+				<thead>
+					<tr class="row">
+						<th class="col">Name</th>
+						<th class="col">Email</th>
+						<th class="col text-right">Actions</th>
+					</tr>	
+				</thead>
+				<tbody>
+					<user v-if="!loading" v-for="tutor in tutors" :user="tutor" :key="tutor.id"/>
+				</tbody>
+			</table>
 		</section>
-		<h4>Students</h4>
+		<h4 class="text-primary my-5">Students</h4>
 		<section v-if="errored">
 			<p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
 		</section>
@@ -18,17 +29,31 @@
 			<div v-if="loading">
 				Loading...
 			</div>
-			<user v-else v-for="student in students" :user="student" :key="student.id"/>
+			<table class="table table-hover">
+				<thead>
+					<tr class="row">
+						<th class="col">Name</th>
+						<th class="col">Email</th>
+						<th class="col text-right">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<user v-if="!loading" v-for="student in page_students" :user="student" :key="student.id"/>
+				</tbody>
+			</table>
+			<base-pagination v-model="currentPage" :total="students.length" align="center"></base-pagination>
 		</section>
 	</div>
 </template>
 
 <script>
 	import User from "./User";
+	import BasePagination from "@/components/BasePagination";
 
 	export default {
 		components: {
-			User
+			User,
+			BasePagination
 		},
 		data () {
 			return {
@@ -36,7 +61,8 @@
 				users: null,
 				errored: false,
 				tutors: null,
-				students: null
+				students: null,
+				currentPage: 1
 			}
 		},
 		mounted () {
@@ -63,6 +89,12 @@
 			users () {
 				this.tutors = this.users.filter(user => user.role == "tutor");
 				this.students = this.users.filter(user => user.role == "student");
+			}
+		},
+		computed: {
+			page_students() {
+				let start = (this.currentPage-1)*15;
+				return this.students.slice(start, start+15);
 			}
 		}
 	}

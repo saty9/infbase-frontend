@@ -1,9 +1,6 @@
 <template>
 	<div id="courses">
-		<h4 class="d-inline-block">Courses</h4>
-		<base-button type="success" class="d-inline-block btn-sm ml-2 align-top" @click="modal = true">
-			+
-		</base-button>
+		<h4 class="text-primary mb-5">Courses</h4>
 		<section v-if="errored">
 			<p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
 		</section>
@@ -11,7 +8,22 @@
 			<div v-if="loading">
 				Loading...
 			</div>
-			<course v-else v-for="course in courses" :course="course" :key="course.id"/>
+			<table class="table table-hover">
+				<thead>
+					<tr class="row">
+						<th>
+							Course
+							<base-button type="success" class="d-inline-block btn-sm ml-2 align-top" @click="modal = true">
+								+
+							</base-button>
+						</th>
+						<th class="text-right col">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<course v-if="!loading" v-for="course in courses" :course="course" :key="course.id"/>
+				</tbody>
+			</table>
 		</section>
     <modal :show.sync="modal">
         <h6 slot="header" class="modal-title" id="modal-title-default">New course</h6>

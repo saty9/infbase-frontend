@@ -122,7 +122,9 @@
             </p>
           </div>
         </div>
-        <schedule></schedule>
+        <card class="border-0" shadow body-classes="py-5">
+          <schedule></schedule>
+        </card>
       </div>
     </section>
 

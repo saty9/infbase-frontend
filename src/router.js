@@ -8,6 +8,10 @@ import Signup from "./views/Signup.vue";
 import Profile from "./views/Profile.vue";
 import AdminPanel from "./views/AdminPanel.vue";
 import ResetPassword from "./views/ResetPassword.vue";
+import AdminCourses from "./views/admin/Courses";
+import AdminSchedule from "./views/admin/Schedule";
+import AdminReports from "./views/admin/Reports";
+import AdminUsers from "./views/admin/Users";
 
 Vue.use(Router);
 
@@ -68,7 +72,25 @@ export default new Router({
         header: AppHeader,
         default: AdminPanel,
         footer: AppFooter
-      }
+      },
+      children: [
+        {
+          path: 'schedule',
+          component: AdminSchedule
+        },
+        {
+          path: 'reports',
+          component: AdminReports
+        },
+        {
+          path: 'users',
+          component: AdminUsers
+        },
+        {
+          path: 'courses',
+          component: AdminCourses
+        }
+      ]
     },
   ],
   scrollBehavior: to => {

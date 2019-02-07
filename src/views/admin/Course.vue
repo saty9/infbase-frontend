@@ -1,10 +1,14 @@
 <template>
-	<div class="course d-inline-block pl-2" v-if="!deleted">
-		<base-button type="secondary" @click="modal = true">{{course.name}}</base-button>
-    <modal :show.sync="modal">
+  <tr v-if="!deleted" class="row">
+    <td class="col">{{course.name}}</td>
+    <td class="text-right col">
+      <base-button type="info" class="btn-sm" @click="modal1 = true">Edit</base-button>
+      <base-button type="warning" class="btn-sm" @click="modal2 = true">Remove</base-button>
+    </td>
+    <modal :show.sync="modal1">
         <h6 slot="header" class="modal-title" id="modal-title-default">Edit course</h6>
         <div v-if="errors">
-        	{{errors}}
+          {{errors}}
         </div>
         <base-input
           required
@@ -16,8 +20,7 @@
 
         <template slot="footer">
             <base-button type="primary" @click="submit">Save changes</base-button>
-            <base-button type="danger" @click="modal2 = true">Remove</base-button>
-            <base-button type="link" class="ml-auto" @click="modal = false">Close
+            <base-button type="link" class="ml-auto" @click="modal1 = false">Close
             </base-button>
         </template>
     </modal>
@@ -42,7 +45,7 @@
             </base-button>
         </template>
     </modal>
-	</div>
+  </tr>
 </template>
 
 <script>
@@ -51,7 +54,8 @@
 
 	export default {
 		components: {
-			Modal
+			Modal,
+      BaseInput
 		},
 		props: {
 			course: {
@@ -62,7 +66,7 @@
 		},
 		data() {
 			return {
-				modal: false,
+				modal1: false,
 				modal2: false,
 				name: this.course.name,
 				errors: '',

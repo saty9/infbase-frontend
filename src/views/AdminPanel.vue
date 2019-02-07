@@ -1,43 +1,27 @@
 <template>
-  <section class="section section-shaped section-lg my-0">
+  <section class="section section-shaped section-lg my-0 row justify-content-center">
     <div class="shape bg-gradient-default">
     </div>
-    <div class="container pt-lg-md col-lg-12">
-      <div class="row justify-content-center">
-					<tabs fill class="flex-column flex-md-row col-lg-12">
-				    <card shadow>
-			        <tab-pane>
-		            <span slot="title">
-	                <i class="ni ni-calendar-grid-58"/>
-	                Schedule
-		            </span>
-								<courses/>
-			        </tab-pane>
-
-			        <tab-pane title="Profile">
-		            <span slot="title">
-	                <i class="ni ni-bell-55 mr-2"/>
-	                Users
-		            </span>
-			          <users/>
-			        </tab-pane>
-				    </card>
-					</tabs>
-      </div>
+    <div class="col-lg-10 row justify-content-center">
+			<div class="nav flex-column nav-pills d-inline-block col-lg-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+			  <router-link to="/admin-panel/schedule" class="nav-link mb-1">Schedule</router-link>
+			  <router-link to="/admin-panel/reports" class="nav-link mb-1">Reports</router-link>
+			  <router-link to="/admin-panel/users" class="nav-link mb-1">Users</router-link>
+			  <router-link to="/admin-panel/courses" class="nav-link mb-1">Courses</router-link>
+			</div>
+	    <card shadow class="tab-content col-lg-10 d-inline-block col-lg-10" id="v-pills-tabContent">
+	    	<router-view></router-view>
+	    </card>
     </div>
   </section>
 </template>
 
 <script>
-	import Tabs from "@/components/Tabs/Tabs";
-	import TabPane from "@/components/Tabs/TabPane";
 	import Courses from "./admin/Courses";
 	import Users from "./admin/Users";
 
 	export default {
 		components: {
-			Tabs,
-			TabPane,
 			Courses,
 			Users
 		},
