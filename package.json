@@ -17,6 +17,7 @@
     "vue": "^2.5.22",
     "vue-axios": "^2.1.4",
     "vue-cookies": "^1.5.12",
+    "vue-disable-autocomplete": "0.0.4",
     "vue-lazyload": "^1.2.6",
     "vue-router": "^3.0.1",
     "vue2-transitions": "^0.2.3",

@@ -31,7 +31,7 @@
             class="close"
             @click="dismissAlert"
           >
-            <span aria-hidden="true">×</span>
+            <span aria-hidden="true" @click="dismissAlert">×</span>
           </button>
         </slot>
       </template>
@@ -58,9 +58,14 @@ export default {
       description: "Alert icon. Will be overwritten by default slot"
     },
     dismissible: {
-      type: Boolean,
+      type: [String, Boolean],
       default: false,
       description: "Whether alert is closes when clicking"
+    },
+    message: {
+      type: String,
+      default: '',
+      description: "What message to display"
     }
   },
   data() {
@@ -70,6 +75,7 @@ export default {
   },
   methods: {
     dismissAlert() {
+      this.$store.commit("removeAlert", this.message);
       this.visible = false;
     }
   }

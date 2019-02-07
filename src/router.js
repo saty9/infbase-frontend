@@ -4,7 +4,7 @@ import AppHeader from "./layout/AppHeader";
 import AppFooter from "./layout/AppFooter";
 import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
-import Register from "./views/Register.vue";
+import Signup from "./views/Signup.vue";
 import Profile from "./views/Profile.vue";
 import ResetPassword from "./views/ResetPassword.vue";
 
@@ -34,11 +34,11 @@ export default new Router({
       }
     },
     {
-      path: "/register",
-      name: "register",
+      path: "/signup",
+      name: "signup",
       components: {
         header: AppHeader,
-        default: Register,
+        default: Signup,
         footer: AppFooter
       }
     },

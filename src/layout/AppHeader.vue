@@ -41,6 +41,15 @@
         </li>
       </ul>
     </base-nav>
+    <div id="alerts" v-if="anyAlerts" class="w-100 row">
+      <base-alert v-for="alert in $store.state.alerts" 
+                  dismissible="true"
+                  :message="alert"
+                  :key="alert"
+                  class="col-6 offset-3">
+        {{alert}}
+      </base-alert>
+    </div>
   </header>
 </template>
 <script>
@@ -55,13 +64,23 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("signedOut");
+      this.$store.commit("addAlert", "You logged out successfully.");
     }
   },
   computed: {
     signedIn() {
       return this.$store.state.signedIn;
+    },
+    anyAlerts() {
+      return this.$store.state.alerts.length;
     }
   }
 };
 </script>
-<style></style>
+<style scoped lang="scss">
+  #alerts {
+    position: absolute;
+    top: 80px;
+    z-index: 1000;
+  }
+</style>

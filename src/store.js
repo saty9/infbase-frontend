@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     signedIn: false,
-    userRole: ""
+    userRole: "",
+    alerts: []
   },
   actions: {
     signedIn(state, [token, userId]) {
@@ -43,6 +44,14 @@ export default new Vuex.Store({
       this.$axios.defaults.headers.common["Authorization"] = null;
       state.signedIn = false;
       state.userRole = "";
+    },
+    addAlert(state, message) {
+      let self = this;
+      state.alerts.push(message);
+      setTimeout(() => self.commit("removeAlert", message), 500 + message.length*70);
+    },
+    removeAlert(state, message) {
+      state.alerts = state.alerts.filter(alert => alert != message);
     }
   }
 });

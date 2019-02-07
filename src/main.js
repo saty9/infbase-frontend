@@ -6,6 +6,7 @@ import router from "./router";
 import store from "./store";
 import Argon from "./plugins/argon-kit";
 import axios from "axios";
+import DisableAutocomplete from 'vue-disable-autocomplete';
 import { securedAxiosInstance, plainAxiosInstance } from "./backend/axios";
 import VueAxios from "vue-axios";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -20,6 +21,7 @@ Vue.use(Vuex);
 Vue.use(Argon);
 Vue.use(VueAxios, axios);
 Vue.use(require("vue-cookies"));
+Vue.use(DisableAutocomplete);
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, {

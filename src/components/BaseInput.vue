@@ -29,8 +29,9 @@
       <input
         :value="value"
         v-on="listeners"
-        v-bind="$attrs"
         class="form-control"
+        :type="input_type"
+        :placeholder="placeholder"
         :class="[
           { 'is-valid': valid === true },
           { 'is-invalid': valid === false },
@@ -65,7 +66,7 @@ export default {
   name: "base-input",
   props: {
     required: {
-      type: Boolean,
+      type: [String, Boolean],
       description: "Whether input is required (adds an asterix *)"
     },
     valid: {
@@ -104,6 +105,14 @@ export default {
     addonLeftIcon: {
       type: String,
       description: "Addont left icon"
+    },
+    placeholder: {
+      type: String,
+      description: "Input placeholder"
+    },
+    input_type: {
+      type: String,
+      description: "Type of the input"
     }
   },
   data() {

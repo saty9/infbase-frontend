@@ -38,7 +38,7 @@
               </base-input>
               <base-input
                 alternative
-                type="password"
+                input_type="password"
                 placeholder="Password"
                 addon-left-icon="ni ni-lock-circle-open"
                 v-model="password"
@@ -65,7 +65,7 @@
               </router-link>
             </div>
             <div class="col-6 text-right">
-              <router-link to="/register" class="text-light">
+              <router-link to="/signup" class="text-light">
                 <small>Create new account</small>
               </router-link>
             </div>
@@ -109,6 +109,7 @@
           response.headers.authorization,
           response.data.id
         ]);
+        this.$store.commit("addAlert", "You are now logged in.");
         this.$router.push('/');
       },
       loginFailed (error) {
