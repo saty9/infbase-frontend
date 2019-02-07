@@ -1,4 +1,4 @@
-import Vue from "vue/dist/vue.esm";
+import Vue from "vue/dist/vue.js";
 import Vuex from "vuex";
 
 Vue.use(Vuex);
@@ -6,37 +6,43 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     signedIn: false,
-    userRole: '',
+    userRole: ""
   },
   actions: {
-    signedIn(state, [token, userId]){
-      window.$cookies.set('jwt', token);
-      window.$cookies.set('userId',userId);
+    signedIn(state, [token, userId]) {
+      window.$cookies.set("jwt", token);
+      window.$cookies.set("userId", userId);
       let self = this;
-      this.$axios.get('/api/users/'+userId+'/courses',{ 'headers': { 'Authorization': token }}).then(function(response){
-        let userRole = response.data.some(x => x.role == "tutor") ? 'tutor': 'student';
-        self.commit('signedIn',[token,userRole])
-      });
+      this.$axios
+        .get("/api/users/" + userId + "/courses", {
+          headers: { Authorization: token }
+        })
+        .then(function(response) {
+          let userRole = response.data.some(x => x.role == "tutor")
+            ? "tutor"
+            : "student";
+          self.commit("signedIn", [token, userRole]);
+        });
     },
-    signedOut(state){
+    signedOut(state) {
       let self = this;
-      this.$axios.delete('/api/logout').then(function(response){
-        self.commit('signedOut');
-      })
+      this.$axios.delete("/api/logout").then(function(response) {
+        self.commit("signedOut");
+      });
     }
   },
   mutations: {
-    signedIn(state, [token, userRole]){
-      this.$axios.defaults.headers.common['Authorization'] = token;
+    signedIn(state, [token, userRole]) {
+      this.$axios.defaults.headers.common["Authorization"] = token;
       state.signedIn = true;
-      state.userRole = userRole
+      state.userRole = userRole;
     },
-    signedOut(state){
-      window.$cookies.remove('jwt');
-      window.$cookies.remove('userId');
-      this.$axios.defaults.headers.common['Authorization'] = null;
+    signedOut(state) {
+      window.$cookies.remove("jwt");
+      window.$cookies.remove("userId");
+      this.$axios.defaults.headers.common["Authorization"] = null;
       state.signedIn = false;
-      state.userRole = '';
+      state.userRole = "";
     }
   }
 });
