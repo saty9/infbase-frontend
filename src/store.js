@@ -10,26 +10,20 @@ export default new Vuex.Store({
     alerts: []
   },
   actions: {
-    signedIn(state, [token, userId]) {
+    signedIn(state, [token, userId, userRole]) {
       window.$cookies.set("jwt", token);
       window.$cookies.set("userId", userId);
-      let self = this;
-      this.$axios
-        .get("/api/users/" + userId + "/courses", {
-          headers: { Authorization: token }
-        })
-        .then(function(response) {
-          let userRole = response.data.some(x => x.role == "tutor")
-            ? "tutor"
-            : "student";
-          self.commit("signedIn", [token, userRole]);
-        });
+      this.commit("signedIn", [token, userRole]);
     },
     signedOut(state) {
       let self = this;
       this.$axios.delete("/api/logout").then(function(response) {
         self.commit("signedOut");
-      });
+      })
+      .then(response => {
+        self.commit("addAlert", "You logged out successfully.");
+      })
+      .catch(error => self.commit("addAlert", "Something went wrong."));
     }
   },
   mutations: {

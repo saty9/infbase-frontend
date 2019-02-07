@@ -64,7 +64,6 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("signedOut");
-      this.$store.commit("addAlert", "You logged out successfully.");
     }
   },
   computed: {
