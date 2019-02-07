@@ -3,7 +3,8 @@ WORKDIR /srv/infbase
 ADD package* /srv/infbase/
 RUN npm install
 ADD . .
-RUN npm build
+RUN npm run build --dest=dist
+RUN ls
 
 FROM nginx:latest
 WORKDIR /var/www/infbase
