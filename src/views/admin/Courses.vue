@@ -11,7 +11,7 @@
 			<div v-if="loading">
 				Loading...
 			</div>
-			<course v-else v-for="course in courses" :course="course"/>
+			<course v-else v-for="course in courses" :course="course" :key="course.id"/>
 		</section>
     <modal :show.sync="modal">
         <h6 slot="header" class="modal-title" id="modal-title-default">New course</h6>
@@ -22,7 +22,7 @@
           required
           class="mb-3"
           placeholder="Course name"
-          v-model="name"
+          v-model="new_course_name"
         ></base-input>
 
 
@@ -51,12 +51,11 @@
 				errored: false,
 				errors: null,
 				modal: false,
-				name: "",
+				new_course_name: "",
 			}
 		},
 		mounted () {
-	    this.axios
-	      this.getCourses();
+	    this.getCourses();
 		},
 		methods: {
 			getCourses () {
@@ -70,7 +69,7 @@
 		        this.courses = response.data;
 		      })
 		      .catch(error => {
-		        this.errored = true
+		        this.errored = true;
 		      })
 		      .finally(() => this.loading = false)
 			},
@@ -79,13 +78,13 @@
 		      .post('/api/courses', {
 	          headers: { Authorization: window.$cookies.get("jwt") },
 	          course: {
-	          	name: this.name
+	          	name: this.new_course_name
 	          }
 	        })
 		      .then(response => {
 		      	this.getCourses();
 		      	this.modal = false;
-		      	this.$store.commit("addAlert", `Course ${this.name} successfully created.`);
+		      	this.$store.commit("addAlert", `Course ${this.new_course_name} successfully created.`);
 		      })
 		      .catch(error => {
 		        this.errored = true;

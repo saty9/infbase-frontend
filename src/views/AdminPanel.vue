@@ -17,9 +17,9 @@
 			        <tab-pane title="Profile">
 		            <span slot="title">
 	                <i class="ni ni-bell-55 mr-2"/>
-	                Tutors
+	                Users
 		            </span>
-			          <tutors/>
+			          <users/>
 			        </tab-pane>
 				    </card>
 					</tabs>
@@ -32,14 +32,14 @@
 	import Tabs from "@/components/Tabs/Tabs";
 	import TabPane from "@/components/Tabs/TabPane";
 	import Courses from "./admin/Courses";
-	import Tutors from "./admin/Tutors";
+	import Users from "./admin/Users";
 
 	export default {
 		components: {
 			Tabs,
 			TabPane,
 			Courses,
-			Tutors
+			Users
 		},
 		data() {
 			return {}
