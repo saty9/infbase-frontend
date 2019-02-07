@@ -105,7 +105,6 @@
           .catch(error => this.loginFailed(error))
       },
       loginSuccessful (response) {
-        console.log(response);
         this.$store.dispatch("signedIn", [
           response.headers.authorization,
           response.data.id,

@@ -6,6 +6,7 @@ import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
 import Signup from "./views/Signup.vue";
 import Profile from "./views/Profile.vue";
+import AdminPanel from "./views/AdminPanel.vue";
 import ResetPassword from "./views/ResetPassword.vue";
 
 Vue.use(Router);
@@ -59,7 +60,16 @@ export default new Router({
         default: Profile,
         footer: AppFooter
       }
-    }
+    },
+    {
+      path: "/admin-panel",
+      name: "admin panel",
+      components: {
+        header: AppHeader,
+        default: AdminPanel,
+        footer: AppFooter
+      }
+    },
   ],
   scrollBehavior: to => {
     if (to.hash) {

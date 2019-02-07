@@ -1,9 +1,11 @@
 import Vue from "vue/dist/vue.js";
 import Vuex from "vuex";
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  plugins: [createPersistedState()],
   state: {
     signedIn: false,
     userRole: "",
@@ -13,6 +15,7 @@ export default new Vuex.Store({
     signedIn(state, [token, userId, userRole]) {
       window.$cookies.set("jwt", token);
       window.$cookies.set("userId", userId);
+      window.$cookies.set("userRole", userRole);
       this.commit("signedIn", [token, userRole]);
     },
     signedOut(state) {
@@ -35,6 +38,7 @@ export default new Vuex.Store({
     signedOut(state) {
       window.$cookies.remove("jwt");
       window.$cookies.remove("userId");
+      window.$cookies.remove("userRole");
       this.$axios.defaults.headers.common["Authorization"] = null;
       state.signedIn = false;
       state.userRole = "";

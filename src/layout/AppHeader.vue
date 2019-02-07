@@ -38,6 +38,16 @@
             </span>
             <span class="nav-link-inner--text">Log out</span>
           </base-button>
+          <router-link
+            v-if="signedIn && userRole == 'admin'"
+            to="/admin-panel"
+            class="btn btn-primary btn-icon"
+          >
+            <span class="btn-inner--icon">
+              <i class="fa fa-sign-in mr-2"></i>
+            </span>
+            <span class="nav-link-inner--text">Admin panel</span>
+          </router-link>
         </li>
       </ul>
     </base-nav>
@@ -69,6 +79,9 @@ export default {
   computed: {
     signedIn() {
       return this.$store.state.signedIn;
+    },
+    userRole() {
+      return this.$store.state.userRole;
     },
     anyAlerts() {
       return this.$store.state.alerts.length;
