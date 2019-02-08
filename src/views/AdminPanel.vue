@@ -9,9 +9,7 @@
 			  <router-link to="/admin-panel/users" class="nav-link mb-1">Users</router-link>
 			  <router-link to="/admin-panel/courses" class="nav-link mb-1">Courses</router-link>
 			</div>
-	    <card shadow class="tab-content col-lg-10 d-inline-block col-lg-10" id="v-pills-tabContent">
-	    	<router-view></router-view>
-	    </card>
+    	<router-view></router-view>
     </div>
   </section>
 </template>

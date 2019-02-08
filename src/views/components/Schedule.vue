@@ -1,36 +1,36 @@
 <template>
-    <table class="table text-center border-0 schedule">
-      <thead>
-        <tr>
-          <th @click="previous_period()">
-            <font-awesome-icon icon="caret-left" class="mb-2" size="2x" />
-          </th>
-          <th v-for="day in days" :key="day">
-            <span
-              class="btn btn-sm mb-3 align-top"
-              :class="{ 'btn-primary': day.join() == get_today().join() }"
-            >
-              {{ formatted_date(day) }}
-            </span>
-          </th>
-          <th @click="next_period()">
-            <font-awesome-icon icon="caret-right" class="mb-2" size="2x" />
-          </th>
-        </tr>   
-      </thead>
-      <tbody>
-        <tr v-for="hour in existing_hours(hours)" :key="hour">
-          <td class="align-middle">{{ hour }}</td>
-          <td v-for="day in days" :key="day + hour">
-            <time-slot
-              v-if="find_session(day, hour)"
-              :session="find_session(day, hour)"
-            ></time-slot>
-          </td>
-          <td></td>
-        </tr>      
-      </tbody>
-    </table>
+  <table class="table text-center border-0 schedule">
+    <thead>
+      <tr class="row">
+        <th @click="previous_period()" class="col-1">
+          <font-awesome-icon icon="caret-left" class="mb-2" size="2x" />
+        </th>
+        <th v-for="day in days" :key="day" class="col-2">
+          <span
+            class="btn btn-sm mb-3 align-top"
+            :class="{ 'btn-primary': day.join() == get_today().join() }"
+          >
+            {{ formatted_date(day) }}
+          </span>
+        </th>
+        <th @click="next_period()" class="col-1">
+          <font-awesome-icon icon="caret-right" class="mb-2" size="2x" />
+        </th>
+      </tr>   
+    </thead>
+    <tbody>
+      <tr v-for="hour in existing_hours(hours)" :key="hour" class="row">
+        <td class="align-middle col-1">{{ hour }}</td>
+        <td v-for="day in days" :key="day + hour" class="col-2">
+          <time-slot
+            v-if="find_session(day, hour)"
+            :session="find_session(day, hour)"
+          ></time-slot>
+        </td>
+        <td class="col-1"></td>
+      </tr>      
+    </tbody>
+  </table>
 </template>
 
 <script>
@@ -43,7 +43,7 @@ export default {
   props: {
     scope: {
       type: Number,
-      default: 3,
+      default: 5,
       description: "How many days to show"
     },
     user: {

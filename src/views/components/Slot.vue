@@ -1,5 +1,5 @@
 <template>
-  <a class="btn" v-if="courses">
+  <a v-if="courses">
     <badge
       v-for="(course, idx) in all_courses"
       :key="idx"

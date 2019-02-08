@@ -17,7 +17,7 @@
       </div>
 
       <ul class="navbar-nav align-items-lg-center ml-lg-auto">
-        <li class="nav-item d-none d-lg-block ml-lg-4">
+        <li class="nav-item d-none d-lg-block">
           <router-link
             v-if="!signedIn"
             to="/login"
@@ -94,5 +94,8 @@ export default {
     position: absolute;
     top: 80px;
     z-index: 1000;
+  }
+  .navbar-nav .nav-item {
+    margin-right: 0px;
   }
 </style>

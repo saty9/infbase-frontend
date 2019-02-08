@@ -1,13 +1,10 @@
 <template>
-	<div id="courses">
+	<card shadow class="tab-content col-lg-10 d-inline-block col-lg-10">
 		<h4 class="text-primary mb-5">Courses</h4>
 		<section v-if="errored">
 			<p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
 		</section>
 		<section v-else>
-			<div v-if="loading">
-				Loading...
-			</div>
 			<table class="table table-hover">
 				<thead>
 					<tr class="row">
@@ -20,8 +17,11 @@
 						<th class="text-right col">Actions</th>
 					</tr>
 				</thead>
-				<tbody>
-					<course v-if="!loading" v-for="course in courses" :course="course" :key="course.id"/>
+				<div v-if="loading">
+					Loading...
+				</div>
+				<tbody v-else>
+					<course v-for="course in courses" :course="course" :key="course.id"/>
 				</tbody>
 			</table>
 		</section>
@@ -44,7 +44,7 @@
             </base-button>
         </template>
     </modal>
-	</div>
+	</card>
 </template>
 
 <script>

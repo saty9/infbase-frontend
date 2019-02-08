@@ -9,8 +9,8 @@
 		</td>
     <modal :show.sync="modal">
         <h6 slot="header" class="modal-title" id="modal-title-default">Edit user</h6>
-        <div v-if="errors">
-        	{{errors}}
+        <div v-if="error">
+        	{{error}}
         </div>
         <base-input
           class="mb-3"
@@ -27,7 +27,6 @@
 		    <base-radio name="student" class="mb-3" v-model="role">
 	        Student
 		    </base-radio>
-
 		    <base-radio name="tutor" class="mb-3" v-model="role">
 	        Tutor
 		    </base-radio>

@@ -9,7 +9,7 @@
       { rounded: round }
     ]"
   >
-    <div class="container">
+    <div class="container col-lg-10">
       <slot name="container-pre"></slot>
       <slot name="brand">
         <a class="navbar-brand" href="#" @click.prevent="onTitleClick">
