@@ -46,4 +46,5 @@ document.addEventListener("DOMContentLoaded", () => {
       window.$cookies.get("userRole")
     ]);
   }
+  global.vm = v; //Define you app variable globally
 });

@@ -65,6 +65,28 @@
 		},
 		methods: {
 			saveUser() {
+        this.axios
+          .put(`/api/admin/users/${this.user.id}`, {
+            user: {
+              first_name: this.first_name,
+              last_name: this.last_name,
+              role: this.role
+            }
+          })
+          .then(response => {
+            this.editSuccessful(response);
+          })
+          .catch(error => this.editFailed(error))
+			},
+			editSuccessful (response) {
+				this.user.first_name = this.first_name;
+				this.user.last_name = this.last_name;
+				this.user.role = this.role;
+				this.modal = false;
+				this.$store.commit("addAlert", "User successfully edited.");
+				this.$emit('changed', this.user);
+			},
+			editFailed (error) {
 
 			}
 		}

@@ -26,6 +26,7 @@
             v-if="find_session(day, hour)"
             :session="find_session(day, hour)"
           ></time-slot>
+          <base-button v-else-if="user == 'admin'" class="btn-sm" type="secondary">Assign</base-button>
         </td>
         <td class="col-1"></td>
       </tr>      
@@ -49,7 +50,7 @@ export default {
     user: {
       type: String,
       default: "student",
-      description: "Who will see the calendar (tutor/student)"
+      description: "Who will see the calendar (tutor/student/admin)"
     }
   },
   data() {
@@ -110,6 +111,10 @@ export default {
       });
     },
     existing_hours(hours) {
+      if (this.user == 'admin') {
+        return hours;
+      }
+
       let days = this.days;
       let sessions = this.sessions;
 
@@ -143,6 +148,6 @@ export default {
 
 .schedule th,
 .schedule tr td {
-  padding: 0px;
+  padding: 5px;
 }
 </style>

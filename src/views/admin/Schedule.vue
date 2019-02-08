@@ -1,7 +1,7 @@
 <template>
 	<card shadow class="tab-content col-lg-10 d-inline-block col-lg-10">
 		<h4 class="text-primary mb-5">Schedule</h4>
-		<schedule user="tutor"/>
+		<schedule user="admin"/>
 	</card>
 </template>
 

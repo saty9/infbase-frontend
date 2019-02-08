@@ -56,7 +56,7 @@
                   dismissible="true"
                   :message="alert"
                   :key="alert"
-                  class="col-6 offset-3">
+                  class="col-3 offset-8">
         {{alert}}
       </base-alert>
     </div>
@@ -92,7 +92,7 @@ export default {
 <style scoped lang="scss">
   #alerts {
     position: absolute;
-    top: 80px;
+    top: 95px;
     z-index: 1000;
   }
   .navbar-nav .nav-item {

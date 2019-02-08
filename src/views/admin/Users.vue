@@ -1,6 +1,6 @@
 <template>
 	<div class="col-lg-10 users">
-		<card class="tab-content w-100 d-inline-blockmb-3 mb-3" v-for="(user, idx) in users" :id="user">
+		<card class="tab-content d-inline-blockmb-3 mb-3" v-for="(user, idx) in users" :id="user">
 			<h4 class="text-primary mb-5">{{user}}</h4>
 			<section v-if="errored">
 				<p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
@@ -18,14 +18,14 @@
 						Loading...
 					</div>
 				  <tbody v-else>
-						<user-row v-if="user == 'Students'" v-for="student in page_users('student')" :user="student" :key="student.id"/>
-						<user-row v-if="user == 'Tutors'" v-for="tutor in page_users('tutor')" :user="tutor" :key="tutor.id"/>
-						<user-row v-if="user == 'Admins'" v-for="admin in page_users('admin')" :user="admin" :key="admin.id"/>
+						<user-row v-if="user == 'Students'" v-for="student in page_students" :user="student" :key="student.id" @changed="onRoleChange"/>
+						<user-row v-if="user == 'Tutors'" v-for="tutor in page_tutors" :user="tutor" :key="tutor.id" @changed="onRoleChange"/>
+						<user-row v-if="user == 'Admins'" v-for="admin in page_admins" :user="admin" :key="admin.id" @changed="onRoleChange"/>
 				  </tbody>
 				</table>
-				<base-pagination v-if="user == 'Students'" v-model="page_student" :total="students_count" align="center"></base-pagination>
-				<base-pagination v-if="user == 'Tutors'" v-model="page_tutor" :total="tutors_count" align="center"></base-pagination>
-				<base-pagination v-if="user == 'Admins'" v-model="page_admin" :total="admins_count" align="center"></base-pagination>
+				<base-pagination v-if="user == 'Students' && students_count > 10" v-model="page_student" :total="students_count" align="center"></base-pagination>
+				<base-pagination v-if="user == 'Tutors' && tutors_count > 10" v-model="page_tutor" :total="tutors_count" align="center"></base-pagination>
+				<base-pagination v-if="user == 'Admins' && admins_count > 10" v-model="page_admin" :total="admins_count" align="center"></base-pagination>
 			</section>
 		</card>	
 	</div>
@@ -50,15 +50,14 @@
 		data () {
 			return {
 				loading: true,
-				all_users: null,
+				all_users: [],
 				errored: false,
-				admins: null,
-				tutors: null,
-				students: null,
+				admins: [],
+				tutors: [],
+				students: [],
 				page_student: 1,
 				page_tutor: 1,
-				page_admin: 1,
-				per_page: 0
+				page_admin: 1
 			}
 		},
 		mounted () {
@@ -74,32 +73,18 @@
 	        })
 		      .then(response => {
 		        this.all_users = response.data;
+						this.tutors = this.all_users.filter(user => user.role == "tutor");
+						this.students = this.all_users.filter(user => user.role == "student");
+						this.admins = this.all_users.filter(user => user.role == "admin");
 		      })
 		      .catch(error => {
 		        this.errored = true;
 		      })
 		      .finally(() => this.loading = false)
 			},
-			page_users (role) {
-				switch(role) {
-					case "student":
-						var users = this.students;
-						var start = (this.page_student-1)*10;
-						break;
-					case "tutor":
-						var users = this.tutors;
-						var start = (this.page_tutor-1)*10;
-						break;
-					case "admin":
-						var users = this.admins;
-						var start = (this.page_admin-1)*10;
-				}
-
-				return users ? users.slice(start, start+10) : [];
-			},
-		},
-		watch: {
-			all_users () {
+			onRoleChange (user) {
+				let index = this.all_users.findIndex(usr => usr.id == user.id);
+				vm.$set(this.all_users, index, user);
 				this.tutors = this.all_users.filter(user => user.role == "tutor");
 				this.students = this.all_users.filter(user => user.role == "student");
 				this.admins = this.all_users.filter(user => user.role == "admin");
@@ -114,6 +99,18 @@
 			},
 			admins_count () {
 				return this.admins ? this.admins.length : 0;
+			},
+			page_students () {
+				var start = (this.page_student-1)*10;
+				return this.students ? this.students.slice(start, start+10) : [];
+			},
+			page_tutors () {
+				var start = (this.page_tutor-1)*10;
+				return this.tutors ? this.tutors.slice(start, start+10) : [];
+			},
+			page_admins () {
+				var start = (this.page_admin-1)*10;
+				return this.admins ? this.admins.slice(start, start+10) : [];
 			}
 		}
 	}
@@ -122,12 +119,9 @@
 <style scoped lang="scss">
 	.users {
 		padding: 0px;
-	}
-.table-row-move {
-  transition: all .5s;
-}
 
-.table-row-item {
-  backface-visibility: hidden;
-}
+		.card {
+			padding: 0px 15px;
+		}
+	}
 </style>
