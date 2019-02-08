@@ -84,18 +84,18 @@
 				switch(role) {
 					case "student":
 						var users = this.students;
-						var start = (this.page_student-1)*15;
+						var start = (this.page_student-1)*10;
 						break;
 					case "tutor":
 						var users = this.tutors;
-						var start = (this.page_tutor-1)*15;
+						var start = (this.page_tutor-1)*10;
 						break;
 					case "admin":
 						var users = this.admins;
-						var start = (this.page_admin-1)*15;
+						var start = (this.page_admin-1)*10;
 				}
 
-				return users ? users.slice(start, start+15) : [];
+				return users ? users.slice(start, start+10) : [];
 			},
 		},
 		watch: {
@@ -107,13 +107,13 @@
 		},
 		computed: {
 			students_count () {
-				this.students ? this.students.length : 0;
+				return this.students ? this.students.length : 0
 			},
 			tutors_count () {
-				this.tutors ? this.tutors.length : 0;
+				return this.tutors ? this.tutors.length : 0;
 			},
 			admins_count () {
-				this.admins ? this.admins.length : 0;
+				return this.admins ? this.admins.length : 0;
 			}
 		}
 	}

@@ -39,7 +39,7 @@ export default {
     },
     perPage: {
       type: Number,
-      default: 15,
+      default: 10,
       description:
         "Pagination per page. Should be specified with total or pageCount"
     },
