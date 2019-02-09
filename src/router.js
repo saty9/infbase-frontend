@@ -8,10 +8,10 @@ import Signup from "./views/Signup.vue";
 import Profile from "./views/Profile.vue";
 import AdminPanel from "./views/AdminPanel.vue";
 import ResetPassword from "./views/ResetPassword.vue";
-import AdminCourses from "./views/admin/Courses";
-import AdminSchedule from "./views/admin/Schedule";
-import AdminReports from "./views/admin/Reports";
-import AdminUsers from "./views/admin/Users";
+import CourseList from "./views/admin/CourseList";
+import SessionSchedule from "./views/admin/SessionSchedule";
+import ReportList from "./views/admin/ReportList";
+import UserList from "./views/admin/UserList";
 
 Vue.use(Router);
 
@@ -76,19 +76,19 @@ export default new Router({
       children: [
         {
           path: 'schedule',
-          component: AdminSchedule
+          component: SessionSchedule
         },
         {
           path: 'reports',
-          component: AdminReports
+          component: ReportList
         },
         {
           path: 'users',
-          component: AdminUsers
+          component: UserList
         },
         {
           path: 'courses',
-          component: AdminCourses
+          component: CourseList
         }
       ]
     },

@@ -97,19 +97,19 @@
 			editSuccessful (response) {
 				this.course.name = this.name;
 				this.modal = false;
-				this.$store.commit("addAlert", ["Course successfully edited.", "success"]);
+				this.$store.commit("ADD_ALERT", ["Course successfully edited.", "success"]);
 			},
 			editFailed (error) {
 
 			},
 			deleteSuccessful (response) {
-				this.$store.commit("addAlert", [`Course ${this.name} deleted.`, "success"]);
+				this.$store.commit("ADD_ALERT", [`Course ${this.name} deleted.`, "success"]);
 				this.modal2 = false;
 				this.modal = false;
 				this.deleted = true;
 			},
 			deleteFailed (error) {
-				this.$store.commit("addAlert", ["Something went wrong.", "warning"]);
+				this.$store.commit("ADD_ALERT", ["Something went wrong.", "warning"]);
 			}
 		}
 	}

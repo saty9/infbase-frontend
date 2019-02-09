@@ -110,7 +110,7 @@
           response.data.id,
           response.data.role
         ]);
-        this.$store.commit("addAlert", ["You are now logged in.", "success"]);
+        this.$store.commit("ADD_ALERT", ["You are now logged in.", "success"]);
         this.$router.push('/');
       },
       loginFailed (error) {

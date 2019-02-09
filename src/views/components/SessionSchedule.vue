@@ -22,11 +22,11 @@
       <tr v-for="hour in existing_hours(hours)" :key="hour" class="row">
         <td class="align-middle col-1">{{ hour }}</td>
         <td v-for="day in days" :key="day + hour" class="col-2">
-          <time-slot
-            v-if="find_session(day, hour)"
+          <session-slot
             :session="find_session(day, hour)"
-          ></time-slot>
-          <base-button v-else-if="user == 'admin'" class="btn-sm" type="secondary">Assign</base-button>
+            :user="user"
+            :all_courses="courses"
+          ></session-slot>
         </td>
         <td class="col-1"></td>
       </tr>      
@@ -35,11 +35,11 @@
 </template>
 
 <script>
-import TimeSlot from "./Slot.vue";
+import SessionSlot from "./SessionSlot.vue";
 
 export default {
   components: {
-    TimeSlot
+    SessionSlot
   },
   props: {
     scope: {
@@ -55,18 +55,11 @@ export default {
   },
   data() {
     return {
+      loading: true,
       current_date: this.get_today(),
+      courses: [],
+      hours: [],
       days: this.get_n_days(this.get_today()),
-      hours: [
-        "10:00",
-        "11:10",
-        "12:10",
-        "13:10",
-        "14:10",
-        "15:10",
-        "16:10",
-        "17:10"
-      ],
       sessions: [
         {
           date: [2019, 2, 4],
@@ -80,7 +73,17 @@ export default {
       ]
     };
   },
+  mounted () {
+    this.getCourses();
+    this.getHours();
+  },
   methods: {
+    getCourses () {
+
+    },
+    getHours() {
+
+    },
     get_today() {
       let today = new Date();
       let year = today.getUTCFullYear();

@@ -15,14 +15,7 @@
 </template>
 
 <script>
-	import Courses from "./admin/Courses";
-	import Users from "./admin/Users";
-
 	export default {
-		components: {
-			Courses,
-			Users
-		},
 		data() {
 			return {}
 		}

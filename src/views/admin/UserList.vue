@@ -32,7 +32,7 @@
 </template>
 
 <script>
-	import UserRow from "./User";
+	import UserRow from "./UserRow";
 	import BasePagination from "@/components/BasePagination";
 
 	export default {

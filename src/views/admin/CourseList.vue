@@ -21,7 +21,7 @@
 					Loading...
 				</div>
 				<tbody v-else>
-					<course v-for="course in courses" :course="course" :key="course.id"/>
+					<course-row v-for="course in courses" :course="course" :key="course.id"/>
 				</tbody>
 			</table>
 		</section>
@@ -48,12 +48,12 @@
 </template>
 
 <script>
-	import Course from "./Course";
+	import CourseRow from "./CourseRow";
 	import Modal from "@/components/Modal";
 
 	export default {
 		components: {
-			Course,
+			CourseRow,
 			Modal
 		},
 		data () {
@@ -96,7 +96,7 @@
 		      .then(response => {
 		      	this.getCourses();
 		      	this.modal = false;
-		      	this.$store.commit("addAlert", [`Course ${this.new_course_name} successfully created.`, "success"]);
+		      	this.$store.commit("ADD_ALERT", [`Course ${this.new_course_name} successfully created.`, "success"]);
 		      })
 		      .catch(error => {
 		        this.errored = true;

@@ -52,13 +52,13 @@
       </ul>
     </base-nav>
     <div id="alerts" v-if="anyAlerts" class="w-100 row">
-      <base-alert v-for="alert in $store.state.alerts" 
+      <base-alert v-for="[message, status] in $store.state.alerts" 
                   dismissible="true"
-                  :type="alert[1]"
-                  :message="alert[0]"
-                  :key="alert[0]"
+                  :type="status"
+                  :message="message"
+                  :key="message"
                   class="col-3 offset-8">
-        {{alert[0]}}
+        {{message}}
       </base-alert>
     </div>
   </header>

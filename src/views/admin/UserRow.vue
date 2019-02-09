@@ -83,7 +83,7 @@
 				this.user.first_name = this.first_name;
 				this.user.last_name = this.last_name;
 				this.user.role = this.role;
-				this.$store.commit("addAlert", ["User successfully edited.", "success"]);
+				this.$store.commit("ADD_ALERT", ["User successfully edited.", "success"]);
 				this.modal = false;
 			},
 			editFailed (error) {

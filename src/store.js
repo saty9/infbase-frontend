@@ -11,31 +11,13 @@ export default new Vuex.Store({
     userRole: "",
     alerts: []
   },
-  actions: {
-    signedIn(state, [token, userId, userRole]) {
-      window.$cookies.set("jwt", token);
-      window.$cookies.set("userId", userId);
-      window.$cookies.set("userRole", userRole);
-      this.commit("signedIn", [token, userRole]);
-    },
-    signedOut(state) {
-      let self = this;
-      this.$axios.delete("/api/logout").then(function(response) {
-        self.commit("signedOut");
-      })
-      .then(response => {
-        self.commit("addAlert", ["You logged out successfully.", "success"]);
-      })
-      .catch(error => self.commit("addAlert", "Something went wrong."));
-    }
-  },
   mutations: {
-    signedIn(state, [token, userRole]) {
+    SIGNED_IN(state, [token, userRole]) {
       this.$axios.defaults.headers.common["Authorization"] = token;
       state.signedIn = true;
       state.userRole = userRole;
     },
-    signedOut(state) {
+    SIGNED_OUT(state) {
       window.$cookies.remove("jwt");
       window.$cookies.remove("userId");
       window.$cookies.remove("userRole");
@@ -43,13 +25,31 @@ export default new Vuex.Store({
       state.signedIn = false;
       state.userRole = "";
     },
-    addAlert(state, message) {
+    ADD_ALERT(state, [message, status]) {
       let self = this;
-      state.alerts.push(message);
-      setTimeout(() => self.commit("removeAlert", message[0]), 500 + message[0].length*70);
+      state.alerts.push([message, status]);
+      setTimeout(() => self.commit("REMOVE_ALERT", message), 700 + message.length*70);
     },
-    removeAlert(state, message) {
-      state.alerts = state.alerts.filter(alert => alert[0] != message);
+    REMOVE_ALERT(state, message) {
+      state.alerts = state.alerts.filter(([msg, status]) => msg != message);
+    }
+  },
+  actions: {
+    signedIn(state, [token, userId, userRole]) {
+      window.$cookies.set("jwt", token);
+      window.$cookies.set("userId", userId);
+      window.$cookies.set("userRole", userRole);
+      this.commit("SIGNED_IN", [token, userRole]);
+    },
+    signedOut(state) {
+      let self = this;
+      this.$axios.delete("/api/logout").then(function(response) {
+        self.commit("SIGNED_OUT");
+      })
+      .then(response => {
+        self.commit("ADD_ALERT", ["You logged out successfully.", "success"]);
+      })
+      .catch(error => self.commit("ADD_ALERT", ["Something went wrong.", "warning"]));
     }
   }
 });
