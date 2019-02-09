@@ -159,7 +159,7 @@
           .catch(error => this.signupFailed(error))
       },
       signupSuccessful (response) {
-        this.$store.commit("addAlert", "Signup successfull. You may now login.");
+        this.$store.commit("addAlert", ["Signup successfull. You may now login.", "success"]);
         this.$router.push("/login");
       },
       signupFailed (errors) {

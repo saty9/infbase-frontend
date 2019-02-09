@@ -24,7 +24,7 @@ export default new Vuex.Store({
         self.commit("signedOut");
       })
       .then(response => {
-        self.commit("addAlert", "You logged out successfully.");
+        self.commit("addAlert", ["You logged out successfully.", "success"]);
       })
       .catch(error => self.commit("addAlert", "Something went wrong."));
     }
@@ -46,10 +46,10 @@ export default new Vuex.Store({
     addAlert(state, message) {
       let self = this;
       state.alerts.push(message);
-      setTimeout(() => self.commit("removeAlert", message), 500 + message.length*70);
+      setTimeout(() => self.commit("removeAlert", message[0]), 500 + message[0].length*70);
     },
     removeAlert(state, message) {
-      state.alerts = state.alerts.filter(alert => alert != message);
+      state.alerts = state.alerts.filter(alert => alert[0] != message);
     }
   }
 });

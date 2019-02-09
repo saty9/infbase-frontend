@@ -96,7 +96,7 @@
 		      .then(response => {
 		      	this.getCourses();
 		      	this.modal = false;
-		      	this.$store.commit("addAlert", `Course ${this.new_course_name} successfully created.`);
+		      	this.$store.commit("addAlert", [`Course ${this.new_course_name} successfully created.`, "success"]);
 		      })
 		      .catch(error => {
 		        this.errored = true;

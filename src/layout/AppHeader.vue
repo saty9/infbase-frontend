@@ -40,7 +40,7 @@
           </base-button>
           <router-link
             v-if="signedIn && userRole == 'admin'"
-            to="/admin-panel"
+            to="/admin-panel/schedule"
             class="btn btn-primary btn-icon"
           >
             <span class="btn-inner--icon">
@@ -54,10 +54,11 @@
     <div id="alerts" v-if="anyAlerts" class="w-100 row">
       <base-alert v-for="alert in $store.state.alerts" 
                   dismissible="true"
-                  :message="alert"
-                  :key="alert"
+                  :type="alert[1]"
+                  :message="alert[0]"
+                  :key="alert[0]"
                   class="col-3 offset-8">
-        {{alert}}
+        {{alert[0]}}
       </base-alert>
     </div>
   </header>

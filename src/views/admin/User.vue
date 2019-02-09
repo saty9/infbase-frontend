@@ -75,6 +75,7 @@
           })
           .then(response => {
             this.editSuccessful(response);
+            this.$emit('changed', this.user);
           })
           .catch(error => this.editFailed(error))
 			},
@@ -82,12 +83,10 @@
 				this.user.first_name = this.first_name;
 				this.user.last_name = this.last_name;
 				this.user.role = this.role;
+				this.$store.commit("addAlert", ["User successfully edited.", "success"]);
 				this.modal = false;
-				this.$store.commit("addAlert", "User successfully edited.");
-				this.$emit('changed', this.user);
 			},
 			editFailed (error) {
-
 			}
 		}
 	}

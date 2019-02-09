@@ -73,9 +73,6 @@
 	        })
 		      .then(response => {
 		        this.all_users = response.data;
-						this.tutors = this.all_users.filter(user => user.role == "tutor");
-						this.students = this.all_users.filter(user => user.role == "student");
-						this.admins = this.all_users.filter(user => user.role == "admin");
 		      })
 		      .catch(error => {
 		        this.errored = true;
@@ -85,6 +82,11 @@
 			onRoleChange (user) {
 				let index = this.all_users.findIndex(usr => usr.id == user.id);
 				vm.$set(this.all_users, index, user);
+				document.body.classList.remove("modal-open"); // hack to forcefully close the modal
+			}
+		},
+		watch: {
+			all_users () {
 				this.tutors = this.all_users.filter(user => user.role == "tutor");
 				this.students = this.all_users.filter(user => user.role == "student");
 				this.admins = this.all_users.filter(user => user.role == "admin");
