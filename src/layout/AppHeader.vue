@@ -30,7 +30,7 @@
           </router-link>
           <base-button
             v-if="signedIn"
-            @click="logout"
+            @click="logOut"
             class="btn btn-neutral btn-icon"
           >
             <span class="btn-inner--icon">
@@ -73,7 +73,7 @@ export default {
     CloseButton
   },
   methods: {
-    logout() {
+    logOut() {
       this.$store.dispatch("signedOut");
     }
   },

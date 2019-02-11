@@ -1,8 +1,8 @@
 <template>
-	<card shadow class="tab-content col-lg-10 d-inline-block">
+	<div>
 		<h4 class="text-primary mb-5">Reports</h4>
 
-	</card>
+	</div>
 </template>
 
 <script>

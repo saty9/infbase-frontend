@@ -8,20 +8,26 @@
 			  <router-link to="/admin-panel/reports" class="nav-link mb-1">Reports</router-link>
 			  <router-link to="/admin-panel/users" class="nav-link mb-1">Users</router-link>
 			  <router-link to="/admin-panel/courses" class="nav-link mb-1">Courses</router-link>
+			  <router-link to="/admin-panel/hours" class="nav-link mb-1">Hours</router-link>
 			</div>
-    	<router-view></router-view>
+			<fade-transition mode="out-in" name="fade" :duration="300">
+				<card shadow class="tab-content col-lg-10 d-inline-block p-3 router-card">
+		    	<router-view></router-view>
+		    </card>
+    	</fade-transition>
     </div>
   </section>
 </template>
 
 <script>
+	import { FadeTransition } from "vue2-transitions";
+
 	export default {
+		components: {
+			FadeTransition
+		},
 		data() {
 			return {}
 		}
 	}
 </script>
-
-<style>
-	
-</style>

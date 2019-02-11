@@ -24,11 +24,14 @@
           v-model="last_name"
         ></base-input>
 
-		    <base-radio name="student" class="mb-3" v-model="role">
-	        Student
+		    <base-radio name="admin" class="mb-3" v-model="role">
+	        Admin
 		    </base-radio>
 		    <base-radio name="tutor" class="mb-3" v-model="role">
 	        Tutor
+		    </base-radio>
+		    <base-radio name="student" class="mb-3" v-model="role">
+	        Student
 		    </base-radio>
 
         <template slot="footer">

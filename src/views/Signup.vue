@@ -27,7 +27,7 @@
               <base-alert type="warning" v-if="errors.length">
                 <b>Please correct the following error(s):</b>
                 <ul>
-                  <li v-for="error in errors">{{ error }}</li>
+                  <li v-for="error in errors" :key="error">{{ error }}</li>
                 </ul>
               </base-alert>
               <form role="form" id="register">
@@ -141,7 +141,6 @@
         }
       },
       submit () {
-        console.log('submit');
         this.axios
           .post("/api/signup", {
             user: {
@@ -162,8 +161,7 @@
         this.$store.commit("ADD_ALERT", ["Signup successfull. You may now login.", "success"]);
         this.$router.push("/login");
       },
-      signupFailed (errors) {
-        this.errors = errors;
+      signupFailed (error) {
         this.failure = true;
       }
     }

@@ -12,6 +12,7 @@ import CourseList from "./views/admin/CourseList";
 import SessionSchedule from "./views/admin/SessionSchedule";
 import ReportList from "./views/admin/ReportList";
 import UserList from "./views/admin/UserList";
+import SessionHourList from "./views/admin/SessionHourList";
 
 Vue.use(Router);
 
@@ -89,6 +90,10 @@ export default new Router({
         {
           path: 'courses',
           component: CourseList
+        },
+        {
+          path: 'hours',
+          component: SessionHourList
         }
       ]
     },

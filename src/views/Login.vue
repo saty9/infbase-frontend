@@ -120,5 +120,3 @@
     }
   };
 </script>
-
-<style></style>

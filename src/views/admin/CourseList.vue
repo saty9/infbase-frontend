@@ -1,6 +1,7 @@
 <template>
-	<card shadow class="tab-content col-lg-10 d-inline-block">
-		<h4 class="text-primary mb-5">Courses</h4>
+	<div>
+		<h4 class="text-primary mb-5 d-inline-block">Courses</h4>
+		<base-button @click="modal = true" class="float-right d-inline-block" type="primary">Add course</base-button>
 		<section v-if="errored">
 			<p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
 		</section>
@@ -8,13 +9,8 @@
 			<table class="table table-hover">
 				<thead>
 					<tr class="row">
-						<th>
-							Course
-							<base-button type="success" class="d-inline-block btn-sm ml-2 align-top" @click="modal = true">
-								+
-							</base-button>
-						</th>
-						<th class="text-right col">Actions</th>
+						<th> Course </th>
+						<th class="text-right col pr-3"> Actions </th>
 					</tr>
 				</thead>
 				<div v-if="loading">
@@ -36,15 +32,13 @@
           placeholder="Course name"
           v-model="new_course_name"
         ></base-input>
-
-
         <template slot="footer">
             <base-button type="primary" @click="submitCourse">Create</base-button>
             <base-button type="link" class="ml-auto" @click="modal = false">Close
             </base-button>
         </template>
     </modal>
-	</card>
+	</div>
 </template>
 
 <script>

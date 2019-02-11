@@ -1,6 +1,6 @@
 <template>
-	<div class="col-lg-10 users">
-		<card class="tab-content d-inline-blockmb-3 mb-3" v-for="(user, idx) in users" :id="user">
+	<div>
+		<div v-for="(user, idx) in users" :id="user" class="mb-5">
 			<h4 class="text-primary mb-5">{{user}}</h4>
 			<section v-if="errored">
 				<p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
@@ -18,16 +18,22 @@
 						Loading...
 					</div>
 				  <tbody v-else>
-						<user-row v-if="user == 'Students'" v-for="student in page_students" :user="student" :key="student.id" @changed="onRoleChange"/>
-						<user-row v-if="user == 'Tutors'" v-for="tutor in page_tutors" :user="tutor" :key="tutor.id" @changed="onRoleChange"/>
-						<user-row v-if="user == 'Admins'" v-for="admin in page_admins" :user="admin" :key="admin.id" @changed="onRoleChange"/>
+				  	<div v-if="user == 'Students'">
+							<user-row v-for="student in page_students" :user="student" :key="student.id" @changed="onRoleChange"/>
+				  	</div>
+				  	<div v-if="user == 'Tutors'">
+				  		<user-row v-for="tutor in page_tutors" :user="tutor" :key="tutor.id" @changed="onRoleChange"/>
+				  	</div>
+				  	<div v-if="user == 'Admins'">
+				  		<user-row v-for="admin in page_admins" :user="admin" :key="admin.id" @changed="onRoleChange"/>
+				  	</div>
 				  </tbody>
 				</table>
 				<base-pagination v-if="user == 'Students' && students_count > 10" v-model="page_student" :total="students_count" align="center"></base-pagination>
 				<base-pagination v-if="user == 'Tutors' && tutors_count > 10" v-model="page_tutor" :total="tutors_count" align="center"></base-pagination>
 				<base-pagination v-if="user == 'Admins' && admins_count > 10" v-model="page_admin" :total="admins_count" align="center"></base-pagination>
 			</section>
-		</card>	
+		</div>	
 	</div>
 </template>
 
@@ -43,7 +49,7 @@
 		props: {
 			users: {
 				type: Array,
-				default: () => ["Tutors", "Students"],
+				default: () => ["Admins", "Tutors", "Students"],
 				description: "Which list to show opt(Students/Tutors/Admins)"
 			}
 		},
@@ -68,7 +74,7 @@
 				this.loading = true;
 
 		    this.axios
-		      .get('/api/users/all', {
+		      .get('/api/admin/users', {
 	          headers: { Authorization: window.$cookies.get("jwt") }
 	        })
 		      .then(response => {
