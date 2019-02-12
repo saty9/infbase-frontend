@@ -2,11 +2,17 @@ import Vue from "vue";
 import Router from "vue-router";
 import AppHeader from "./layout/AppHeader";
 import AppFooter from "./layout/AppFooter";
-import Landing from "./views/Landing.vue";
-import Login from "./views/Login.vue";
-import Signup from "./views/Signup.vue";
-import Profile from "./views/Profile.vue";
-import ResetPassword from "./views/ResetPassword.vue";
+import Landing from "./views/Landing";
+import Login from "./views/Login";
+import Signup from "./views/Signup";
+import ResetPassword from "./views/ResetPassword";
+import Profile from "./views/Profile";
+import AdminPanel from "./views/AdminPanel";
+import CourseList from "./views/admin/Course/CourseList";
+import Schedule from "./views/admin/Schedule/Schedule";
+import ReportList from "./views/admin/Report/ReportList";
+import UserList from "./views/admin/User/UserList";
+import HourList from "./views/admin/Hour/HourList";
 
 Vue.use(Router);
 
@@ -59,7 +65,38 @@ export default new Router({
         default: Profile,
         footer: AppFooter
       }
-    }
+    },
+    {
+      path: "/admin-panel",
+      name: "admin panel",
+      components: {
+        header: AppHeader,
+        default: AdminPanel,
+        footer: AppFooter
+      },
+      children: [
+        {
+          path: 'schedule',
+          component: Schedule
+        },
+        {
+          path: 'reports',
+          component: ReportList
+        },
+        {
+          path: 'users',
+          component: UserList
+        },
+        {
+          path: 'courses',
+          component: CourseList
+        },
+        {
+          path: 'hours',
+          component: HourList
+        }
+      ]
+    },
   ],
   scrollBehavior: to => {
     if (to.hash) {

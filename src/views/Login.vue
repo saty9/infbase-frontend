@@ -84,7 +84,7 @@
         password: "",
         remember_me: false,
         failure: false,
-        reposnse: ""
+        response: ""
       };
     },
     methods: {
@@ -107,9 +107,10 @@
       loginSuccessful (response) {
         this.$store.dispatch("signedIn", [
           response.headers.authorization,
-          response.data.id
+          response.data.id,
+          response.data.role
         ]);
-        this.$store.commit("addAlert", "You are now logged in.");
+        this.$store.commit("ADD_ALERT", ["You are now logged in.", "success"]);
         this.$router.push('/');
       },
       loginFailed (error) {
@@ -119,5 +120,3 @@
     }
   };
 </script>
-
-<style></style>

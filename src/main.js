@@ -42,7 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.$cookies.get("userId") && window.$cookies.get("jwt")) {
     v.$store.dispatch("signedIn", [
       window.$cookies.get("jwt"),
-      window.$cookies.get("userId")
+      window.$cookies.get("userId"),
+      window.$cookies.get("userRole")
     ]);
   }
+  global.vm = v; //Define you app variable globally
 });

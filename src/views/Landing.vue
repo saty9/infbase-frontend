@@ -122,7 +122,9 @@
             </p>
           </div>
         </div>
-        <schedule></schedule>
+        <card class="border-0" shadow body-classes="py-5">
+          <session-schedule :scope="3"/>
+        </card>
       </div>
     </section>
 
@@ -310,9 +312,9 @@
 </template>
 
 <script>
-import Schedule from "./components/Schedule";
+import SessionSchedule from "./admin/Schedule/Schedule";
 export default {
   name: "home",
-  components: { Schedule }
+  components: { SessionSchedule }
 };
 </script>

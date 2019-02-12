@@ -1,0 +1,135 @@
+<template>
+	<div>
+		<div v-for="user in users" :key="user.id" class="mb-5">
+			<h4 class="text-primary mb-5">{{user}}</h4>
+			<section v-if="errored">
+				<p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+			</section>
+			<section v-else>
+				<table class="table table-hover">
+					<thead>
+						<tr class="row">
+							<th class="col">Name</th>
+							<th class="col">Email</th>
+							<th class="col text-right">Actions</th>
+						</tr>	
+					</thead>
+					<div v-if="loading">
+						Loading...
+					</div>
+				  <tbody v-else>
+				  	<div v-if="user == 'Students'">
+							<user-row v-for="student in page_students" :user="student" :key="student.id" @changed="onRoleChange"/>
+				  	</div>
+				  	<div v-if="user == 'Tutors'">
+				  		<user-row v-for="tutor in page_tutors" :user="tutor" :key="tutor.id" @changed="onRoleChange"/>
+				  	</div>
+				  	<div v-if="user == 'Admins'">
+				  		<user-row v-for="admin in page_admins" :user="admin" :key="admin.id" @changed="onRoleChange"/>
+				  	</div>
+				  </tbody>
+				</table>
+				<base-pagination v-if="user == 'Students' && students_count > 10" v-model="page_student" :total="students_count" align="center"></base-pagination>
+				<base-pagination v-if="user == 'Tutors' && tutors_count > 10" v-model="page_tutor" :total="tutors_count" align="center"></base-pagination>
+				<base-pagination v-if="user == 'Admins' && admins_count > 10" v-model="page_admin" :total="admins_count" align="center"></base-pagination>
+			</section>
+		</div>	
+	</div>
+</template>
+
+<script>
+	import UserRow from "./UserListRow";
+	import BasePagination from "@/components/BasePagination";
+
+	export default {
+		components: {
+			UserRow,
+			BasePagination
+		},
+		props: {
+			users: {
+				type: Array,
+				default: () => ["Admins", "Tutors", "Students"],
+				description: "Which list to show opt(Students/Tutors/Admins)"
+			}
+		},
+		data () {
+			return {
+				loading: true,
+				all_users: [],
+				errored: false,
+				admins: [],
+				tutors: [],
+				students: [],
+				page_student: 1,
+				page_tutor: 1,
+				page_admin: 1
+			}
+		},
+		mounted () {
+      this.getUsers();
+		},
+		methods: {
+			getUsers () {
+				this.loading = true;
+
+		    this.axios
+		      .get('/api/admin/users', {
+	          headers: { Authorization: window.$cookies.get("jwt") }
+	        })
+		      .then(response => {
+		        this.all_users = response.data;
+		      })
+		      .catch(error => {
+		        this.errored = true;
+		      })
+		      .finally(() => this.loading = false)
+			},
+			onRoleChange (user) {
+				let index = this.all_users.findIndex(usr => usr.id == user.id);
+				vm.$set(this.all_users, index, user);
+				document.body.classList.remove("modal-open"); // hack to forcefully close the modal
+			}
+		},
+		watch: {
+			all_users () {
+				this.tutors = this.all_users.filter(user => user.role == "tutor");
+				this.students = this.all_users.filter(user => user.role == "student");
+				this.admins = this.all_users.filter(user => user.role == "admin");
+			}
+		},
+		computed: {
+			students_count () {
+				return this.students ? this.students.length : 0
+			},
+			tutors_count () {
+				return this.tutors ? this.tutors.length : 0;
+			},
+			admins_count () {
+				return this.admins ? this.admins.length : 0;
+			},
+			page_students () {
+				var start = (this.page_student-1)*10;
+				return this.students ? this.students.slice(start, start+10) : [];
+			},
+			page_tutors () {
+				var start = (this.page_tutor-1)*10;
+				return this.tutors ? this.tutors.slice(start, start+10) : [];
+			},
+			page_admins () {
+				var start = (this.page_admin-1)*10;
+				return this.admins ? this.admins.slice(start, start+10) : [];
+			}
+		}
+	}
+</script>
+
+<style scoped lang="scss">
+	.users {
+		padding: 0px;
+
+		.card {
+			padding: 0px 15px;
+		}
+	}
+</style>

@@ -17,7 +17,7 @@
       </div>
 
       <ul class="navbar-nav align-items-lg-center ml-lg-auto">
-        <li class="nav-item d-none d-lg-block ml-lg-4">
+        <li class="nav-item d-none d-lg-block">
           <router-link
             v-if="!signedIn"
             to="/login"
@@ -30,7 +30,7 @@
           </router-link>
           <base-button
             v-if="signedIn"
-            @click="logout"
+            @click="logOut"
             class="btn btn-neutral btn-icon"
           >
             <span class="btn-inner--icon">
@@ -38,16 +38,27 @@
             </span>
             <span class="nav-link-inner--text">Log out</span>
           </base-button>
+          <router-link
+            v-if="signedIn && userRole == 'admin'"
+            to="/admin-panel/schedule"
+            class="btn btn-primary btn-icon"
+          >
+            <span class="btn-inner--icon">
+              <i class="fa fa-sign-in mr-2"></i>
+            </span>
+            <span class="nav-link-inner--text">Admin panel</span>
+          </router-link>
         </li>
       </ul>
     </base-nav>
     <div id="alerts" v-if="anyAlerts" class="w-100 row">
-      <base-alert v-for="alert in $store.state.alerts" 
+      <base-alert v-for="[message, status] in $store.state.alerts" 
                   dismissible="true"
-                  :message="alert"
-                  :key="alert"
-                  class="col-6 offset-3">
-        {{alert}}
+                  :type="status"
+                  :message="message"
+                  :key="message"
+                  class="col-3 offset-8">
+        {{message}}
       </base-alert>
     </div>
   </header>
@@ -62,14 +73,16 @@ export default {
     CloseButton
   },
   methods: {
-    logout() {
+    logOut() {
       this.$store.dispatch("signedOut");
-      this.$store.commit("addAlert", "You logged out successfully.");
     }
   },
   computed: {
     signedIn() {
       return this.$store.state.signedIn;
+    },
+    userRole() {
+      return this.$store.state.userRole;
     },
     anyAlerts() {
       return this.$store.state.alerts.length;
@@ -80,7 +93,10 @@ export default {
 <style scoped lang="scss">
   #alerts {
     position: absolute;
-    top: 80px;
+    top: 95px;
     z-index: 1000;
+  }
+  .navbar-nav .nav-item {
+    margin-right: 0px;
   }
 </style>
