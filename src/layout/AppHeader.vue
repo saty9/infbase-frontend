@@ -48,6 +48,16 @@
             </span>
             <span class="nav-link-inner--text">Admin panel</span>
           </router-link>
+          <router-link
+            v-if="signedIn && userRole == 'tutor'"
+            to="/admin-panel/schedule"
+            class="btn btn-primary btn-icon"
+          >
+            <span class="btn-inner--icon">
+              <i class="fa fa-sign-in mr-2"></i>
+            </span>
+            <span class="nav-link-inner--text">Tutor panel</span>
+          </router-link>
         </li>
       </ul>
     </base-nav>

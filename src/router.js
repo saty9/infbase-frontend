@@ -7,12 +7,14 @@ import Login from "./views/Login";
 import Signup from "./views/Signup";
 import ResetPassword from "./views/ResetPassword";
 import Profile from "./views/Profile";
-import AdminPanel from "./views/AdminPanel";
+import AdminPanel from "./views/admin/AdminPanel";
 import CourseList from "./views/admin/Course/CourseList";
 import Schedule from "./views/admin/Schedule/Schedule";
 import ReportList from "./views/admin/Report/ReportList";
+import ReportForm from "./views/admin/Report/ReportForm";
 import UserList from "./views/admin/User/UserList";
 import HourList from "./views/admin/Hour/HourList";
+import ExpertiseList from "./views/admin/Expertise/ExpertiseList";
 import FAQIndex from "./views/FAQ/FAQIndex";
 import FAQQuestionView from "./views/FAQ/FAQQuestionView";
 import FAQAsk from "./views/FAQ/FAQAsk";
@@ -82,24 +84,32 @@ let router = new Router({
       },
       children: [
         {
-          path: 'schedule',
+          path: "schedule",
           component: Schedule
         },
         {
-          path: 'reports',
+          path: "reports",
           component: ReportList
         },
         {
-          path: 'users',
+          path: "report/:id",
+          component: ReportForm
+        },
+        {
+          path: "users",
           component: UserList
         },
         {
-          path: 'courses',
+          path: "courses",
           component: CourseList
         },
         {
-          path: 'hours',
+          path: "hours",
           component: HourList
+        },
+        {
+          path: "expertises",
+          component: ExpertiseList
         }
       ]
     },
@@ -142,9 +152,9 @@ let router = new Router({
   ],
   scrollBehavior: to => {
     if (to.hash) {
-      return {selector: to.hash};
+      return { selector: to.hash };
     } else {
-      return {x: 0, y: 0};
+      return { x: 0, y: 0 };
     }
   }
 });
@@ -152,23 +162,24 @@ let router = new Router({
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (router.app.$store.state.signedIn) {
-        next()
+      next();
     } else {
       if (window.$cookies.get("jwt")) {
         let token = window.$cookies.get("jwt");
+        let userId = window.$cookies.get("userId");
         let userRole = window.$cookies.get("userRole");
-        router.app.$store.commit("SIGNED_IN", [token, userRole]);
-        next()
+        router.app.$store.commit("SIGNED_IN", [token, userId, userRole]);
+        next();
       } else {
         next({
           name: "login",
-          params: {nextUrl: to.fullPath}
-        })
+          params: { nextUrl: to.fullPath }
+        });
       }
     }
   } else {
-    next()
+    next();
   }
 });
 
-export default router
+export default router;

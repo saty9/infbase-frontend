@@ -78,8 +78,7 @@
                 >
                 </base-input>
                 <base-checkbox v-model="accept">
-                  <span
-                    >I agree with the
+                  <span>I agree with the
                     <a href="#">Privacy Policy</a>
                   </span>
                 </base-checkbox>
@@ -98,75 +97,83 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        first_name: "",
-        last_name: "",
-        email: "",
-        password: "",
-        password_confirmation: "",
-        accept: false,
-        failure: false,
-        errors: ''
+export default {
+  data() {
+    return {
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+      accept: false,
+      failure: false,
+      errors: ""
+    };
+  },
+  methods: {
+    checkForm() {
+      if (
+        this.first_name &&
+        this.email &&
+        this.password.length >= 8 &&
+        this.accept &&
+        this.password == this.password_confirmation
+      ) {
+        this.submit();
+      }
+
+      this.errors = [];
+
+      if (!this.first_name) {
+        this.errors.push("First name required.");
+      }
+      if (!this.email) {
+        this.errors.push("Email required.");
+      }
+      if (this.password.length < 8) {
+        this.errors.push("Password has to be at least 8 symbols long.");
+        this.password = "";
+        this.password_confirmation = "";
+      } else if (this.password != this.password_confirmation) {
+        this.errors.push("Passwords do not match.");
+        this.password = "";
+        this.password_confirmation = "";
+      }
+      if (!this.accept) {
+        this.errors.push(
+          "Please, agree with the Privacy Policy and Terms of Use"
+        );
       }
     },
-    methods: {
-      checkForm () {
-        if (this.first_name && this.email && 
-            this.password.length >= 8 && this.accept && 
-            this.password == this.password_confirmation) {
-          this.submit();
-        }
-
-        this.errors = [];
-
-        if (!this.first_name) {
-          this.errors.push('First name required.');
-        }
-        if (!this.email) {
-          this.errors.push('Email required.');
-        }
-        if (this.password.length < 8 ) {
-          this.errors.push('Password has to be at least 8 symbols long.');
-          this.password = "";
-          this.password_confirmation = "";
-        } else if (this.password != this.password_confirmation) {
-          this.errors.push('Passwords do not match.');
-          this.password = "";
-          this.password_confirmation = "";
-        }
-        if (!this.accept) {
-          this.errors.push('Please, agree with the Privacy Policy and Terms of Use');
-        }
-      },
-      submit () {
-        this.axios
-          .post("/api/signup", {
-            user: {
-              first_name: this.first_name,
-              last_name: this.last_name,
-              email: this.email,
-              password: this.password,
-              password_confirmation: this.password_confirmation,
-              remember_me: this.remember_me ? 1 : 0
-            }
-          })
-          .then(response => {
-            this.signupSuccessful(response)
-          })
-          .catch(error => this.signupFailed(error))
-      },
-      signupSuccessful (response) {
-        this.$store.commit("ADD_ALERT", ["Signup successfull. You may now login.", "success"]);
-        this.$router.push("/login");
-      },
-      signupFailed (error) {
-        this.failure = true;
-      }
+    submit() {
+      this.axios
+        .post("/api/signup", {
+          user: {
+            first_name: this.first_name,
+            last_name: this.last_name,
+            email: this.email,
+            password: this.password,
+            password_confirmation: this.password_confirmation,
+            remember_me: this.remember_me ? 1 : 0
+          }
+        })
+        // eslint-disable-next-line no-unused-vars
+        .then(response => {
+          this.signupSuccessful();
+        })
+        .catch(error => this.signupFailed(error));
+    },
+    signupSuccessful() {
+      this.$store.commit("ADD_ALERT", [
+        "Signup successfull. You may now login.",
+        "success"
+      ]);
+      this.$router.push("/login");
+    },
+    // eslint-disable-next-line no-unused-vars
+    signupFailed(error) {
+      this.failure = true;
     }
-  };
+  }
+};
 </script>
-
-<style scoped lang="scss">
-</style>
