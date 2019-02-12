@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div v-for="(user, idx) in users" :id="user" class="mb-5">
+		<div v-for="user in users" :key="user.id" class="mb-5">
 			<h4 class="text-primary mb-5">{{user}}</h4>
 			<section v-if="errored">
 				<p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-	import UserRow from "./UserRow";
+	import UserRow from "./UserListRow";
 	import BasePagination from "@/components/BasePagination";
 
 	export default {

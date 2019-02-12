@@ -52,7 +52,7 @@
 <script>
 	import FlatPicker from "vue-flatpickr-component";
 	import "flatpickr/dist/flatpickr.css";
-	import HourRow from './SessionHourRow';
+	import HourRow from './HourListRow';
 	import Modal from '@/components/Modal';
 
 	export default {

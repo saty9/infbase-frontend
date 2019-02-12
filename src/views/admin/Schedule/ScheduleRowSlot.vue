@@ -1,7 +1,6 @@
 <template>
 	<div>
-		<SlotInner v-if="session && tutor" :session="session" :tutor="tutor" @clicked="modal = true"/>
-		<base-button v-else type="secondary" class="btn-sm" @click="modal = true">Assign</base-button>
+		<SlotInner :session_prop="session" :tutor_prop="tutor" @clicked="modal = true"/>
     <modal :show.sync="modal" class="text-left">
         <h6 slot="header" class="modal-title" id="modal-title-default">Edit time slot</h6>
 		    <base-alert type="warning" v-if="errors">
@@ -13,11 +12,11 @@
 	        Today only
 		    </base-radio>
 		    <base-radio name="weekly" class="mt-3" v-model="occurrence">
-	        Weekly on {{ dayOfWeek }}
+	        Weekly on {{ dayOfWeek }} until
 		    </base-radio>
 
         <template slot="footer">
-					<base-button type="primary" @click="assignTutor">Save</base-button>
+					<base-button type="primary" @click="submit">Save</base-button>
 					<base-button type="link" class="ml-auto" @click="modal = false">
 						Close
 					</base-button>
@@ -66,26 +65,56 @@
 				errors: '',
 				tutor: null,
 				occurrence: 'today',
+				until: null
 			}
 		},
 		mounted () {
 			this.updateParams();
 		},
 		methods: {
-			assignTutor () {
-        this.axios
-          .post('/api/admin/teaching_sessions', {
-            session: {
-							tutor_id: this.tutor.id,
-							hour_id: this.hour.id,
-							start_date: this.day.join('-')
-						},
-						occurrence: this.occurrence
-          })
-          .then(response => {
-            this.createSuccessful(response);
-          })
-          .catch(error => this.createFailed(error))
+			submit () {
+				// new session
+				if (!this.session_prop)
+					this.axios
+						.post('/api/admin/teaching_sessions', {
+							session: {
+								tutor_id: this.tutor.id,
+								hour_id: this.hour.id,
+								start_date: this.day.join('-')
+							},
+							occurrence: this.occurrence
+						})
+						.then(response => {
+							this.createSuccessful(response);
+						})
+						.catch(error => this.createFailed(error))
+					
+				//edit session
+				else if(this.tutor)
+					this.axios
+						.put(`/api/admin/teaching_sessions/${this.session.id}`, {
+							session: {
+								tutor_id: this.tutor.id,
+								hour_id: this.hour.id,
+								start_date: this.day.join('-')
+							},
+							occurrence: this.occurrence
+						})
+						.then(response => {
+							this.createSuccessful(response);
+						})
+						.catch(error => this.createFailed(error))
+
+				// destroy session
+				else 
+					this.axios
+						.delete(`/api/admin/teaching_sessions/${this.session.id}`, {
+							occurrence: this.occurrence
+						})
+						.then(response => {
+							this.createSuccessful(response);
+						})
+						.catch(error => this.createFailed(error))
 			},
 			createSuccessful (response) {
 				this.session = response;

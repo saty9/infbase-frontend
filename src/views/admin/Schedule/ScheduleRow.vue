@@ -9,7 +9,7 @@
 </template>
 
 <script>
-	import SessionSlot from './SessionScheduleSlot';
+	import SessionSlot from './ScheduleRowSlot';
 
 	export default {
 		components: {
@@ -37,18 +37,14 @@
 				description: "Array of the available tutors"
 			}
 		},
-		data () {
-			return {
-
-			}
-		},
 		methods: {
-			findSession (slot_day) {
-				let slot_start = this.hour.start;
+			findSession (day) {
+				let hour_id = this.hour.id;
+				day = day.join('-');
 
 				return this.sessions.find(session => 
-					session.hour_id == this.hour.id && 
-					session.start_date.replace(/\b0+/g, '') == slot_day.join('-')
+					session.hour_id == hour_id && 
+					session.start_date.replace(/\b0+/g, '') == day
 				);
 			}
 		}

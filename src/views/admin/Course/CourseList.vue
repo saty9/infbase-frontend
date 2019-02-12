@@ -42,7 +42,7 @@
 </template>
 
 <script>
-	import CourseRow from "./CourseRow";
+	import CourseRow from "./CourseListRow";
 	import Modal from "@/components/Modal";
 
 	export default {
