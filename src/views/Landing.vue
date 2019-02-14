@@ -80,9 +80,9 @@
                     them know in advance by posting a question.
                   </p>
                   <br />
-                  <base-button tag="a" href="#" type="success" class="mt-4">
+                  <router-link to="faq" class="btn btn-success mt-4">
                     Learn more
-                  </base-button>
+                  </router-link>
                 </card>
               </div>
               <div class="col-lg-4">

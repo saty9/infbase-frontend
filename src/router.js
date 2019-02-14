@@ -13,6 +13,9 @@ import Schedule from "./views/admin/Schedule/Schedule";
 import ReportList from "./views/admin/Report/ReportList";
 import UserList from "./views/admin/User/UserList";
 import HourList from "./views/admin/Hour/HourList";
+import FAQIndex from "./views/FAQ/FAQIndex";
+import FAQQuestionView from "./views/FAQ/FAQQuestionView";
+import FAQAsk from "./views/FAQ/FAQAsk";
 
 Vue.use(Router);
 
@@ -97,6 +100,33 @@ export default new Router({
         }
       ]
     },
+    {
+      path: "/faq",
+      name: "faq_index",
+      components: {
+        header: AppHeader,
+        default: FAQIndex,
+        footer: AppFooter
+      },
+    },
+    {
+      path: "/faq/ask",
+      name: "faq_ask",
+      components: {
+        header: AppHeader,
+        default: FAQAsk,
+        footer: AppFooter
+      },
+    },
+    {
+      path: "/faq/:id",
+      name: "faq_detail",
+      components: {
+        header: AppHeader,
+        default: FAQQuestionView,
+        footer: AppFooter
+      },
+    }
   ],
   scrollBehavior: to => {
     if (to.hash) {
