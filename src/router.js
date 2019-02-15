@@ -19,7 +19,7 @@ import FAQAsk from "./views/FAQ/FAQAsk";
 
 Vue.use(Router);
 
-export default new Router({
+let router = new Router({
   mode: "history",
   linkExactActiveClass: "active",
   base: process.env.BASE_URL,
@@ -40,6 +40,9 @@ export default new Router({
         header: AppHeader,
         default: Login,
         footer: AppFooter
+      },
+      props: {
+        default: true
       }
     },
     {
@@ -108,6 +111,9 @@ export default new Router({
         default: FAQIndex,
         footer: AppFooter
       },
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/faq/ask",
@@ -117,6 +123,9 @@ export default new Router({
         default: FAQAsk,
         footer: AppFooter
       },
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/faq/:id",
@@ -126,13 +135,40 @@ export default new Router({
         default: FAQQuestionView,
         footer: AppFooter
       },
+      meta: {
+        requiresAuth: true
+      }
     }
   ],
   scrollBehavior: to => {
     if (to.hash) {
-      return { selector: to.hash };
+      return {selector: to.hash};
     } else {
-      return { x: 0, y: 0 };
+      return {x: 0, y: 0};
     }
   }
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (router.app.$store.state.signedIn) {
+        next()
+    } else {
+      if (window.$cookies.get("jwt")) {
+        let token = window.$cookies.get("jwt");
+        let userRole = window.$cookies.get("userRole");
+        router.app.$store.commit("SIGNED_IN", [token, userRole]);
+        next()
+      } else {
+        next({
+          name: "login",
+          params: {nextUrl: to.fullPath}
+        })
+      }
+    }
+  } else {
+    next()
+  }
+});
+
+export default router

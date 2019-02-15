@@ -14,11 +14,11 @@
       <div class="row justify-content-center">
         <div class="col-lg-5">
           <card
-            type="secondary"
-            shadow
-            header-classes="bg-white pb-5"
-            body-classes="px-lg-5 py-lg-5"
-            class="border-0"
+                  type="secondary"
+                  shadow
+                  header-classes="bg-white pb-5"
+                  body-classes="px-lg-5 py-lg-5"
+                  class="border-0"
           >
             <div class="text-center text-muted mb-3">
               <small>Sign in</small>
@@ -28,20 +28,20 @@
             </base-alert>
             <form id="loginForm" role="form">
               <base-input
-                alternative
-                required
-                class="mb-3"
-                placeholder="Email"
-                addon-left-icon="ni ni-email-83"
-                v-model="email"
+                      alternative
+                      required
+                      class="mb-3"
+                      placeholder="Email"
+                      addon-left-icon="ni ni-email-83"
+                      v-model="email"
               >
               </base-input>
               <base-input
-                alternative
-                input_type="password"
-                placeholder="Password"
-                addon-left-icon="ni ni-lock-circle-open"
-                v-model="password"
+                      alternative
+                      input_type="password"
+                      placeholder="Password"
+                      addon-left-icon="ni ni-lock-circle-open"
+                      v-model="password"
               >
               </base-input>
               <base-checkbox v-model="remember_me">
@@ -49,9 +49,9 @@
               </base-checkbox>
               <div class="text-center">
                 <base-button
-                  type="primary"
-                  class="my-4"
-                  v-on:click="submit()"
+                        type="primary"
+                        class="my-4"
+                        v-on:click="submit()"
                 >
                   Sign In
                 </base-button>
@@ -78,6 +78,12 @@
 
 <script>
   export default {
+    props: {
+      nextUrl: {
+        type: String,
+        default: "/"
+      }
+    },
     data() {
       return {
         email: "",
@@ -88,7 +94,7 @@
       };
     },
     methods: {
-      submit: function() {
+      submit () {
         this.failure = false;
 
         this.axios
@@ -111,7 +117,7 @@
           response.data.role
         ]);
         this.$store.commit("ADD_ALERT", ["You are now logged in.", "success"]);
-        this.$router.push('/');
+        this.$router.push(this.nextUrl)
       },
       loginFailed (error) {
         this.failure = true;
