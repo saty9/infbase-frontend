@@ -10,7 +10,9 @@ export default new Vuex.Store({
     signedIn: false,
     userRole: "",
     id: "",
-    alerts: []
+    alerts: [],
+    tags: [],
+    courses: [],
   },
   mutations: {
     SIGNED_IN(state, [token, userId, userRole]) {
@@ -38,7 +40,13 @@ export default new Vuex.Store({
     },
     REMOVE_ALERT(state, message) {
       state.alerts = state.alerts.filter(([msg, _status]) => msg != message);
-    }
+    },
+    UPDATE_AVAILABLE_TAGS(state, tags){
+      state.tags = tags;
+    },
+    UPDATE_AVAILABLE_COURSES(state, courses){
+      state.courses = courses;
+    },
   },
   actions: {
     signedIn(_state, [token, userId, userRole]) {
@@ -58,6 +66,15 @@ export default new Vuex.Store({
         .catch(_error =>
           self.commit("ADD_ALERT", ["Something went wrong.", "warning"])
         );
-    }
+    },
+    updateAvailableTagsAndCourses(_state){
+      let self = this;
+      this.$axios.get("/api/courses").then(function (response) {
+        self.commit("UPDATE_AVAILABLE_COURSES",response.data);
+      });
+      this.$axios.get("/api/topics").then(function (response) {
+        self.commit("UPDATE_AVAILABLE_TAGS",response.data);
+      });
+    },
   }
 });

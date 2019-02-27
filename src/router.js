@@ -1,4 +1,3 @@
-import Vue from "vue";
 import Router from "vue-router";
 import AppHeader from "./layout/AppHeader";
 import AppFooter from "./layout/AppFooter";
@@ -18,8 +17,9 @@ import ExpertiseList from "./views/admin/Expertise/ExpertiseList";
 import FAQIndex from "./views/FAQ/FAQIndex";
 import FAQQuestionView from "./views/FAQ/FAQQuestionView";
 import FAQAsk from "./views/FAQ/FAQAsk";
+import QuestionList from "./views/components/QuestionList";
+import TutorQuestion from "./views/admin/Questions/TutorQuestion"
 
-Vue.use(Router);
 
 let router = new Router({
   mode: "history",
@@ -110,7 +110,11 @@ let router = new Router({
         {
           path: "expertises",
           component: ExpertiseList
-        }
+        },
+        {
+          path: "questions",
+          component: TutorQuestion
+        },
       ]
     },
     {
