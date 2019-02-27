@@ -102,12 +102,12 @@
         filters_modal: false,
         filter_form: {
           asked_by_me: false,
-          course: null,
+          course: this.$route.params.course,
           tag: null
         },
         applied_filters: {
           asked_by_me: false,
-          course: null,
+          course: this.$route.params.course ? this.$route.params.course.id : null,
           tag: null
         },
         orderBy: 'Votes',

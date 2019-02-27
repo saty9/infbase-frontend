@@ -7,6 +7,8 @@
             <div class="tags" v-for="topic in question.topics">
                 <a href="#" class="badge badge-pill badge-primary">{{topic.name}}</a>
             </div>
+            <br/>
+            <div>{{question.created_at | moment("hh:mm MMM Do YYYY")}}</div>
         </div>
         <div class="question-properties">
             <div class="votes">

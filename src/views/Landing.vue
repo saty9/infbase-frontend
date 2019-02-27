@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!$store.state.signedIn">
     <div class="position-relative">
       <section class="section-shaped my-0">
         <div class="shape shape-style-3 shape-default shape-skew">
@@ -309,12 +309,39 @@
       </div>
     </section>
   </div>
+  <div v-else class="container section">
+    <div class="row">
+      <div class="col-sm-4">
+        <h5 class="text-center">InfBase</h5>
+        A drop-in helpdesk for pre-honours Informatics students to get additional tutoring and support with their courses.
+
+        <br/>In addition to supporting drop-in assistance, InfBase can be used as a place to work together with other students, with support from an InfBase tutor.
+      </div>
+      <div class="col">Place schedule here</div>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col-sm-4">
+        <h5 class="text-center">Popular Course Questions</h5>
+        <div v-for="course in $store.state.courses">
+          <router-link :to="{ name: 'faq_index', params: { course: course }}" >{{course.name}}</router-link>
+        </div>
+      </div>
+      <div class="col">
+        <question-form></question-form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import SessionSchedule from "./admin/Schedule/Schedule";
+import QuestionForm from "../components/FAQ/QuestionForm";
 export default {
   name: "home",
-  components: { SessionSchedule }
+  components: { SessionSchedule, QuestionForm },
+  mounted: function () {
+    this.$store.dispatch('updateAvailableTagsAndCourses');
+  },
 };
 </script>
