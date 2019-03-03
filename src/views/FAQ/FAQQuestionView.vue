@@ -1,6 +1,6 @@
 <template>
     <section class="section">
-        <QuestionDetail :question="question"></QuestionDetail>
+        <QuestionDetail :question_id="this.$route.params.id"></QuestionDetail>
     </section>
 </template>
 <script>
@@ -11,21 +11,5 @@ export default {
   components: {
     QuestionDetail
   },
-  mounted: function () {
-    this.fetchData()
-  },
-  data: function () {
-    return {
-      question: {}
-    }
-  },
-  methods: {
-    fetchData: function () {
-      let v = this;
-      this.axios.get('/api/questions/' + this.$route.params.id ).then(function (response) {
-        v.question = response.data;
-      });
-    }
-  }
 };
 </script>

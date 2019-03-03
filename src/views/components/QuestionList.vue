@@ -55,6 +55,10 @@
         type: Boolean,
         description: "Filter to unanswered questions"
       },
+      searchString:{
+        type: String,
+        description: "Search string for questions"
+      },
       theWatched: {
         type: Number,
         default: 0,
@@ -86,6 +90,7 @@
             user_courses: this.filterUserCourses,
             answered: this.filterAnswered,
             unanswered: this.filterUnAnswered,
+            search_string: this.searchString
         };
         Object.keys(params).forEach((key) => (params[key] == false) && delete params[key]);
         this.axios.get('/api/questions', {

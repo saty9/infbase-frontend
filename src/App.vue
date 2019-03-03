@@ -17,6 +17,7 @@
 import { FadeTransition } from "vue2-transitions";
 import Header from "./layout/AppHeader";
 import Footer from "./layout/AppFooter";
+import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css'
 
 export default {
   components: {

@@ -24,7 +24,7 @@
             class="btn btn-neutral btn-icon"
           >
             <span class="btn-inner--icon">
-              <i class="fa fa-sign-in mr-2"></i>
+              <i class="fa fa-sign-in-alt mr-2"></i>
             </span>
             <span class="nav-link-inner--text">Log in</span>
           </router-link>
@@ -34,7 +34,7 @@
             class="btn btn-neutral btn-icon"
           >
             <span class="btn-inner--icon">
-              <i class="fa fa-sign-in mr-2"></i>
+              <i class="fa fa-sign-in-alt mr-2"></i>
             </span>
             <span class="nav-link-inner--text">Log out</span>
           </base-button>
@@ -44,7 +44,7 @@
             class="btn btn-primary btn-icon"
           >
             <span class="btn-inner--icon">
-              <i class="fa fa-sign-in mr-2"></i>
+              <i class="fa fa-sign-in-alt mr-2"></i>
             </span>
             <span class="nav-link-inner--text">Admin panel</span>
           </router-link>
@@ -54,7 +54,7 @@
             class="btn btn-primary btn-icon"
           >
             <span class="btn-inner--icon">
-              <i class="fa fa-sign-in mr-2"></i>
+              <i class="fa fa-sign-in-alt mr-2"></i>
             </span>
             <span class="nav-link-inner--text">Tutor panel</span>
           </router-link>

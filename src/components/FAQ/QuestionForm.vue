@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <div>
-      <h5 class="text-center">Ask a Question</h5>
+      <h5 class="text-center">{{title_string}}</h5>
       <form>
-        <div v-if="form_data.question.title.length">
+        <div v-if="suggestions.length">
           <h6>Questions that may answer your query:</h6>
           <div v-for="suggestion in suggestions">
             <router-link :to="{name: 'faq_detail', params: { id: suggestion.id }}">{{suggestion.title}}</router-link>
@@ -12,14 +12,14 @@
           <br/>
         </div>
         <BaseInput placeholder="Question Title" v-model="form_data.question.title"
-                   :valid="form_validity.title"></BaseInput>
+                   :valid="form_validity.title" @input="title_changed"></BaseInput>
         <div :class="form_validity.body == false ? 'has-danger': ''">
                     <textarea :class="form_validity.body == false ? 'form-control is-invalid': 'form-control'"
                               rows="3" placeholder="Question Body"
                               v-model="form_data.question.body"></textarea>
         </div>
         <br/>
-        <BaseCheckbox v-model="form_data.question.anonymous">Ask Anonymously</BaseCheckbox>
+        <BaseCheckbox v-model="form_data.question.anonymous" v-show="$store.state.userRole == 'student'">Ask Anonymously</BaseCheckbox>
         <br/>
         <div :class="form_validity.course == false ? 'is-invalid has-danger': ''">
           <v-select class="w100"
@@ -96,11 +96,16 @@
           interest: null,
           answer: null,
         },
-        suggestions: [{id: 5, title: "blah balh blah"}, {id: 5, title: "something something something"}],
+        suggestions: [],
       }
     },
     mounted: function () {
       this.getOptions();
+    },
+    computed:{
+      title_string: function () {
+        return this.$store.state.userRole == "student" ? "Ask a Question" : "Add a Question";
+      }
     },
     methods: {
       getOptions: function () {
@@ -135,12 +140,23 @@
           this.form_validity.course != "" &&
           tutor_satisfied
         )
+      },
+      title_changed: function (new_title) {
+        let self = this;
+        if (new_title.length >= 3) {
+          this.axios.get('/api/questions/search', {
+              params: {search_string: new_title},
+            }
+          ).then(function (response) {
+            self.suggestions = response.data;
+          })
+        }
       }
     },
   };
 </script>
 <style>
-  .w100{
+  .w100 {
     width: 100%;
   }
 </style>

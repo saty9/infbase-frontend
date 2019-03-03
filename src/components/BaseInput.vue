@@ -30,6 +30,7 @@
         :disabled="disabled"
         :value="value"
         v-on="listeners"
+        v-model="contents"
         class="form-control"
         :type="input_type"
         :placeholder="placeholder"
@@ -123,7 +124,8 @@ export default {
   },
   data() {
     return {
-      focused: false
+      focused: false,
+      contents: this.value
     };
   },
   computed: {

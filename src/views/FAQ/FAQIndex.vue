@@ -4,21 +4,20 @@
       <div class="row justify-content-md-center">
         <div class="col">
           <router-link style="display: block" to="/faq/ask" class="btn btn-success">
-            Ask a Question
+            {{add_q_button_string}}
           </router-link>
         </div>
       </div>
       <br/>
       <div class="row">
         <div class="col">
-          <font-awesome-icon icon='search'/>
-          <base-input addon-left-icon="fa fa-search" placeholder="Search"></base-input>
+          <base-input addon-left-icon="fa fa-search" placeholder="Search" v-on:input="search_changed"></base-input>
         </div>
       </div>
       <br/>
       <div class="row">
         <div class="col">
-          <base-button block type="primary" class="mb-3" @click="filters_modal = true">
+          <base-button block v-bind:type="filter_class" class="mb-3" @click="filters_modal = true">
             Filter
             <font-awesome-icon icon="filter"/>
           </base-button>
@@ -70,6 +69,7 @@
                     v-bind:filter-asked-by-me="applied_filters.asked_by_me"
                     v-bind:filter-tag="applied_filters.tag"
                     v-bind:order-by="orderByOptions[orderBy]"
+                    v-bind:search-string="search_string"
                     v-bind:the-watched="the_watched"
                     ref="qList"></QuestionList>
     </div>
@@ -83,6 +83,7 @@
   import BaseCheckbox from "../../components/BaseCheckbox";
   import BTooltip from "bootstrap-vue/es/directives/tooltip/tooltip";
   import BaseInput from "../../components/BaseInput";
+
 
   export default {
     name: "faq_index",
@@ -103,12 +104,12 @@
         filter_form: {
           asked_by_me: false,
           course: this.$route.params.course,
-          tag: null
+          tag: this.$route.params.tag
         },
         applied_filters: {
           asked_by_me: false,
           course: this.$route.params.course ? this.$route.params.course.id : null,
-          tag: null
+          tag: this.$route.params.tag ? this.$route.params.tag.id : null
         },
         orderBy: 'Votes',
         orderByOptions: {
@@ -116,11 +117,20 @@
           'Views': 'view_count',
           'Date Asked': 'posted',
         },
+        search_string: null,
         the_watched: 0
       }
     },
     mounted: function () {
       this.$store.dispatch('updateAvailableTagsAndCourses');
+    },
+    computed: {
+      filter_class: function () {
+        return Object.values(this.applied_filters).some(element => Boolean(element)) ? "primary" : "secondary";
+      },
+      add_q_button_string: function () {
+        return this.$store.state.userRole == "student" ? "Ask a Question" : "Add a Question";
+      }
     },
     methods: {
       clear_filters: function () {
@@ -140,6 +150,15 @@
       change_sort: function (parameter) {
         this.orderBy = parameter;
         this.the_watched += 1;
+      },
+      search_changed: function (event) {
+        if (event.length >= 3) {
+          this.search_string = event;
+          this.the_watched += 1;
+        } else if (this.search_string != null) {
+          this.search_string = null;
+          this.the_watched += 1;
+        }
       }
     }
   };

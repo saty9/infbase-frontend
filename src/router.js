@@ -19,6 +19,7 @@ import FAQQuestionView from "./views/FAQ/FAQQuestionView";
 import FAQAsk from "./views/FAQ/FAQAsk";
 import QuestionList from "./views/components/QuestionList";
 import TutorQuestion from "./views/admin/Questions/TutorQuestion"
+import QuestionSummaries from "./views/admin/Questions/QuestionSummaries";
 
 
 let router = new Router({
@@ -115,6 +116,10 @@ let router = new Router({
           path: "questions",
           component: TutorQuestion
         },
+        {
+          path: "question_summaries",
+          component: QuestionSummaries
+        }
       ]
     },
     {
