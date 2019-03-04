@@ -32,7 +32,7 @@
           :sessions="sessions"
           :hour="hour"
           :range="calendar_range"
-          @clicked="openModal"
+          @clicked="session_clicked"
         />
       </tbody>
     </table>
@@ -67,6 +67,11 @@ export default {
       type: Number,
       default: 3,
       description: "How many days to show at once"
+    },
+    on_select: {
+      type: Function,
+      default: null,
+      description: "Optional function to call when slot is selected"
     }
   },
   data() {
@@ -154,6 +159,13 @@ export default {
       if (action == "created") this.sessions.push(session);
       else if (action == "updated") this.sessions.splice(idx, 1, session);
       else this.sessions.splice(idx, 1);
+    },
+    session_clicked(){
+      if (this.on_select == null){
+        this.openModal(arguments);
+      } else {
+        this.on_select(arguments);
+      }
     },
     openModal(session, day, hour) {
       [this.session, this.day, this.hour] = [session, day, hour];

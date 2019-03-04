@@ -42,6 +42,13 @@
 
         <br/>
         <br/>
+        <div v-if="selected_session_start == null">
+          <base-button type="secondary" v-on:click="session_modal_open = true">Select a Session</base-button>
+        </div>
+        <div v-else>
+          {{selected_session_start}} <base-button v-on:click="selected_session_start = null">Reset</base-button>
+        </div>
+        <br/>
         <div v-if="$store.state.userRole!='student'">
           <BaseInput :valid="form_validity.interest"
                      placeholder="Number of students showing interest"
@@ -59,18 +66,26 @@
         <base-button block type="primary" v-on:click="submitForm">Submit</base-button>
       </form>
     </div>
+    <modal :show.sync="session_modal_open" >
+      <h6 slot="header" class="modal-title" id="modal-title-default">Session</h6>
+      <session-schedule :scope="3" :on_select="session_selected"/>
+    </modal>
   </div>
 </template>
 <script>
   import BaseInput from "../../components/BaseInput";
   import BaseCheckbox from "../../components/BaseCheckbox";
   import BTooltip from "bootstrap-vue/es/directives/tooltip/tooltip";
+  import SessionSchedule from "../../views/admin/Schedule/Schedule";
+  import Modal from "../Modal";
 
   export default {
     name: "faq_ask",
     components: {
       BaseInput,
-      BaseCheckbox
+      BaseCheckbox,
+      SessionSchedule,
+      Modal
     },
     directives: {
       BTooltip,
@@ -99,7 +114,9 @@
           interest: null,
           answer: null,
         },
+        selected_session_start: null,
         suggestions: [],
+        session_modal_open: false,
       }
     },
     mounted: function () {
@@ -154,7 +171,13 @@
             self.suggestions = response.data;
           })
         }
-      }
+      },
+      session_selected: function (event){
+        console.log(arguments[0]);
+        this.session_modal_open = false;
+        this.form_data.question.teaching_session_id = event[0].id;
+        this.selected_session_start = event[2].start + " " + event[0].start_date;
+      },
     },
   };
 </script>
