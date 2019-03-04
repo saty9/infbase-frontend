@@ -71,6 +71,7 @@
                     v-bind:order-by="orderByOptions[orderBy]"
                     v-bind:search-string="search_string"
                     v-bind:the-watched="the_watched"
+                    @refresh="handleRefresh($event)"
                     ref="qList"></QuestionList>
     </div>
   </section>
@@ -159,6 +160,10 @@
           this.search_string = null;
           this.the_watched += 1;
         }
+      },
+      handleRefresh: function(e) {
+        this.filter_form.tag=e;
+        this.apply_filters();
       }
     }
   };

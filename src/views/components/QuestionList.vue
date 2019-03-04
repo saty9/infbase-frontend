@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="questions.length">
     <div class="container" v-for="question in questions">
-      <question-list-item :question="question"></question-list-item>
+      <question-list-item :question="question" @refresh="$emit('refresh', $event)"></question-list-item>
     </div>
   </div>
   <div class="container text-center" v-else>

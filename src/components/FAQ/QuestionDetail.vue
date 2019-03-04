@@ -5,7 +5,7 @@
     </div>
     <div class="row">
       <div class="tags" v-for="topic in question.topics">
-        <a href="" class="badge badge-pill badge-primary">{{topic.name}}</a>
+        <router-link :to="{name: 'faq_index', params: { tag: topic }}" class="badge badge-pill badge-primary">{{topic.name}}</router-link>
       </div>
     </div>
     <div class="row">
