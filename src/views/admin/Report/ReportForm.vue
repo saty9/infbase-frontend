@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4 class="text-primary mb-2">Report</h4>
-    <h5 class="text-muted mb-5">{{ loading ? 'Loading...' : report.date }}</h5>
+    <h5 class="text-muted mb-5">{{ loading ? "Loading..." : report.date }}</h5>
 
     <base-input
       :disabled="report.completed"
@@ -9,6 +9,14 @@
       label="Number of students"
       v-model="report.students"
     ></base-input>
+    <v-select
+      class="d-block mb-4"
+      :options="topics"
+      label="name"
+      v-model="report.topics"
+      multiple
+      taggable
+    ></v-select>
     <label for="">Comments</label>
     <textarea
       label="Comments"
@@ -23,13 +31,16 @@
       type="success"
       class="float-right mt-5"
       @click="goToReports"
-    >Back</base-button>
+    >
+      Back
+    </base-button>
     <base-button
       v-else
       type="primary"
       class="float-right mt-5"
       @click="submitReport"
-    >Submit</base-button>
+      >Submit</base-button
+    >
   </div>
 </template>
 <script>
@@ -37,14 +48,16 @@ export default {
   data() {
     return {
       report_id: this.$route.params.id,
-      report: {},
+      report: { topics: [] },
       loading: true,
-      errored: false
+      errored: false,
+      topics: []
     };
   },
   mounted() {
     this.loading = true;
 
+    // get report
     this.axios
       .get(`/api/admin/reports/${this.report_id}`, {
         headers: { Authorization: window.$cookies.get("jwt") }
@@ -56,6 +69,15 @@ export default {
         this.errored = true;
       })
       .finally(() => (this.loading = false));
+
+    // get all available topics
+    this.axios
+      .get("/api/topics", {
+        headers: { Authorization: window.$cookies.get("jwt") }
+      })
+      .then(response => {
+        this.topics = response.data;
+      });
   },
   methods: {
     submitReport() {

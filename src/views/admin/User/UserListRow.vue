@@ -1,24 +1,18 @@
 <template>
   <tr class="row">
-    <td class="col">{{user.first_name}} {{user.last_name}}</td>
-    <td class="col">{{user.email}}</td>
-    <td class="col text-right">
-      <base-button
-        class="btn-sm"
-        type="info"
-        @click="modal = true"
-      >
+    <td class="col">{{ user.first_name }} {{ user.last_name }}</td>
+    <td class="col">{{ user.email }}</td>
+    <td class="col text-right" v-if="$store.state.userRole == 'admin'">
+      <base-button outline class="btn-sm" type="info" @click="modal = true">
         Edit
       </base-button>
     </td>
     <modal :show.sync="modal">
-      <h6
-        slot="header"
-        class="modal-title"
-        id="modal-title-default"
-      >Edit user</h6>
+      <h6 slot="header" class="modal-title" id="modal-title-default">
+        Edit user
+      </h6>
       <div v-if="error">
-        {{error}}
+        {{ error }}
       </div>
       <base-input
         class="mb-3"
@@ -32,38 +26,20 @@
         v-model="last_name"
       ></base-input>
 
-      <base-radio
-        name="admin"
-        class="mb-3"
-        v-model="role"
-      >
+      <base-radio name="admin" class="mb-3" v-model="role">
         Admin
       </base-radio>
-      <base-radio
-        name="tutor"
-        class="mb-3"
-        v-model="role"
-      >
+      <base-radio name="tutor" class="mb-3" v-model="role">
         Tutor
       </base-radio>
-      <base-radio
-        name="student"
-        class="mb-3"
-        v-model="role"
-      >
+      <base-radio name="student" class="mb-3" v-model="role">
         Student
       </base-radio>
 
       <template slot="footer">
-        <base-button
-          type="primary"
-          @click="saveUser"
-        >Save changes</base-button>
-        <base-button
-          type="link"
-          class="ml-auto"
-          @click="modal = false"
-        >Close
+        <base-button type="primary" @click="saveUser">Save changes</base-button>
+        <base-button type="link" class="ml-auto" @click="modal = false">
+          Close
         </base-button>
       </template>
     </modal>

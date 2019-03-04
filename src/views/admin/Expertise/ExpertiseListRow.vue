@@ -6,6 +6,7 @@
     <td class="col">{{expertise.name}}</td>
     <td class="text-right col">
       <base-button
+        outline
         type="warning"
         class="btn-sm"
         @click="deleteExpertise"

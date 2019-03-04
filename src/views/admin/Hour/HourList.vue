@@ -3,7 +3,7 @@
     <h4 class="text-primary mb-5 d-inline-block">Session hours</h4>
     <base-button
       @click="modal = true"
-      class="float-right d-inline-block"
+      class="float-right d-inline-block btn-sm btn-link"
       type="primary"
     >Add hour</base-button>
 

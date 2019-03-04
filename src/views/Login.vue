@@ -48,6 +48,7 @@
                 placeholder="Password"
                 addon-left-icon="ni ni-lock-circle-open"
                 v-model="password"
+                @keyup.enter="submit"
               >
               </base-input>
               <base-checkbox v-model="remember_me">

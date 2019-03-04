@@ -1,7 +1,5 @@
 <template>
   <section class="section section-shaped section-lg my-0 row justify-content-center">
-    <div class="shape bg-gradient-default">
-    </div>
     <div class="col-lg-10 row justify-content-center">
       <div
         class="nav flex-column nav-pills d-inline-block col-lg-2"

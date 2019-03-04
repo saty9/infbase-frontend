@@ -6,11 +6,13 @@
     <td class="col">{{course.name}}</td>
     <td class="text-right col">
       <base-button
+        outline
         type="info"
         class="btn-sm"
         @click="modal1 = true"
       >Edit</base-button>
       <base-button
+        outline
         type="warning"
         class="btn-sm"
         @click="modal2 = true"

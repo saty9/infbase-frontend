@@ -3,33 +3,28 @@
     <h4 class="text-primary mb-5 d-inline-block">Schedule</h4>
     <base-dropdown class="float-right d-inline-block">
       <base-button
+        outline
         slot="title"
-        type="secondary"
-        class="dropdown-toggle"
+        type="primary"
+        class="dropdown-toggle btn-sm"
       >
         {{ calendar_scope }} days
       </base-button>
       <a
         class="dropdown-item"
-        v-for="days in [3,5,7]"
+        v-for="days in [3, 5, 7]"
         :key="days"
         @click="calendar_scope = days"
       >
-        {{days}} days
+        {{ days }} days
       </a>
     </base-dropdown>
 
     <section v-if="errored">
       <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
     </section>
-    <table
-      class="table text-center"
-      v-else
-    >
-      <ScheduleHead
-        :scope="calendar_scope"
-        @range="changeRange"
-      />
+    <table class="table text-center" v-else>
+      <ScheduleHead :scope="calendar_scope" @range="changeRange" />
       <tbody>
         <ScheduleRow
           v-for="hour in hours"
@@ -46,7 +41,8 @@
       :session_prop="session"
       :day_prop="day"
       :hour_prop="hour"
-      :modal_prop="modal"
+      :modal="modal"
+      :interests="interests"
       @closeModal="closeModal"
       @modified="modifySessions"
     />
@@ -85,7 +81,8 @@ export default {
       tutors: [],
       session: null,
       day: null,
-      hour: null
+      hour: null,
+      interests: null
     };
   },
   mounted() {
@@ -116,6 +113,16 @@ export default {
         this.errored = true;
       })
       .finally(() => (this.loading = false));
+
+    // get interests if a student
+    if (this.$store.state.userRole == "student")
+      this.axios
+        .get("/api/interests", {
+          headers: { Authorization: window.$cookies.get("jwt") }
+        })
+        .then(response => {
+          this.interests = response.data;
+        });
   },
   methods: {
     getSessionsInRange(calendar_range) {

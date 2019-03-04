@@ -12,8 +12,9 @@ import VueAxios from "vue-axios";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faCaretLeft, faCaretRight, faFilter, faMinusCircle, faCheck, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import Vue2Filters from "vue2-filters"
+import Vue2Filters from "vue2-filters";
 import vSelect from "vue-select";
+import JsonCSV from "vue-json-csv";
 
 library.add({ faCaretLeft, faCaretRight, faFilter, faMinusCircle, faCheck, faSearch });
 
@@ -27,8 +28,8 @@ Vue.use(DisableAutocomplete);
 Vue.use(Vue2Filters);
 Vue.use(require("vue-moment"));
 Vue.component("v-select", vSelect);
-
-
+Vue.use(require("vue-moment"));
+Vue.component("downloadCsv", JsonCSV)
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, {

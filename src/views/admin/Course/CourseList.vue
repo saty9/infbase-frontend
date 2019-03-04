@@ -3,9 +3,10 @@
     <h4 class="text-primary mb-5 d-inline-block">Courses</h4>
     <base-button
       @click="modal = true"
-      class="float-right d-inline-block"
+      class="float-right d-inline-block btn-sm btn-link"
       type="primary"
-    >Add course</base-button>
+      >Add course</base-button
+    >
     <section v-if="errored">
       <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
     </section>

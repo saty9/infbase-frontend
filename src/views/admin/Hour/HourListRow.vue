@@ -7,11 +7,13 @@
     <td class="col">{{ hour.end }}</td>
     <td class="col text-right">
       <base-button
+        outline
         type="info"
         class="btn-sm"
         @click="modal1 = true"
       >Edit</base-button>
       <base-button
+        outline
         type="warning"
         class="btn-sm"
         @click="modal2 = true"
