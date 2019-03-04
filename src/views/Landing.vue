@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!$store.state.signedIn">
     <div class="position-relative" v-if="!$store.state.userId">
       <section class="section-shaped my-0">
         <div class="shape shape-style-3 shape-default shape-skew">
