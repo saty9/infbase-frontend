@@ -19,14 +19,17 @@
                               v-model="form_data.question.body"></textarea>
         </div>
         <br/>
-        <BaseCheckbox v-model="form_data.question.anonymous" v-show="$store.state.userRole == 'student'">Ask Anonymously</BaseCheckbox>
+        <BaseCheckbox v-model="form_data.question.anonymous" v-show="$store.state.userRole == 'student'">Ask
+          Anonymously
+        </BaseCheckbox>
         <br/>
-        <div :class="form_validity.course == false ? 'is-invalid has-danger': ''">
-          <v-select class="w100"
-                    label="name"
-                    :options="courses"
-                    v-model="form_data.question.course"
-                    placeholder="Course"></v-select>
+        <label for="course_options" class="font-weight-bold">Course:</label>
+        <div class="row" id="course_options">
+          <div v-for="course in courses" class="col-sm-4">
+            <base-radio v-bind:name="String(course.id)" class="mb-3" v-model="form_data.question.course_id">
+              {{course.name}}
+            </base-radio>
+          </div>
         </div>
         <br/>
         <v-select class="w100"
@@ -90,7 +93,7 @@
             anonymous: false,
             course: null,
             teaching_session_id: 1,
-            course_id: 0
+            course_id: ""
           },
           tags: [],
           interest: null,
@@ -102,7 +105,7 @@
     mounted: function () {
       this.getOptions();
     },
-    computed:{
+    computed: {
       title_string: function () {
         return this.$store.state.userRole == "student" ? "Ask a Question" : "Add a Question";
       }
@@ -119,7 +122,7 @@
       },
       submitForm: function () {
         if (this.form_valid()) {
-          this.form_data.question.course_id = this.form_data.question.course.id;
+          //this.form_data.question.course_id = this.form_data.question.course.id;
           let router = this.$router;
           this.axios.post("/api/questions", this.form_data).then(function (response) {
             router.push({name: "faq_detail", params: {id: response.data.id}})
@@ -137,7 +140,7 @@
           (parseInt(this.form_data.interest) >= 0 && this.form_data.answer != ""));
         return (this.form_data.question.title != "" &&
           this.form_data.question.body != "" &&
-          this.form_validity.course != "" &&
+          this.form_data.course_id != "" &&
           tutor_satisfied
         )
       },
