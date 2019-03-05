@@ -1,6 +1,6 @@
 <template>
-  <div v-if="!$store.state.signedIn">
-    <div class="position-relative" v-if="!$store.state.userId">
+  <div>
+    <div class="position-relative">
       <section class="section-shaped my-0">
         <div class="shape shape-style-3 shape-default shape-skew">
           <span></span>
@@ -17,7 +17,7 @@
           <div class="col px-0">
             <div class="row">
               <div class="col-lg-6">
-                <h1 class="display-3  text-white">
+                <h1 class="display-3 text-white">
                   InfBase
                   <span
                     >A drop-in helpdesk for pre-honours Informatics students to
@@ -36,13 +36,20 @@
         </div>
       </section>
     </div>
-    <div class="position-relative" :class="{ 'mt--300': !$store.state.userId }">
+    <div class="position-relative mt--300">
       <section class="section section-lg">
         <div class="container">
           <card class="border-0" shadow body-classes="py-2">
-            <p class="lead text-muted">
-              InfBase is in room 7.03 of Appleton tower
-            </p>
+            <div class="row">
+              <p class="lead text-muted col-lg-6 col-xs-12">
+                InfBase is in room 7.03 of Appleton tower
+              </p>
+              <p class="text-muted col-lg-6 col-xs-12 p-4">
+                Just drop in into one of the sessions, you don’t have to sign up
+                in advance but committing regularly can help you pacing your
+                course work.
+              </p>
+            </div>
             <session-schedule :scope="3" v-if="$store.state.userId" />
             <div v-else class="text-center my-5">
               <base-button type="primary" outline tag="a" href="/login"
@@ -54,82 +61,35 @@
         </div>
       </section>
     </div>
-    <section class="section section-lg pt-lg-0">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-12">
-            <div class="row row-grid text-center">
-              <div class="col" v-if="!$store.state.userId">
-                <card class="border-0" hover shadow body-classes="py-5">
-                  <div class="text-center">
-                    <icon
-                      name="ni ni-check-bold"
-                      type="primary"
-                      rounded
-                      class="mb-4"
-                    >
-                    </icon>
-                    <h6 class="text-primary text-uppercase">Schedule</h6>
-                  </div>
-                  <p class="description mt-3">
-                    Just drop in into one of the sessions, you don’t have to
-                    sign up in advance but committing regularly can help you
-                    pacing your course work.
-                  </p>
-                  <base-button tag="a" href="#" type="primary" class="mt-4">
-                    Learn more
-                  </base-button>
-                </card>
-              </div>
-              <div class="col">
-                <card class="border-0" hover shadow body-classes="py-5">
-                  <div class="text-center">
-                    <icon
-                      name="ni ni-istanbul"
-                      type="success"
-                      rounded
-                      class="mb-4"
-                    >
-                    </icon>
-                    <h6 class="text-success text-uppercase">FAQ</h6>
-                  </div>
-                  <p class="description mt-3">
-                    To help InfBase tutors answering your questions, please let
-                    them know in advance by posting a question.
-                  </p>
-                  <br />
-                  <router-link to="faq" class="btn btn-success mt-4">
-                    Learn more
-                  </router-link>
-                </card>
-              </div>
-              <div class="col">
-                <card class="border-0" hover shadow body-classes="py-5">
-                  <div class="text-center">
-                    <icon
-                      name="ni ni-planet"
-                      type="warning"
-                      rounded
-                      class="mb-4"
-                    >
-                    </icon>
-                    <h6 class="text-warning text-uppercase">Tutors</h6>
-                  </div>
-                  <p class="description mt-3">
-                    InfBase tutors are selected on the basis of expertise and
-                    coverage, offering support and advice on core pre-honours
-                    courses in Informatics.
-                  </p>
-                  <base-button tag="a" href="#" type="warning" class="mt-4">
-                    Learn more
-                  </base-button>
-                </card>
-              </div>
+
+    <div class="position-relative">
+      <section class="section section-lg">
+        <div class="container">
+          <div class="row justify-content-center text-center mb-lg">
+            <div class="col-lg-8">
+              <h2 class="display-3">FAQ</h2>
             </div>
           </div>
+          <card shadow class="py-2">
+            <div class="row">
+              <div class="col-sm-4">
+                <h4 class="text-primary">Popular Course Questions</h4>
+                <div v-for="course in $store.state.courses" :key="course.id">
+                  <router-link
+                    class="btn btn-outline-primary col-xs-12 d-block mb-2"
+                    :to="{ name: 'faq_index', params: { course: course } }"
+                    >{{ course.name }}</router-link
+                  >
+                </div>
+              </div>
+              <div class="col">
+                <question-form></question-form>
+              </div>
+            </div>
+          </card>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
     <section class="section section-lg">
       <div class="container">
@@ -142,33 +102,13 @@
           <tutor-info v-for="tutor in tutors" :tutor="tutor" :key="tutor.id"/>
         </div>
         <div v-else class="text-center">
-          <base-button type="primary" tag="a" outline href="/login">Log in</base-button> to see the <b>tutors</b>.
+          <base-button type="primary" tag="a" outline href="/login"
+            >Log in</base-button
+          >
+          to see the <b>tutors</b>.
         </div>
       </div>
     </section>
-  </div>
-  <div v-else class="container section">
-    <div class="row">
-      <div class="col-sm-4">
-        <h5 class="text-center">InfBase</h5>
-        A drop-in helpdesk for pre-honours Informatics students to get additional tutoring and support with their courses.
-
-        <br/>In addition to supporting drop-in assistance, InfBase can be used as a place to work together with other students, with support from an InfBase tutor.
-      </div>
-      <div class="col">Place schedule here</div>
-    </div>
-    <br/>
-    <div class="row">
-      <div class="col-sm-4">
-        <h5 class="text-center">Popular Course Questions</h5>
-        <div v-for="course in $store.state.courses">
-          <router-link :to="{ name: 'faq_index', params: { course: course }}" >{{course.name}}</router-link>
-        </div>
-      </div>
-      <div class="col">
-        <question-form></question-form>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -189,8 +129,7 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch('updateAvailableTagsAndCourses');
-    
+    this.$store.dispatch("updateAvailableTagsAndCourses");
     this.axios
       .get("/api/admin/users", {
         headers: { Authorization: window.$cookies.get("jwt") },

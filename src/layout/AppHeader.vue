@@ -22,16 +22,6 @@
           <router-link v-if="!signedIn" to="/login" class="btn btn-secondary">
             <span class="nav-link-inner--text">Log in</span>
           </router-link>
-          <base-button
-            v-if="signedIn"
-            @click="logOut"
-            class="btn btn-neutral btn-icon"
-          >
-            <span class="btn-inner--icon">
-              <i class="fa fa-sign-in-alt mr-2"></i>
-            </span>
-            <span class="nav-link-inner--text">Log out</span>
-          </base-button>
           <router-link
             v-if="signedIn && userRole == 'admin'"
             to="/admin-panel/schedule"
