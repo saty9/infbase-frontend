@@ -16,9 +16,9 @@
       </div>
     </div>
     <h2>Next Session Questions</h2>
-    <question-list filter-upcoming-session></question-list>
+    <question-list filter-upcoming-session class="qlist"></question-list>
     <h2>Unanswered Questions</h2>
-    <question-list filter-user-courses filter-un-answered></question-list>
+    <question-list filter-user-courses filter-un-answered class="qlist"></question-list>
   </section>
 </template>
 <script>
@@ -30,3 +30,9 @@
     },
   };
 </script>
+<style>
+  .qlist{
+    overflow:scroll;
+    height:400px;
+  }
+</style>
