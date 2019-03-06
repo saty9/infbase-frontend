@@ -37,6 +37,7 @@
       >New expertise</h6>
 
       <v-select
+        class="d-block w-100"
         label="name"
         v-model="course"
         :options="courses"

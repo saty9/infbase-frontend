@@ -10,6 +10,7 @@
       v-model="report.students"
     ></base-input>
     <v-select
+      :disabled="report.completed"
       class="d-block mb-4"
       :options="topics"
       label="name"

@@ -70,6 +70,7 @@ export default {
             "success"
           ]);
           this.closeModal();
+          this.resetEmail();
         })
         .catch(() => {
           this.errored = true;

@@ -40,17 +40,26 @@
       <section class="section section-lg">
         <div class="container">
           <card class="border-0" shadow body-classes="py-2">
-            <div class="row">
-              <p class="lead text-muted col-lg-6 col-xs-12">
-                InfBase is in room 7.03 of Appleton tower
+            <prototype slot="header" class="row">
+              <p class="text-muted col-lg-4 col-xs-12">
+                <span class="badge mr-3 badge-success badge-circle">
+                  <i class="fa fa-map-marker-alt"></i>
+                </span>
+                room 7.03 of Appleton tower
               </p>
-              <p class="text-muted col-lg-6 col-xs-12 p-4">
-                Just drop in into one of the sessions, you don’t have to sign up
-                in advance but committing regularly can help you pacing your
-                course work.
+              <p class="text-muted col-lg-8 col-xs-12 text-right">
+                <span class="badge mr-3 badge-primary badge-circle">
+                  <i class="fa fa-info"></i>
+                </span>
+                Drop in into one of the sessions below. You don’t have to sign up
+                in advance.
               </p>
-            </div>
-            <session-schedule :scope="3" v-if="$store.state.userId" />
+            </prototype>
+            <session-schedule
+              :scope="3"
+              v-if="$store.state.userId"
+              class="py-2"
+            />
             <div v-else class="text-center my-5">
               <base-button type="primary" outline tag="a" href="/login"
                 >Log in</base-button
@@ -63,30 +72,28 @@
     </div>
 
     <div class="position-relative">
-      <section class="section section-lg">
+      <section class="section section-lg bg-secondary">
         <div class="container">
           <div class="row justify-content-center text-center mb-lg">
             <div class="col-lg-8">
               <h2 class="display-3">FAQ</h2>
             </div>
           </div>
-          <card shadow class="py-2">
-            <div class="row">
-              <div class="col-sm-4">
-                <h4 class="text-primary">Popular Course Questions</h4>
-                <div v-for="course in $store.state.courses" :key="course.id">
-                  <router-link
-                    class="btn btn-outline-primary col-xs-12 d-block mb-2"
-                    :to="{ name: 'faq_index', params: { course: course } }"
-                    >{{ course.name }}</router-link
-                  >
-                </div>
-              </div>
-              <div class="col">
-                <question-form></question-form>
+          <div class="row p-0 col-12">
+            <div class="col-sm-4">
+              <h4 class="text-primary">Popular Course Questions</h4>
+              <div v-for="course in $store.state.courses" :key="course.id">
+                <router-link
+                  class="btn btn-outline-primary col-xs-12 d-block mb-2"
+                  :to="{ name: 'faq_index', params: { course: course } }"
+                  >{{ course.name }}</router-link
+                >
               </div>
             </div>
-          </card>
+            <card shadow class=" col py-2">
+              <question-form></question-form>
+            </card>
+          </div>
         </div>
       </section>
     </div>

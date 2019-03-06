@@ -29,7 +29,7 @@ Vue.use(Vue2Filters);
 Vue.use(require("vue-moment"));
 Vue.component("v-select", vSelect);
 Vue.use(require("vue-moment"));
-Vue.component("downloadCsv", JsonCSV)
+Vue.component("downloadCsv", JsonCSV);
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, {
@@ -55,5 +55,5 @@ document.addEventListener("DOMContentLoaded", () => {
     ]);
   }
   global.vm = v; //Define you app variable globally
-  v.$mount("#app")
+  v.$mount("#app");
 });

@@ -134,4 +134,7 @@ export default {
 .modal .wide {
   max-width: 700px;
 }
+.modal .wider {
+  max-width: 900px;
+}
 </style>

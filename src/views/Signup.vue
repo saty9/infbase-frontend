@@ -78,7 +78,8 @@
                 >
                 </base-input>
                 <base-checkbox v-model="accept">
-                  <span>I agree with the
+                  <span>
+                    I agree with the
                     <a href="#">Privacy Policy</a>
                   </span>
                 </base-checkbox>
@@ -90,6 +91,14 @@
               </form>
             </template>
           </card>
+          <div class="row mt-3">
+            <div class="col-6"></div>
+            <div class="col-6 text-right">
+              <router-link to="/login" class="text-light">
+                <small>Log in</small>
+              </router-link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

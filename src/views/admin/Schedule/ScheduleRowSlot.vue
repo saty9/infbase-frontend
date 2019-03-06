@@ -2,20 +2,14 @@
   <base-button
     outline
     class="btn-sm"
-    :type="
-      session_prop.tutor_id == $store.state.userId ? 'warning' : 'secondary'
-    "
-    v-if="session_prop && (userRole == 'admin' || userRole == 'tutor')"
+    :type="session.tutor_id == $store.state.userId ? 'warning' : 'secondary'"
+    v-if="session && (userRole == 'admin' || userRole == 'tutor')"
     @click="emitClick"
   >
-    {{ session_prop.tutor_f_name }}
+    {{ session.tutor_f_name }}
   </base-button>
-  <span v-else-if="session_prop" class="course-button" @click="emitClick">
-    <badge
-      type="success"
-      v-for="(course, idx) in session_prop.courses"
-      :key="idx"
-    >
+  <span v-else-if="session" class="course-button d-inline-block p-1" @click="emitClick">
+    <badge type="success" v-for="(course, idx) in session.courses" :key="idx">
       {{ course }}
     </badge>
   </span>
@@ -42,7 +36,7 @@ export default {
       default: () => [],
       description: "Date of the slot"
     },
-    session_prop: {
+    session: {
       type: Object,
       default: null,
       description: "Object of the session at this slot"
@@ -50,7 +44,7 @@ export default {
   },
   methods: {
     emitClick() {
-      this.$emit("clicked", this.session_prop, this.day, this.hour);
+      this.$emit("clicked", this.session, this.day, this.hour);
     }
   },
   computed: {
@@ -69,7 +63,9 @@ export default {
     border: 0px !important;
   }
 }
-.course-button { transition: all .1s ease-in-out; }
+.course-button {
+  transition: all 0.1s ease-in-out;
+}
 .course-button:hover {
   box-shadow: 0px 0px 10px -2px rgba(0, 0, 0, 0.75);
   padding: 10px;

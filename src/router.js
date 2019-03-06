@@ -17,10 +17,8 @@ import ExpertiseList from "./views/admin/Expertise/ExpertiseList";
 import FAQIndex from "./views/FAQ/FAQIndex";
 import FAQQuestionView from "./views/FAQ/FAQQuestionView";
 import FAQAsk from "./views/FAQ/FAQAsk";
-import QuestionList from "./views/components/QuestionList";
-import TutorQuestion from "./views/admin/Questions/TutorQuestion"
+import TutorQuestion from "./views/admin/Questions/TutorQuestion";
 import QuestionSummaries from "./views/admin/Questions/QuestionSummaries";
-
 
 let router = new Router({
   mode: "history",
@@ -34,6 +32,9 @@ let router = new Router({
         header: AppHeader,
         default: Landing,
         footer: AppFooter
+      },
+      meta: {
+        lightHeader: true
       }
     },
     {

@@ -5,13 +5,9 @@
     @close="closeModal"
     modalClasses="wide"
   >
-    <h6 slot="header" class="modal-title" id="modal-title-default">
-      Session
-    </h6>
-
     <div class="row">
       <tutor-info :tutor="tutor" />
-      <div class="col text-center" v-if="session_prop">
+      <div class="col text-right pr-4" v-if="session_prop">
         <h3>{{ hour_prop.start }} - {{ hour_prop.end }}</h3>
         <h4 class="text-muted">
           {{ toFormattedDate(session_prop.start_date.split(".")) }}
@@ -19,20 +15,21 @@
         <h4 class="text-muted">
           7.03 Appleton Tower
         </h4>
-        <base-button type="primary w-100 my-3" @click="closeModal">
-          Ask in advance
-        </base-button>
-        <base-button
-          type="secondary w-100"
-          @click="submitInterested"
-          :disabled="isInterested"
-        >
-          Interested/Going
-        </base-button>
       </div>
     </div>
 
     <template slot="footer" class="text-center">
+      <base-button outline type="primary" class="" @click="closeModal">
+        Ask in advance
+      </base-button>
+      <base-button
+        outline
+        type="default"
+        @click="submitInterested"
+        :disabled="isInterested"
+      >
+        {{ isInterested ? `${interests.length} student(s) going` : "Going" }}
+      </base-button>
       <base-button type="link" class="ml-auto" @click="closeModal">
         Close
       </base-button>
@@ -70,11 +67,6 @@ export default {
       default: () => {},
       description: "Hour object of the session slot"
     },
-    interests: {
-      type: Array,
-      default: () => [],
-      description: "Array of student interests"
-    },
     modal: {
       type: [String, Boolean],
       default: false,
@@ -85,12 +77,14 @@ export default {
     return {
       errors: null,
       session: this.session_prop,
-      tutor: null
+      tutor: null,
+      interests: []
     };
   },
   methods: {
     closeModal() {
       this.$emit("closeModal");
+      this.interests = [];
     },
     toFormattedDate(date, format) {
       date = new Date(Date.UTC(date[0], date[1] - 1, date[2]));
@@ -122,22 +116,30 @@ export default {
   computed: {
     dayOfWeek() {
       if (this.day_prop)
-        return new Date(...this.day_prop).toLocaleDateString("en-uk", {
+        return new Date(this.day_prop).toLocaleDateString("en-uk", {
           weekday: "long"
         });
       else return false;
     },
     isInterested() {
-      let session_id = this.session_prop.id;
-      return this.interests.find(
-        interest => interest.teaching_session_id == session_id
-      );
+      let user_id = this.$store.state.userId;
+      return this.interests.find(interest => interest.user_id == user_id);
     }
   },
   watch: {
     session_prop() {
       let tutor_id = this.session_prop.tutor_id;
       this.tutor = this.tutors.find(tutor => tutor.id == tutor_id);
+
+      // get session interests
+      this.axios
+        .get("/api/interests", {
+          headers: { Authorization: window.$cookies.get("jwt") },
+          params: { session_id: this.session_prop.id }
+        })
+        .then(response => {
+          this.interests = response.data;
+        });
     }
   }
 };

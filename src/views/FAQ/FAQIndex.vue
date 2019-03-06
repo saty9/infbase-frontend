@@ -11,7 +11,7 @@
       <br/>
       <div class="row">
         <div class="col">
-          <base-input addon-left-icon="fa fa-search" placeholder="Search" v-on:input="search_changed"></base-input>
+          <base-input addon-left-icon="fa fa-search" placeholder="Search" v-model="search_string_value" v-on:input="search_changed"></base-input>
         </div>
       </div>
       <br/>
@@ -118,7 +118,7 @@
           'Views': 'view_count',
           'Date Asked': 'posted',
         },
-        search_string: null,
+        search_string_value: '',
         the_watched: 0
       }
     },
@@ -153,7 +153,7 @@
         this.the_watched += 1;
       },
       search_changed: function (event) {
-        if (event.length >= 3) {
+        if (this.search_string_value.length >= 3) {
           this.search_string = event;
           this.the_watched += 1;
         } else if (this.search_string != null) {

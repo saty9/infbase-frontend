@@ -37,7 +37,7 @@
         class="btn btn-success"
         v-else-if="generated"
         :data="csv"
-        :name="'reports-' + new Date()"
+        :name="'reports-' + new Date() + '.csv'"
       >
         Download Data
       </download-csv>
@@ -77,6 +77,7 @@ export default {
   },
   methods: {
     closeModal() {
+      this.resetDownload();
       this.$emit("closeModal");
     },
     exportCsv() {
@@ -95,16 +96,6 @@ export default {
     resetDownload() {
       this.csv = null;
       this.generated = false;
-    }
-  },
-  computed: {
-    downloadUrl() {
-      return this.csv.length > 0
-        ? "data:text/csv," +
-            encodeURIComponent(
-              json2csv({ data: this.csv, fields: this.fields })
-            )
-        : "javascript:void(0);";
     }
   }
 };

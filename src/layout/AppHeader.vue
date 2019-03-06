@@ -1,9 +1,12 @@
 <template>
   <header class="header-global">
     <base-nav class="navbar-main" transparent type="" effect="light" expand>
-      <a slot="brand" class="navbar-brand mr-lg-5" href="https://www.ed.ac.uk/">
+      <a slot="brand" class="navbar-brand mr-lg-5" href="https://www.ed.ac.uk/" v-if="$route.meta.lightHeader">
         <img src="../assets/images/logo.png" />
       </a>
+      <router-link to="/" v-else>
+        <b>InfBase</b>
+      </router-link>
 
       <div class="row" slot="content-header" slot-scope="{ closeMenu }">
         <div class="col-6 collapse-brand">
@@ -16,29 +19,44 @@
         </div>
       </div>
 
-
       <ul class="navbar-nav ml-lg-auto">
         <li class="nav-item">
-          <router-link v-if="!signedIn" to="/login" class="btn btn-secondary">
-            <span class="nav-link-inner--text">Log in</span>
+          <router-link
+            v-if="!signedIn"
+            to="/login"
+            class="btn btn-secondary"
+            type="link"
+          >
+            Log in
           </router-link>
           <router-link
             v-if="signedIn && userRole == 'admin'"
             to="/admin-panel/schedule"
-            class="btn btn-primary btn-link"
+            class="btn"
+            :class="
+              $route.meta.lightHeader ? 'btn-primary' : 'btn-primary-link'
+            "
           >
-            <span class="nav-link-inner--text">Admin panel</span>
+            Admin panel
           </router-link>
           <router-link
             v-if="signedIn && userRole == 'tutor'"
             to="/admin-panel/schedule"
-            class="btn btn-primary btn-link"
+            class="btn"
+            :class="
+              $route.meta.lightHeader ? 'btn-primary' : 'btn-primary-link'
+            "
           >
-            <span class="nav-link-inner--text">Tutor panel</span>
+            Tutor panel
           </router-link>
         </li>
         <base-dropdown tag="li" v-if="signedIn" class="ml-3">
-          <base-button slot="title" type="link" class="dropdown-toggle">
+          <base-button
+            :outline="!$route.meta.lightHeader"
+            slot="title"
+            :type="$route.meta.lightHeader ? 'secondary' : 'primary'"
+            class="dropdown-toggle"
+          >
             Account
           </base-button>
           <router-link class="dropdown-item" to="/profile">

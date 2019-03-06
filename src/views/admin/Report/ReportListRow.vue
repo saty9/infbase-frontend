@@ -2,7 +2,7 @@
   <tr class="row">
     <td class="col-2">
       <badge :type="completed ? 'success' : 'warning'">{{
-        completed ? "Completed" : "Incomplete"
+        completed ? "Submitted" : "Incomplete"
       }}</badge>
     </td>
     <td class="col-5">{{ report.date }}</td>

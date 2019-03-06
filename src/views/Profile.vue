@@ -66,14 +66,15 @@ export default {
         smail: "*_~"
       },
       user: { avatar: "" },
-      first_name: null,
-      last_name: null,
-      biography: null,
+      first_name: "",
+      last_name: "",
+      biography: "",
       header: { Authorization: window.$cookies.get("jwt") }
     };
   },
   beforeMount() {
-    this.avatar = "https://cdn.pixabay.com/photo/2018/09/06/18/26/person-3658927_1280.png";
+    this.avatar =
+      "https://cdn.pixabay.com/photo/2018/09/06/18/26/person-3658927_1280.png";
     this.axios
       .get("/api/profile", {
         headers: { Authorization: window.$cookies.get("jwt") }

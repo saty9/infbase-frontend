@@ -21,7 +21,10 @@
     </base-dropdown>
 
     <section v-if="errored">
-      <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+      <p>
+        We're sorry, we're not able to retrieve this information at the moment,
+        please try back later.
+      </p>
     </section>
     <table class="table text-center" v-else>
       <ScheduleHead :scope="calendar_scope" @range="changeRange" />
@@ -32,7 +35,7 @@
           :sessions="sessions"
           :hour="hour"
           :range="calendar_range"
-          @clicked="session_clicked"
+          @clicked="sessionClicked"
         />
       </tbody>
     </table>
@@ -42,7 +45,6 @@
       :day_prop="day"
       :hour_prop="hour"
       :modal="modal"
-      :interests="interests"
       @closeModal="closeModal"
       @modified="modifySessions"
     />
@@ -86,8 +88,7 @@ export default {
       tutors: [],
       session: null,
       day: null,
-      hour: null,
-      interests: null
+      hour: null
     };
   },
   mounted() {
@@ -118,16 +119,6 @@ export default {
         this.errored = true;
       })
       .finally(() => (this.loading = false));
-
-    // get interests if a student
-    if (this.$store.state.userRole == "student")
-      this.axios
-        .get("/api/interests", {
-          headers: { Authorization: window.$cookies.get("jwt") }
-        })
-        .then(response => {
-          this.interests = response.data;
-        });
   },
   methods: {
     getSessionsInRange(calendar_range) {
@@ -160,9 +151,9 @@ export default {
       else if (action == "updated") this.sessions.splice(idx, 1, session);
       else this.sessions.splice(idx, 1);
     },
-    session_clicked(){
-      if (this.on_select == null){
-        this.openModal(arguments);
+    sessionClicked(session, day, hour) {
+      if (this.on_select == null) {
+        this.openModal(session, day, hour);
       } else {
         this.on_select(arguments);
       }
@@ -180,8 +171,9 @@ export default {
 
 <style scoped>
 table >>> th,
-table tr td {
+table >>> tr td {
   padding: 0px;
+  min-height: 50px;
   display: flex;
   justify-content: center; /* align horizontal */
   align-items: center; /* align vertical */
