@@ -46,6 +46,7 @@
         </div>
         <br />
         <v-select
+          ref="tag_select"
           class="w-100"
           label="name"
           :options="tags"
@@ -53,6 +54,7 @@
           multiple
           taggable
           placeholder="Tags"
+          @search:focus="fix_readonly"
           v-b-tooltip.hover.top
           title="select a tag or start typing and press enter to add a tag. (tags that dont already exist will be created when you submit the form)">
         </v-select>
@@ -195,6 +197,9 @@ export default {
       this.form_data.question.teaching_session_id = event[0].id;
       this.selected_session_start = event[2].start + " " + event[0].start_date;
     },
+    fix_readonly: function () {
+      this.$refs.tag_select.$refs.search.readOnly = false
+    }
   },
 };
 </script>
