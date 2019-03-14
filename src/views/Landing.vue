@@ -76,7 +76,7 @@
         <div class="container">
           <div class="row justify-content-center text-center mb-lg">
             <div class="col-lg-8">
-              <h2 class="display-3">FAQ</h2>
+              <h2 class="display-3">Questions</h2>
             </div>
           </div>
           <div class="row p-0 col-12">
