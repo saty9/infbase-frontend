@@ -35,7 +35,7 @@
     <div class="row question-end">
       <div class="col-md-1"></div>
       <div class="col-md-8">
-        {{question.created_at | moment("MMM Do YYYY")}}
+        {{question.created_at | moment("MMM Do YYYY, HH:mm")}}
       </div>
     </div>
 
