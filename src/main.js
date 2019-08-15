@@ -55,5 +55,13 @@ document.addEventListener("DOMContentLoaded", () => {
     ]);
   }
   global.vm = v; //Define you app variable globally
+  v.axios.interceptors.response.use(function (response) {
+    // Do something before request is sent
+    return response;
+  }, function (error) {
+    // Do something with request error
+    v.$store.commit("ADD_ALERT", ["You are not authorised to perform this action", "warning"]);
+    return Promise.reject(error);
+  });
   v.$mount("#app");
 });
