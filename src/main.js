@@ -60,7 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return response;
   }, function (error) {
     // Do something with request error
-    v.$store.commit("ADD_ALERT", ["You are not authorised to perform this action", "warning"]);
+    if (error.response.status == 403) {
+      v.$store.commit("ADD_ALERT", ["You are not authorised to perform this action", "warning"]);
+    }
     return Promise.reject(error);
   });
   v.$mount("#app");
