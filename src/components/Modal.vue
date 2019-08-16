@@ -131,4 +131,10 @@ export default {
 .modal.show {
   background-color: rgba(0, 0, 0, 0.3);
 }
+.modal .wide {
+  max-width: 700px;
+}
+.modal .wider {
+  max-width: 900px;
+}
 </style>

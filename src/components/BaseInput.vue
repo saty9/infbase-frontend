@@ -27,6 +27,7 @@
     </div>
     <slot v-bind="slotData">
       <input
+        :disabled="disabled"
         :value="value"
         v-on="listeners"
         class="form-control"
@@ -113,6 +114,11 @@ export default {
     input_type: {
       type: String,
       description: "Type of the input"
+    },
+    disabled: {
+      type: [Boolean, String],
+      default: false,
+      description: "Input disabled?"
     }
   },
   data() {

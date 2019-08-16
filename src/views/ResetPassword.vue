@@ -23,13 +23,22 @@
             <div class="text-center text-muted mb-3">
               <small>Reset password</small>
             </div>
-				    <base-alert type="success" v-if="success">
-				      {{response}}
-				    </base-alert>
-				    <base-alert type="warning" v-if="failure">
-				      {{response}}
-				    </base-alert>
-            <form id="loginForm" role="form">
+            <base-alert
+              type="success"
+              v-if="success"
+            >
+              {{response}}
+            </base-alert>
+            <base-alert
+              type="warning"
+              v-if="failure"
+            >
+              {{response}}
+            </base-alert>
+            <form
+              id="loginForm"
+              role="form"
+            >
               <base-input
                 alternative
                 required
@@ -53,12 +62,18 @@
           </card>
           <div class="row mt-3">
             <div class="col-6">
-              <router-link to="/login" class="text-light">
+              <router-link
+                to="/login"
+                class="text-light"
+              >
                 <small>Log in</small>
               </router-link>
             </div>
             <div class="col-6 text-right">
-              <router-link to="/register" class="text-light">
+              <router-link
+                to="/register"
+                class="text-light"
+              >
                 <small>Register</small>
               </router-link>
             </div>
@@ -73,26 +88,26 @@
 export default {
   data() {
     return {
-      email: '',
-      response: '',
+      email: "",
+      response: "",
       success: false,
       failure: false
     };
   },
   methods: {
-    validEmail: function (email) {
+    validEmail: function(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(this.email);
     },
     submit: function() {
-    	this.response = '';
-    	this.failure = false;
-    	this.success = false;
+      this.response = "";
+      this.failure = false;
+      this.success = false;
 
-    	if(!this.validEmail()) {
-    		this.resetFailed("Please, use a real email.");
-    		return;
-    	}
+      if (!this.validEmail()) {
+        this.resetFailed("Please, use a real email.");
+        return;
+      }
 
       this.axios
         .post("/api/password", {
@@ -101,14 +116,14 @@ export default {
           }
         })
         .then(response => this.resetSuccessful(response))
-        .catch(error => this.resetFailed(error))
+        .catch(error => this.resetFailed(error));
     },
-    resetSuccessful (response) {
+    resetSuccessful(response) {
       this.success = true;
       this.response = response.data.message;
     },
-    resetFailed (error) {
-    	this.failure = true;
+    resetFailed(error) {
+      this.failure = true;
       this.response = error;
     }
   }
@@ -116,5 +131,4 @@ export default {
 </script>
 
 <style>
-	
 </style>

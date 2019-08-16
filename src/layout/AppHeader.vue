@@ -1,9 +1,12 @@
 <template>
   <header class="header-global">
     <base-nav class="navbar-main" transparent type="" effect="light" expand>
-      <a slot="brand" class="navbar-brand mr-lg-5" href="https://www.ed.ac.uk/">
+      <a slot="brand" class="navbar-brand mr-lg-5" href="https://www.ed.ac.uk/" v-if="$route.meta.lightHeader">
         <img src="../assets/images/logo.png" />
       </a>
+      <router-link to="/" v-else>
+        <b>InfBase</b>
+      </router-link>
 
       <div class="row" slot="content-header" slot-scope="{ closeMenu }">
         <div class="col-6 collapse-brand">
@@ -16,60 +19,88 @@
         </div>
       </div>
 
-      <ul class="navbar-nav align-items-lg-center ml-lg-auto">
-        <li class="nav-item d-none d-lg-block ml-lg-4">
+      <ul class="navbar-nav ml-lg-auto">
+        <li class="nav-item">
           <router-link
             v-if="!signedIn"
             to="/login"
-            class="btn btn-neutral btn-icon"
+            class="btn btn-secondary"
+            type="link"
           >
-            <span class="btn-inner--icon">
-              <i class="fa fa-sign-in mr-2"></i>
-            </span>
-            <span class="nav-link-inner--text">Log in</span>
+            Log in
           </router-link>
-          <base-button
-            v-if="signedIn"
-            @click="logout"
-            class="btn btn-neutral btn-icon"
+          <router-link
+            v-if="signedIn && userRole == 'admin'"
+            to="/admin-panel/schedule"
+            class="btn"
+            :class="
+              $route.meta.lightHeader ? 'btn-primary' : 'btn-primary-link'
+            "
           >
-            <span class="btn-inner--icon">
-              <i class="fa fa-sign-in mr-2"></i>
-            </span>
-            <span class="nav-link-inner--text">Log out</span>
-          </base-button>
+            Admin panel
+          </router-link>
+          <router-link
+            v-if="signedIn && userRole == 'tutor'"
+            to="/admin-panel/schedule"
+            class="btn"
+            :class="
+              $route.meta.lightHeader ? 'btn-primary' : 'btn-primary-link'
+            "
+          >
+            Tutor panel
+          </router-link>
         </li>
+        <base-dropdown tag="li" v-if="signedIn" class="ml-3">
+          <base-button
+            :outline="!$route.meta.lightHeader"
+            slot="title"
+            :type="$route.meta.lightHeader ? 'secondary' : 'primary'"
+            class="dropdown-toggle"
+          >
+            Account
+          </base-button>
+          <router-link class="dropdown-item" to="/profile">
+            Profile
+          </router-link>
+          <a class="dropdown-item" href="#" @click="logOut">Log out</a>
+        </base-dropdown>
       </ul>
     </base-nav>
     <div id="alerts" v-if="anyAlerts" class="w-100 row">
-      <base-alert v-for="alert in $store.state.alerts" 
-                  dismissible="true"
-                  :message="alert"
-                  :key="alert"
-                  class="col-6 offset-3">
-        {{alert}}
+      <base-alert
+        v-for="[message, status] in $store.state.alerts"
+        dismissible="true"
+        :type="status"
+        :message="message"
+        :key="message"
+        class="col-3 offset-8">
+        {{ message }}
       </base-alert>
     </div>
   </header>
 </template>
 <script>
 import BaseNav from "@/components/BaseNav";
+import BaseDropdown from "@/components/BaseDropdown";
 import CloseButton from "@/components/CloseButton";
 
 export default {
   components: {
     BaseNav,
-    CloseButton
+    CloseButton,
+    BaseDropdown
   },
   methods: {
-    logout() {
+    logOut() {
       this.$store.dispatch("signedOut");
-      this.$store.commit("addAlert", "You logged out successfully.");
     }
   },
   computed: {
     signedIn() {
       return this.$store.state.signedIn;
+    },
+    userRole() {
+      return this.$store.state.userRole;
     },
     anyAlerts() {
       return this.$store.state.alerts.length;
@@ -80,7 +111,10 @@ export default {
 <style scoped lang="scss">
   #alerts {
     position: absolute;
-    top: 80px;
+    top: 95px;
     z-index: 1000;
+  }
+  .navbar-nav .nav-item {
+    margin-right: 0px;
   }
 </style>

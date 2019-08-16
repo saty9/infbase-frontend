@@ -23,10 +23,16 @@
             <div class="text-center text-muted mb-3">
               <small>Sign in</small>
             </div>
-            <base-alert type="danger" v-if="failure">
+            <base-alert
+              type="danger"
+              v-if="failure"
+            >
               {{response}}
             </base-alert>
-            <form id="loginForm" role="form">
+            <form
+              id="loginForm"
+              role="form"
+            >
               <base-input
                 alternative
                 required
@@ -42,17 +48,14 @@
                 placeholder="Password"
                 addon-left-icon="ni ni-lock-circle-open"
                 v-model="password"
+                @keyup.enter="submit"
               >
               </base-input>
               <base-checkbox v-model="remember_me">
                 Remember me
               </base-checkbox>
               <div class="text-center">
-                <base-button
-                  type="primary"
-                  class="my-4"
-                  v-on:click="submit()"
-                >
+                <base-button type="primary" class="my-4" v-on:click="submit()">
                   Sign In
                 </base-button>
               </div>
@@ -77,47 +80,57 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        email: "",
-        password: "",
-        remember_me: false,
-        failure: false,
-        reposnse: ""
-      };
-    },
-    methods: {
-      submit: function() {
-        this.failure = false;
-
-        this.axios
-          .post("/api/login", {
-            user: {
-              email: this.email,
-              password: this.password,
-              remember_me: this.remember_me ? 1 : 0
-            }
-          })
-          .then(response => {
-            this.loginSuccessful(response)
-          })
-          .catch(error => this.loginFailed(error))
-      },
-      loginSuccessful (response) {
-        this.$store.dispatch("signedIn", [
-          response.headers.authorization,
-          response.data.id
-        ]);
-        this.$store.commit("addAlert", "You are now logged in.");
-        this.$router.push('/');
-      },
-      loginFailed (error) {
-        this.failure = true;
-        this.response = "Your email or password is incorrect";
-      }
+export default {
+  props: {
+    nextUrl: {
+      type: String,
+      default: "/"
     }
-  };
-</script>
+  },
+  data() {
+    return {
+      email: "",
+      password: "",
+      remember_me: false,
+      failure: false,
+      response: ""
+    };
+  },
+  methods: {
+    submit() {
+      this.failure = false;
 
-<style></style>
+      this.axios
+        .post("/api/login", {
+          user: {
+            email: this.email,
+            password: this.password,
+            remember_me: this.remember_me ? 1 : 0
+          }
+        })
+        .then(response => {
+          this.loginSuccessful(response);
+        })
+        .catch(error => this.loginFailed(error));
+    },
+    loginSuccessful(response) {
+      this.$store.dispatch("signedIn", [
+        response.headers.authorization,
+        response.data.id,
+        response.data.role
+      ]);
+      this.$store.commit("ADD_ALERT", ["You are now logged in.", "success"]);
+      if (response.role != "student" && this.nextUrl == "/"){
+        this.$router.push('/admin-panel/schedule');
+      } else {
+        this.$router.push(this.nextUrl);
+      }
+
+    },
+    loginFailed(error) {
+      this.failure = true;
+      this.response = "Your email or password is incorrect";
+    }
+  }
+};
+</script>

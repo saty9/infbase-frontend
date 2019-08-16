@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     dismissAlert() {
-      this.$store.commit("removeAlert", this.message);
+      this.$store.commit("REMOVE_ALERT", this.message);
       this.visible = false;
     }
   }

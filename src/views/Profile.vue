@@ -1,98 +1,157 @@
 <template>
-  <div class="profile-page">
-    <section class="section-profile-cover section-shaped my-0">
-      <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+  <div class="container col-lg-6 col-xs-10 col-md-8 py-5">
+    <card shadow class="card-profile mt-5">
+      <h3>Profile</h3>
+      <div
+        class="text-center avatar-image"
+        v-if="$store.state.userRole == 'tutor'"
+      >
+        <img
+          :src="avatar"
+          class="rounded-circle shadow shadow-lg--hover"
+          alt=""
+        />
+        <div class="middle">
+          <base-button type="secondary" @click="show = true"
+            >Change avatar
+          </base-button>
+        </div>
       </div>
-    </section>
-    <section class="section section-skew">
-      <div class="container">
-        <card shadow class="card-profile mt--300" no-body>
-          <div class="px-4">
-            <div class="row justify-content-center">
-              <div class="col-lg-3 order-lg-2">
-                <div class="card-profile-image">
-                  <a href="#">
-                    <img
-                      v-lazy="'img/theme/team-4-800x800.jpg'"
-                      class="rounded-circle"
-                    />
-                  </a>
-                </div>
-              </div>
-              <div
-                class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center"
-              >
-                <div class="card-profile-actions py-4 mt-lg-0">
-                  <base-button type="info" size="sm" class="mr-4"
-                    >Connect</base-button
-                  >
-                  <base-button type="default" size="sm" class="float-right"
-                    >Message</base-button
-                  >
-                </div>
-              </div>
-              <div class="col-lg-4 order-lg-1">
-                <div class="card-profile-stats d-flex justify-content-center">
-                  <div>
-                    <span class="heading">22</span>
-                    <span class="description">Friends</span>
-                  </div>
-                  <div>
-                    <span class="heading">10</span>
-                    <span class="description">Photos</span>
-                  </div>
-                  <div>
-                    <span class="heading">89</span>
-                    <span class="description">Comments</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="text-center mt-5">
-              <h3>
-                Jessica Jones
-                <span class="font-weight-light">, 27</span>
-              </h3>
-              <div class="h6 font-weight-300">
-                <i class="ni location_pin mr-2"></i>Bucharest, Romania
-              </div>
-              <div class="h6 mt-4">
-                <i class="ni business_briefcase-24 mr-2"></i>Solution Manager -
-                Creative Tim Officer
-              </div>
-              <div>
-                <i class="ni education_hat mr-2"></i>University of Computer
-                Science
-              </div>
-            </div>
-            <div class="mt-5 py-5 border-top text-center">
-              <div class="row justify-content-center">
-                <div class="col-lg-9">
-                  <p>
-                    An artist of considerable range, Ryan — the name taken by
-                    Melbourne-raised, Brooklyn-based Nick Murphy — writes,
-                    performs and records all of his own music, giving it a warm,
-                    intimate feel with a solid groove structure. An artist of
-                    considerable range.
-                  </p>
-                  <a href="#">Show more</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </card>
-      </div>
-    </section>
+      <my-upload
+        v-if="$store.state.userRole == 'tutor'"
+        @crop-upload-success="cropUploadSuccess"
+        v-model="show"
+        :width="300"
+        :height="300"
+        :headers="header"
+        url="/api/signup"
+        method="put"
+        field="user[avatar]"
+        lang-type="en"
+        img-format="png"
+      >
+      </my-upload>
+      <br /><br />
+      <base-input label="First name" v-model="first_name"></base-input>
+      <base-input label="Last name" v-model="last_name"></base-input>
+      <label for="biography">Biography</label>
+      <textarea
+        id="biography"
+        class="form-control"
+        cols="30"
+        rows="10"
+        label="Biography"
+        v-model="biography"
+      ></textarea>
+      <base-button type="primary" class="float-right mt-3" @click="submit">
+        Update
+      </base-button>
+    </card>
   </div>
 </template>
 <script>
-export default {};
+import myUpload from "vue-image-crop-upload";
+export default {
+  components: {
+    myUpload
+  },
+  data() {
+    return {
+      show: false,
+      params: {
+        token: "123456798",
+        name: "avatar"
+      },
+      headers: {
+        smail: "*_~"
+      },
+      user: { avatar: "" },
+      first_name: "",
+      last_name: "",
+      biography: "",
+      header: { Authorization: window.$cookies.get("jwt") }
+    };
+  },
+  beforeMount() {
+    this.avatar =
+      "https://cdn.pixabay.com/photo/2018/09/06/18/26/person-3658927_1280.png";
+    this.axios
+      .get("/api/profile", {
+        headers: { Authorization: window.$cookies.get("jwt") }
+      })
+      .then(response => {
+        this.user = response.data;
+        this.first_name = this.user.first_name;
+        this.last_name = this.user.last_name;
+        this.biography = this.user.biography;
+        this.avatar = this.user.avatar;
+      })
+      .catch(() => {
+        this.errored = true;
+      })
+      .finally(() => (this.loading = false));
+  },
+  methods: {
+    submit() {
+      this.axios
+        .put("/api/signup", {
+          headers: { Authorization: window.$cookies.get("jwt") },
+          user: {
+            first_name: this.first_name,
+            last_name: this.last_name,
+            biography: this.biography
+          }
+        })
+        .then(response => {
+          this.user = response.data;
+          this.$store.commit("ADD_ALERT", [
+            "Your account was successfully updated!",
+            "success"
+          ]);
+        })
+        .catch(() => {
+          this.errored = true;
+        })
+        .finally(() => (this.loading = false));
+    },
+    cropUploadSuccess(jsonData, field) {
+      this.show = false;
+      this.avatar = jsonData.avatar;
+      this.$store.commit("ADD_ALERT", [
+        "Avatar updated successfully!!",
+        "success"
+      ]);
+    }
+  }
+};
 </script>
-<style></style>
+
+<style lang="scss" scoped>
+.avatar-image {
+  position: relative;
+  .middle {
+    transition: 0.5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  img {
+    max-height: 300px;
+    opacity: 1;
+    transition: 0.5s ease;
+    backface-visibility: hidden;
+  }
+}
+.avatar-image:hover {
+  img {
+    opacity: 0.3;
+  }
+  .middle {
+    opacity: 1;
+  }
+}
+</style>
