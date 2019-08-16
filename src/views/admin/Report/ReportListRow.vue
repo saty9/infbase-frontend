@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       report: this.report_prop,
-      completed: this.report_prop.completed
+      completed: this.report_prop.students != null
     };
   },
   watch: {
