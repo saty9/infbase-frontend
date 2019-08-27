@@ -175,6 +175,7 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       if (window.$cookies.get("jwt")) {
+        //TODO Check if this is still needed or if its handled sufficiently by main.js
         let token = window.$cookies.get("jwt");
         let userId = window.$cookies.get("userId");
         let userRole = window.$cookies.get("userRole");

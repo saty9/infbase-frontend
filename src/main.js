@@ -68,6 +68,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Do something with request error
     if (error.response.status == 403) {
       v.$store.commit("ADD_ALERT", ["You are not authorised to perform this action", "warning"]);
+    } else if (error.response.status == 401) {
+      v.$store.dispatch("signedOut");
+      v.$store.commit("ADD_ALERT", ["Your session has expired and you have been logged out", "warning"]);
     }
     return Promise.reject(error);
   });
