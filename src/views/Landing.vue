@@ -40,7 +40,7 @@
       <section class="section section-lg">
         <div class="container">
           <card class="border-0" shadow body-classes="py-2">
-            <prototype slot="header" class="row">
+            <div slot="header" class="row">
               <p class="text-muted col-lg-4 col-xs-12">
                 <span class="badge mr-3 badge-success badge-circle">
                   <i class="fa fa-map-marker-alt"></i>
@@ -54,7 +54,7 @@
                 Drop in into one of the sessions below. You don’t have to sign up
                 in advance.
               </p>
-            </prototype>
+            </div>
             <session-schedule
               :scope="3"
               v-if="$store.state.userId"
@@ -116,6 +116,32 @@
         </div>
       </div>
     </section>
+
+    <section class="section section-lg">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-lg">
+          <div class="col-lg-8">
+            <h2 class="display-3">Useful Resources</h2>
+          </div>
+        </div>
+        <div class="row" v-if="$store.state.userId">
+          <div v-for="course in $store.state.courses" :key="course.id">
+            <router-link
+                    class="btn btn-outline-primary col-xs-12 d-block mb-2"
+                    :to="{ name: 'useful_resources', params: { course_id: course.id } }"
+            >{{ course.name }}</router-link
+            >
+          </div>
+        </div>
+        <div v-else class="text-center">
+          <base-button type="primary" tag="a" outline href="/login"
+          >Log in</base-button
+          >
+          to see <b>useful resources</b>.
+        </div>
+      </div>
+    </section>
+
   </div>
 </template>
 
