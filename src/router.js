@@ -19,6 +19,7 @@ import FAQQuestionView from "./views/FAQ/FAQQuestionView";
 import FAQAsk from "./views/FAQ/FAQAsk";
 import TutorQuestion from "./views/admin/Questions/TutorQuestion";
 import QuestionSummaries from "./views/admin/Questions/QuestionSummaries";
+import UsefulResourcesView from "./views/UsefulResourcesView";
 
 let router = new Router({
   mode: "history",
@@ -153,6 +154,18 @@ let router = new Router({
       components: {
         header: AppHeader,
         default: FAQQuestionView,
+        footer: AppFooter
+      },
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/useful_resources/:course_id",
+      name: "useful_resources",
+      components: {
+        header: AppHeader,
+        default: UsefulResourcesView,
         footer: AppFooter
       },
       meta: {
