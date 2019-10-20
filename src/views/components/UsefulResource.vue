@@ -12,7 +12,7 @@
       </div>
       <div v-else>
         <vue-markdown v-bind:source="resource.body"></vue-markdown>
-        <base-button type="info" @click="edit_mode=true">Edit</base-button>
+        <base-button type="info" @click="edit_mode=true; edit_resource_body= this.resource.body">Edit</base-button>
         <base-button type="danger" @click="$emit('delete-resource', resource)">Delete</base-button>
       </div>
     </div>
