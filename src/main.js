@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import Vue2Filters from "vue2-filters";
 import vSelect from "vue-select";
 import JsonCSV from "vue-json-csv";
+import VueMarkdown from "vue-markdown/src/VueMarkdown";
 
 library.add({ faCaretLeft, faCaretRight, faFilter, faMinusCircle, faCheck, faSearch });
 
@@ -30,6 +31,7 @@ Vue.use(require("vue-moment"));
 Vue.component("v-select", vSelect);
 Vue.use(require("vue-moment"));
 Vue.component("downloadCsv", JsonCSV);
+Vue.use(VueMarkdown)
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, {
