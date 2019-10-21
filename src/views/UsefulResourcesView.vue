@@ -7,11 +7,11 @@
                         v-on:update-resource="update_resource"></UsefulResource>
         <br>
       </div>
-      <div class="container">
+      <div class="container" v-if="$store.state.userRole == 'tutor' || $store.state.userRole == 'admin'">
         <base-button type="success" @click="add_resource">Add Useful Resource</base-button>
       </div>
     </div>
-    <div class="section text-center" v-else-if="$store.state.userRole == 'tutor'">
+    <div class="section text-center" v-else-if="$store.state.userRole == 'tutor' || $store.state.userRole == 'admin'">
       No resources have been added yet.<br>
       Would you like to add the first one?<br>
       <base-button type="success" @click="add_resource">Add Useful Resource</base-button>
