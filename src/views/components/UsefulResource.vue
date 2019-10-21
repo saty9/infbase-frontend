@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div v-if="$store.state.userRole == 'tutor'">
+    <div v-if="$store.state.userRole == 'tutor' || $store.state.userRole == 'admin'">
       <div v-if="edit_mode">
         <textarea
                 class="form-control"
