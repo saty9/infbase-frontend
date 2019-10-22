@@ -11,13 +11,13 @@
         <base-button type="primary" @click="$emit('update-resource', resource, edit_resource_body); edit_mode=false">Update</base-button>
       </div>
       <div v-else>
-        <vue-markdown v-bind:source="resource.body"></vue-markdown>
+        <vue-markdown v-bind:source="resource.body" v-bind:html="false"></vue-markdown>
         <base-button type="info" @click="edit_mode=true; edit_resource_body= this.resource.body">Edit</base-button>
         <base-button type="danger" @click="$emit('delete-resource', resource)">Delete</base-button>
       </div>
     </div>
     <div v-else>
-      <vue-markdown v-bind:source="resource.body"></vue-markdown>
+      <vue-markdown v-bind:source="resource.body" v-bind:html="false"></vue-markdown>
     </div>
   </div>
 </template>
