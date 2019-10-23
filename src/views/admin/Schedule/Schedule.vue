@@ -48,6 +48,11 @@
       @closeModal="closeModal"
       @modified="modifySessions"
     />
+    <div>
+      <h5 class="text-primary mb-5 d-inline-block">Forecast busyness</h5>
+      <br>
+      <BusynessDisplay/>
+    </div>
   </div>
 </template>
 
@@ -56,13 +61,15 @@ import ScheduleRow from "./ScheduleRow";
 import ScheduleHead from "@/views/components/Schedule/ScheduleHead";
 import BaseDropdown from "@/components/BaseDropdown";
 import ScheduleModal from "./ScheduleRowSlotModal";
+import BusynessDisplay from "./BusynessDisplay";
 
 export default {
   components: {
     ScheduleRow,
     ScheduleHead,
     BaseDropdown,
-    ScheduleModal
+    ScheduleModal,
+    BusynessDisplay
   },
   props: {
     scope: {
