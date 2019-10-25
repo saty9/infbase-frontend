@@ -1,7 +1,10 @@
 <template>
   <div>
     <div id="chart"></div>
-    <div id="dataset-picker"></div>
+    <div id="dataset-picker">
+      <input type="button" @click="draw_chart(datasets[0])" value="previous attendance">
+      <input type="button" @click="draw_chart(datasets[1])" value="students interested">
+    </div>
   </div>
 </template>
 
@@ -15,7 +18,8 @@
     },
     data: function(){
       return {
-        datasets: [[], []]
+        datasets: [[], []],
+        draw_chart: function () {}
       }
     },
     mounted: function () {
@@ -29,7 +33,9 @@
           gridSize = Math.floor(width / 16),
           legendElementWidth = gridSize * 2,
           buckets = 9,
-          colors = ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"], // alternatively colorbrewer.YlGnBu[9]
+          colors = ["#ffffff","#ffcccc", "#ff9999",
+            "#ff6666", "#ff3333", "#ff0000",
+            "#cc0000", "#990000", "#660000"], // alternatively colorbrewer.YlGnBu[9]
           days = ["Mo", "Tu", "We", "Th", "Fr"],
           times = ["9am", "10am", "11am", "12am", "1pm", "2pm", "3pm", "4pm", "5pm"];
 
@@ -145,8 +151,9 @@
         };
 
         heatmapChart(this.datasets[1]);
+        this.draw_chart = heatmapChart
 
-        var datasetpicker = d3.select("#dataset-picker").selectAll(".dataset-button")
+        /*var datasetpicker = d3.select("#dataset-picker").selectAll(".dataset-button")
           .data(this.datasets);
 
         datasetpicker.enter()
@@ -159,6 +166,7 @@
           .on("click", function (d) {
             heatmapChart(d);
           });
+         */
 
       },
       fetch_data: function () {
