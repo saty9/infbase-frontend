@@ -20,6 +20,7 @@ import FAQAsk from "./views/FAQ/FAQAsk";
 import TutorQuestion from "./views/admin/Questions/TutorQuestion";
 import QuestionSummaries from "./views/admin/Questions/QuestionSummaries";
 import UsefulResourcesView from "./views/UsefulResourcesView";
+import AdminSchedule from "./views/admin/Schedule/AdminSchedule";
 
 let router = new Router({
   mode: "history",
@@ -88,7 +89,7 @@ let router = new Router({
       children: [
         {
           path: "schedule",
-          component: Schedule
+          component: AdminSchedule
         },
         {
           path: "reports",

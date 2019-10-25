@@ -151,6 +151,7 @@
         };
 
         heatmapChart(this.datasets[1]);
+        heatmapChart(this.datasets[1]);
         this.draw_chart = heatmapChart
 
         /*var datasetpicker = d3.select("#dataset-picker").selectAll(".dataset-button")
