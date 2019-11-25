@@ -4,7 +4,7 @@
       v-if="
         $store.state.userRole == 'admin' || $store.state.userRole == 'tutor'
       "
-      @close="closeModal"
+      @closeModal="closeModal"
       :session_prop="session_prop"
       :tutors="tutors"
       :day_prop="day_prop"
