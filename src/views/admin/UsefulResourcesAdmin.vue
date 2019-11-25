@@ -8,7 +8,10 @@
         </option>
       </select>
     </label>
-    <CourseUsefulResources v-bind:course_id="course_id"/>
+    <CourseUsefulResources v-bind:course_id="course_id" v-if="course_id"/>
+      <div v-else>
+        Please select a course
+      </div>
   </section>
 </template>
 <script>
@@ -21,7 +24,7 @@
     },
     data: function () {
       return {
-        course_id: 1000,
+        course_id: null,
       }
     },
   };
