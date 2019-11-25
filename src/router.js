@@ -21,6 +21,7 @@ import TutorQuestion from "./views/admin/Questions/TutorQuestion";
 import QuestionSummaries from "./views/admin/Questions/QuestionSummaries";
 import UsefulResourcesView from "./views/UsefulResourcesView";
 import AdminSchedule from "./views/admin/Schedule/AdminSchedule";
+import UsefulResourcesAdmin from "./views/admin/UsefulResourcesAdmin";
 
 let router = new Router({
   mode: "history",
@@ -122,6 +123,10 @@ let router = new Router({
         {
           path: "question_summaries",
           component: QuestionSummaries
+        },
+        {
+          path: "useful_resources",
+          component: UsefulResourcesAdmin
         }
       ]
     },

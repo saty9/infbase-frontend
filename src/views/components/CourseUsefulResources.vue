@@ -61,7 +61,7 @@
       }
     },
     watch: {
-      theWatched: function () {
+      course_id: function () {
         this.fetchData()
       }
     },

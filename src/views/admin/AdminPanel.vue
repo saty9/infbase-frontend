@@ -44,6 +44,10 @@
                 to="/admin-panel/question_summaries"
                 class="nav-link mb-1"
         >Questions</router-link>
+        <router-link
+                to="/admin-panel/useful_resources"
+                class="nav-link mb-1"
+        >Useful Resources</router-link>
       </div>
       <fade-transition
         mode="out-in"
