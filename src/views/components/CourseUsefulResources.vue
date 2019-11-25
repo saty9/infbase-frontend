@@ -11,14 +11,6 @@
         <base-button type="success" @click="add_resource">Add Useful Resource</base-button>
       </div>
     </div>
-    <div class="section text-center" v-else-if="$store.state.userRole == 'tutor' || $store.state.userRole == 'admin'">
-      No resources have been added yet.<br>
-      Would you like to add the first one?<br>
-      <base-button type="success" @click="add_resource">Add Useful Resource</base-button>
-    </div>
-    <div class="section text-center" v-else>
-      No resources have been added yet
-    </div>
     <div class="section container" v-if="show_add_form">
       <form
               id="loginForm"
@@ -27,11 +19,19 @@
               <textarea
                       class="form-control"
                       rows="3"
-                      placeholder="Write your resource here in markdown"
                       v-model="newresourcebody"></textarea>
         <br>
         <base-button type="success" @click="submit_new_resource">Submit</base-button>
+        <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a>
       </form>
+    </div>
+    <div class="section text-center" v-else-if="$store.state.userRole == 'tutor' || $store.state.userRole == 'admin'">
+      No resources have been added yet.<br>
+      Would you like to add the first one?<br>
+      <base-button type="success" @click="add_resource">Add Useful Resource</base-button>
+    </div>
+    <div class="section text-center" v-else>
+      No resources have been added yet
     </div>
   </section>
 </template>
@@ -78,6 +78,9 @@
         });
       },
       add_resource: function () {
+        this.newresourcebody = "# Title\n" +
+          "normal __Bold__ _italics_ ~~cross~~\n" +
+          "**bold** *italics*";
         this.show_add_form = true;
       },
       submit_new_resource: function () {
