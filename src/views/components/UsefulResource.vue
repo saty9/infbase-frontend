@@ -7,12 +7,14 @@
                 rows="3"
                 v-model="edit_resource_body">
         </textarea>
+        <base-checkbox v-model="resource.restricted">Tutor Only?</base-checkbox>
         <base-button type="secondary" @click="edit_mode=false">Cancel</base-button>
         <base-button type="primary" @click="$emit('update-resource', resource, edit_resource_body); edit_mode=false">Update</base-button>
         <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a>
       </div>
       <div v-else>
         <vue-markdown v-bind:source="resource.body" v-bind:html="false"></vue-markdown>
+        <base-checkbox v-model="resource.restricted" disabled>Tutor Only</base-checkbox>
         <base-button type="info" @click="edit_mode=true; edit_resource_body= this.resource.body">Edit</base-button>
         <base-button type="danger" @click="$emit('delete-resource', resource)">Delete</base-button>
       </div>

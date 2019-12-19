@@ -21,6 +21,7 @@
                       rows="3"
                       v-model="newresourcebody"></textarea>
         <br>
+        <base-checkbox v-model="newresourcerestricted">Tutor Only?</base-checkbox>
         <base-button type="success" @click="submit_new_resource">Submit</base-button>
         <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a>
       </form>
@@ -58,6 +59,7 @@
         resources: [],
         show_add_form: false,
         newresourcebody: null,
+        newresourcerestricted: false,
       }
     },
     watch: {
@@ -88,6 +90,7 @@
           useful_resource: {
             body: this.newresourcebody,
             course_id: this.course_id,
+            restricted: this.newresourcerestricted
           }
         })
           .then(response => {
@@ -108,7 +111,8 @@
         console.log(event);
         this.axios.patch("/api/useful_resources/" + event.id, {
           useful_resource: {
-            body: updated_body
+            body: updated_body,
+            restricted: event.restricted
           }
         }).then(response => {
           this.resources.find(res => res.id == event.id).body = updated_body;
