@@ -81,7 +81,7 @@
           </div>
           <div class="row p-0 col-12">
             <div class="col-sm-4">
-              <h4 class="text-primary">Popular Course Questions</h4>
+              <h4 class="text-primary">All Course Questions</h4>
               <div v-for="course in $store.state.courses" :key="course.id">
                 <router-link
                   class="btn btn-outline-primary col-xs-12 d-block mb-2"
