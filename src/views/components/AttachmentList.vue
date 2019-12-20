@@ -68,7 +68,9 @@
                 'Content-Type': null,
               }
             }).then(function (response) {
-              x.id = response.data.id;
+              x.file = {};
+              x.file.id = response.data.id;
+              x.file.file = response.data.file;
               x.new = false;
             })
           } else if (x.deleted) {
