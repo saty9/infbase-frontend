@@ -20,7 +20,7 @@
         </button>
       </div>
       <div class="col-md-10">
-        {{question.body}}
+        <vue-markdown v-bind:source="question.body" v-bind:html="false"></vue-markdown>
       </div>
       <div class="col" v-if="$store.state.userRole!='student'">
         <base-dropdown>
@@ -44,7 +44,7 @@
         <div class="row">
           <div class="col-md-1"></div>
           <div class="col-md-10">
-            {{answer.body}}
+            <vue-markdown v-bind:source="answer.body" v-bind:html="false"></vue-markdown>
           </div>
           <div class="col" v-if="$store.state.userRole!='student'">
             <base-dropdown>
@@ -82,11 +82,13 @@
 </template>
 <script>
   import BaseDropdown from "../BaseDropdown";
+  import VueMarkdown from "vue-markdown/src/VueMarkdown";
 
   export default {
     name: "question-detail",
     components: {
-      BaseDropdown
+      BaseDropdown,
+      VueMarkdown
     },
     props: {
       question_id: String,

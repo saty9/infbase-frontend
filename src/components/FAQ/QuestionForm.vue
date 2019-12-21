@@ -21,15 +21,8 @@
           :valid="form_validity.title"
           @input="title_changed"
         ></BaseInput>
-        <div :class="form_validity.body == false ? 'has-danger' : ''">
-          <textarea
-            :class="
-              form_validity.body == false
-                ? 'form-control is-invalid'
-                : 'form-control'
-            "
-            rows="3" placeholder="Question Body"
-            v-model="form_data.question.body"></textarea>
+        <div :class="form_validity.body == false ? 'has-danger is-invalid' : ''">
+          <Editor v-bind:options="editor_options" v-model="form_data.question.body"/>
         </div>
         <br />
         <BaseCheckbox
@@ -85,17 +78,8 @@
             placeholder="Number of students showing interest"
             input_type="number"
             v-model="form_data.interest"></BaseInput>
-          <div :class="form_validity.answer == false ? 'has-danger' : ''">
-            <textarea
-              :class="
-                form_validity.answer == false
-                  ? 'form-control is-invalid'
-                  : 'form-control'
-              "
-              rows="3"
-              placeholder="Answer"
-              v-model="form_data.answer">
-            </textarea>
+          <div :class="form_validity.answer == false ? 'has-danger is-invalid' : ''">
+            <Editor v-bind:options="editor_options" v-model="form_data.answer"/>
           </div>
         </div>
         <br />
@@ -114,6 +98,12 @@
 </template>
 
 <script>
+import 'tui-editor/dist/tui-editor.css';
+import 'tui-editor/dist/tui-editor-contents.css';
+import 'codemirror/lib/codemirror.css';
+import Editor from '@toast-ui/vue-editor/src/Editor.vue';
+import default_editor_options from "../../default_editor_options";
+
 import BaseInput from "../../components/BaseInput";
 import BaseCheckbox from "../../components/BaseCheckbox";
 import BTooltip from "bootstrap-vue/es/directives/tooltip/tooltip";
@@ -126,7 +116,8 @@ export default {
     BaseInput,
     BaseCheckbox,
     SessionSchedule,
-    Modal
+    Modal,
+    Editor
   },
   directives: {
     BTooltip
@@ -153,11 +144,12 @@ export default {
         },
         tags: [],
         interest: null,
-        answer: null
+        answer: "Answer"
       },
       selected_session_start: null,
       suggestions: [],
-      session_modal_open: false
+      session_modal_open: false,
+      editor_options: default_editor_options,
     };
   },
   mounted: function () {
@@ -197,12 +189,12 @@ export default {
         this.form_validity.body = this.form_data.question.body ? null : false;
         this.form_validity.course = this.form_data.question.course ? null : false;
         this.form_validity.interest = (this.form_data.interest >= 0 && this.form_data.interest != null)  ? null : false;
-        this.form_validity.answer = this.form_data.answer ? null : false;
+        this.form_validity.answer = this.form_data.answer != "Answer" ? null : false;
       }
     },
     form_valid: function () {
       let tutor_satisfied = (this.$store.state.userRole == "student" ||
-        (parseInt(this.form_data.interest) >= 0 && this.form_data.answer != ""));
+        (parseInt(this.form_data.interest) >= 0 && this.form_data.answer != "Answer"));
       return (this.form_data.question.title != "" &&
         this.form_data.question.body != "" &&
         this.form_data.course_id != "" &&
