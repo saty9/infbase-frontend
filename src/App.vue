@@ -6,9 +6,16 @@
         origin="center"
         mode="out-in"
         :duration="250"
-        v-if="login_checked"
       >
-        <router-view />
+        <router-view v-if="login_checked"/>
+        <section v-else class="section">
+          <div class="container">
+            <h1 class="text-center">Checking Login</h1>
+            <div class="text-center">
+            <font-awesome-icon :icon="['fas', 'spinner']" spin size="6x"/>
+            </div>
+          </div>
+        </section>
       </fade-transition>
     </main>
     <router-view name="footer"></router-view>

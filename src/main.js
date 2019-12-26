@@ -10,14 +10,14 @@ import DisableAutocomplete from 'vue-disable-autocomplete';
 import { securedAxiosInstance, plainAxiosInstance } from "./backend/axios";
 import VueAxios from "vue-axios";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faCaretLeft, faCaretRight, faFilter, faMinusCircle, faCheck, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCaretLeft, faCaretRight, faFilter, faMinusCircle, faCheck, faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import Vue2Filters from "vue2-filters";
 import vSelect from "vue-select";
 import JsonCSV from "vue-json-csv";
 import VueMarkdown from "vue-markdown/src/VueMarkdown";
 
-library.add({ faCaretLeft, faCaretRight, faFilter, faMinusCircle, faCheck, faSearch });
+library.add({ faCaretLeft, faCaretRight, faFilter, faMinusCircle, faCheck, faSearch, faSpinner});
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.use(VueRouter);
