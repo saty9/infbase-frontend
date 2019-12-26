@@ -49,19 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
     template: "<App/>"
   });
   store.$axios = v.axios;
-  if (window.$cookies.get("userId") && window.$cookies.get("jwt")) {
-    v.axios.get("/api/check_login", {headers: {Authorization:window.$cookies.get("jwt")}})
-      .then(response => {
-        v.$store.dispatch("signedIn", [
-          window.$cookies.get("jwt"),
-          response.data.id,
-          response.data.role
-        ]);
-      })
-      .catch( error => {
-        v.$store.dispatch("signedOut");
-      });
-  }
   global.vm = v; //Define you app variable globally
   v.axios.interceptors.response.use(function (response) {
     // Do something before request is sent

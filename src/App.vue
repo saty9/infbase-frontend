@@ -6,6 +6,7 @@
         origin="center"
         mode="out-in"
         :duration="250"
+        v-if="login_checked"
       >
         <router-view />
       </fade-transition>
@@ -24,6 +25,28 @@ export default {
     FadeTransition,
     Header,
     Footer
+  },
+  data() {
+    return {
+      login_checked: false
+    }
+  },
+  created() {
+    let self = this;
+    if (window.$cookies.get("userId") && window.$cookies.get("jwt")) {
+      self.axios.get("/api/check_login", {headers: {Authorization:window.$cookies.get("jwt")}})
+        .then(response => {
+          self.login_checked = true;
+          self.$store.dispatch("signedIn", [
+            window.$cookies.get("jwt"),
+            response.data.id,
+            response.data.role
+          ]);
+        })
+        .catch( error => {
+          self.$store.dispatch("signedOut");
+        });
+    }
   }
 };
 </script>
