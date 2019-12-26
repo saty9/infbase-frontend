@@ -55,18 +55,18 @@ export default new Vuex.Store({
       window.$cookies.set("userRole", userRole);
       this.commit("SIGNED_IN", [token, userId, userRole]);
     },
-    signedOut(_state, [silent]) {
+    signedOut(_state, payload) {
       let self = this;
       self.commit("SIGNED_OUT");
       this.$axios
         .delete("/api/logout")
         .then(_response => {
-          if (!silent) {
+          if (!payload || !payload.silent) {
             self.commit("ADD_ALERT", ["You logged out successfully.", "success"]);
           }
         })
         .catch(_error => {
-          if (!silent) {
+          if (!payload || !payload.silent) {
             self.commit("ADD_ALERT", ["Something went wrong.", "warning"])
           }
         });

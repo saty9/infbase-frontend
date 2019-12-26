@@ -128,7 +128,10 @@ let router = new Router({
           path: "useful_resources",
           component: UsefulResourcesAdmin
         }
-      ]
+      ],
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/faq",

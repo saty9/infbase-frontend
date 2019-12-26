@@ -55,8 +55,9 @@ export default {
           self.login_checked = true;
         });
     } else {
-      self.$store.dispatch("signedOut", [true]);
-      self.login_checked = true;
+      self.$store.dispatch("signedOut", {silent: true}).then(() => {
+        self.login_checked = true;
+      });
     }
   }
 };
