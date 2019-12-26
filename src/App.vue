@@ -43,16 +43,20 @@ export default {
     if (window.$cookies.get("userId") && window.$cookies.get("jwt")) {
       self.axios.get("/api/check_login", {headers: {Authorization:window.$cookies.get("jwt")}})
         .then(response => {
-          self.login_checked = true;
           self.$store.dispatch("signedIn", [
             window.$cookies.get("jwt"),
             response.data.id,
             response.data.role
           ]);
+          self.login_checked = true;
         })
         .catch( error => {
           self.$store.dispatch("signedOut");
+          self.login_checked = true;
         });
+    } else {
+      self.$store.dispatch("signedOut", [true]);
+      self.login_checked = true;
     }
   }
 };
