@@ -11,6 +11,9 @@
         <base-button type="success" @click="add_resource">Add Useful Resource</base-button>
       </div>
     </div>
+    <div class="section text-center" v-else>
+      No resources have been added yet
+    </div>
     <div class="section container" v-if="show_add_form">
       <form
               id="loginForm"
@@ -27,12 +30,7 @@
       </form>
     </div>
     <div class="section text-center" v-else-if="$store.state.userRole == 'tutor' || $store.state.userRole == 'admin'">
-      No resources have been added yet.<br>
-      Would you like to add the first one?<br>
       <base-button type="success" @click="add_resource">Add Useful Resource</base-button>
-    </div>
-    <div class="section text-center" v-else>
-      No resources have been added yet
     </div>
   </section>
 </template>
