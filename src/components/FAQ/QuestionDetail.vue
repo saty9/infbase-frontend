@@ -86,7 +86,7 @@
         </div>
       </div>
     </div>
-    <div v-else>
+    <div>
       <div class="row">
         <div class="col-md-1">Your Answer:</div>
         <div class="col-md-10">
@@ -167,7 +167,7 @@
           }
         }).then(response => {
           console.log(response);
-          self.question.answers = [response.data];
+          self.question.answers.push(response.data);
         });
       },
       can_edit_question: function(){
