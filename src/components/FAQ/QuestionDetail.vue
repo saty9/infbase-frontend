@@ -90,7 +90,6 @@
       <div class="row">
         <div class="col-md-1">Your Answer:</div>
         <div class="col-md-10">
-          <textarea style="min-width: 100%" v-model="answer_text"></textarea>
           <Editor style="min-width: 100%" v-bind:options="editor_options" v-model="answer_text"/>
         </div>
       </div>
