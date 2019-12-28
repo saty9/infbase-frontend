@@ -34,6 +34,7 @@
                       v-model="filter_form.course"
                       placeholder="Course"></v-select>
             <br>
+            <br>
             <v-select style="width: 100%"
                       label="name"
                       :options="$store.state.tags"
@@ -41,6 +42,7 @@
                       placeholder="Tag"
                       v-b-tooltip.hover.top
                       title="select a tag or start typing and press enter to add a tag."></v-select>
+            <br>
             <br>
             <div class="row">
               <base-button class="col" @click="clear_filters">Clear
@@ -118,6 +120,7 @@
           'Views': 'view_count',
           'Date Asked': 'posted',
         },
+        search_string: '',
         search_string_value: '',
         the_watched: 0
       }
