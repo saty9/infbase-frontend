@@ -155,7 +155,7 @@
         });
       },
       delete_question: function (question) {
-        this.axios.delete('/api/questions/' + question.id);
+        this.axios.delete('/api/questions/' + this.question.id);
         this.$router.push({'name': 'faq_index'});
       },
       submit_answer: function () {
