@@ -13,7 +13,6 @@ import ReportList from "./views/admin/Report/ReportList";
 import ReportForm from "./views/admin/Report/ReportForm";
 import UserList from "./views/admin/User/UserList";
 import HourList from "./views/admin/Hour/HourList";
-import ExpertiseList from "./views/admin/Expertise/ExpertiseList";
 import FAQIndex from "./views/FAQ/FAQIndex";
 import FAQQuestionView from "./views/FAQ/FAQQuestionView";
 import FAQAsk from "./views/FAQ/FAQAsk";
@@ -111,10 +110,6 @@ let router = new Router({
         {
           path: "hours",
           component: HourList
-        },
-        {
-          path: "expertises",
-          component: ExpertiseList
         },
         {
           path: "questions",

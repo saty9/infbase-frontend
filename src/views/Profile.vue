@@ -47,13 +47,19 @@
         Update
       </base-button>
     </card>
+    <card v-if="$store.state.userRole == 'tutor'">
+    <expertise-list/>
+    </card>
   </div>
 </template>
 <script>
 import myUpload from "vue-image-crop-upload";
+import ExpertiseList from "./Expertise/ExpertiseList"
+
 export default {
   components: {
-    myUpload
+    myUpload,
+    ExpertiseList
   },
   data() {
     return {
