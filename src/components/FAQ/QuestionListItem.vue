@@ -1,5 +1,5 @@
 <template>
-  <div class="question narrow">
+  <div v-bind:class="question_classes">
     <div class="summary">
       <h3>
         <router-link :to="{name: 'faq_detail', params: { id: question.id }}">{{question.title}}</router-link>
@@ -25,6 +25,15 @@
     name: "question-list-item",
     props: {
       question: Object
+    },
+    computed: {
+      question_classes: function(){
+        return {
+          question: true,
+          narrow: true,
+          "unresolved-warning": !this.question.resolved,
+        }
+      }
     },
     methods: {
       tag_clicked: function (tag){
@@ -63,5 +72,9 @@
   }
 
   .summary {
+  }
+
+  .unresolved-warning {
+    background-color: #fb6340ad !important;
   }
 </style>
