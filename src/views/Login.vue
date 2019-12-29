@@ -120,7 +120,7 @@ export default {
         response.data.role
       ]);
       this.$store.commit("ADD_ALERT", ["You are now logged in.", "success"]);
-      if (response.role != "student" && this.nextUrl == "/"){
+      if (response.data.role != "student" && this.nextUrl == "/"){
         this.$router.push('/admin-panel/schedule');
       } else {
         this.$router.push(this.nextUrl);
