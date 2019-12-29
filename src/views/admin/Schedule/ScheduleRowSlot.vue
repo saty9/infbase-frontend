@@ -1,35 +1,61 @@
 <template>
-  <base-button
-    outline
-    class="btn-sm"
-    :type="session.tutor_id == $store.state.userId ? 'warning' : 'secondary'"
-    v-if="session && (userRole == 'admin' || userRole == 'tutor')"
-    @click="emitClick"
-  >
-    {{ session.tutor_f_name }}
-  </base-button>
-  <span v-else-if="session" class="course-button d-inline-block p-1" @click="emitClick">
-    <span v-if="session.courses.length">
-      <badge type="success" v-for="(course, idx) in session.courses" :key="idx">
-        {{ course }}
+  <span v-bind:style="c_style">
+    <base-button
+      outline
+      class="btn-sm"
+      :type="session.tutor_id == $store.state.userId ? 'warning' : 'secondary'"
+      v-if="session && (userRole == 'admin' || userRole == 'tutor')"
+      @click="emitClick"
+      v-b-tooltip.hover :title="session.forecast_busyness['interest'] + ' Students Expected'"
+    >
+      {{ session.tutor_f_name }}
+    </base-button>
+    <span v-else-if="session"
+          class="course-button d-inline-block p-1"
+          @click="emitClick"
+          v-b-tooltip.hover :title="session.forecast_busyness['interest'] + ' Students Expected'"
+    >
+      <span v-if="session.courses.length">
+        <badge type="success" v-for="(course, idx) in session.courses" :key="idx">
+          {{ course }}
+        </badge>
+      </span>
+      <badge v-else>
+        NO COURSES SET
       </badge>
     </span>
-    <badge v-else>
-      NO COURSES SET
-    </badge>
+    <base-button
+      outline
+      v-else-if="userRole == 'admin'"
+      type="secondary"
+      class="btn-sm"
+      @click="emitClick"
+      >+</base-button
+    >
   </span>
-  <base-button
-    outline
-    v-else-if="userRole == 'admin'"
-    type="secondary"
-    class="btn-sm"
-    @click="emitClick"
-    >+</base-button
-  >
 </template>
 
 <script>
+
+  import BTooltip from "bootstrap-vue/es/directives/tooltip/tooltip";
+
+  let busyness_map = {
+    0: "#00BF02",
+    1: "#25C401",
+    2: "#4FCA02",
+    3: "#7BD003",
+    4: "#A8D504",
+    5: "#D7DB05",
+    6: "#E1B907",
+    7: "#E69208",
+    8: "#EC6909",
+    9: "#F23F0B"
+  };
+
 export default {
+  directives: {
+    BTooltip
+  },
   props: {
     hour: {
       type: Object,
@@ -53,8 +79,20 @@ export default {
     }
   },
   computed: {
-    userRole() {
+    userRole: function() {
       return this.$store.state.userRole;
+    },
+    c_style: function() {
+      let colour = "";
+      if (this.session){
+        colour = busyness_map[Math.min(this.session.forecast_busyness['interest'], 9)]
+      } else {
+        colour = ""
+      }
+      return {
+        "background-color": colour,
+        "padding": "4px 4px 4px 4px"
+      }
     }
   }
 };
@@ -76,6 +114,15 @@ export default {
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
+}
+.badge-success{
+  background-color: rgba(147, 231, 195, 0.9);
+}
+.badge-default{
+  background-color: rgba(52, 98, 175, 0.9);
+}
+.btn-outline-warning{
+  background-color: whitesmoke;
 }
 </style>
 
