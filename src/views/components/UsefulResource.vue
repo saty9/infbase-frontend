@@ -18,9 +18,23 @@
         <base-button type="danger" @click="$emit('delete-resource', resource)">Delete</base-button>
       </div>
     </div>
-    <div v-else>
-      <vue-markdown v-bind:source="resource.body" v-bind:html="false"></vue-markdown>
-      <attachment_list ref="attachments" v-bind:attachments="resource.useful_resource_attachments" v-bind:edit_mode="edit_mode"/>
+    <div v-else class="row">
+
+      <div class="votes col-md-1">
+        <div class="mini-counts"><span>{{resource.votes}}</span></div>
+        <div>{{resource.votes | pluralize('vote') }}</div>
+
+        <button type="button" class="btn btn-outline-default " v-if="!resource.user_voted" v-on:click="upvote"><i
+                class="fa fa-plus">1</i>
+        </button>
+        <button type="button" class="btn btn-success" v-else v-on:click="remove_vote"><i class="fa fa-check"></i>
+        </button>
+      </div>
+
+      <div class="col-md-10">
+        <vue-markdown v-bind:source="resource.body" v-bind:html="false" ></vue-markdown>
+        <attachment_list ref="attachments" v-bind:attachments="resource.useful_resource_attachments" v-bind:edit_mode="edit_mode"/>
+      </div>
     </div>
   </div>
 </template>
@@ -57,9 +71,26 @@
     methods: {
       sync_attachments: function(){
         this.$refs.attachments.sync(this.resource.id);
-      }
+      },
+      upvote: function () {
+        this.resource.votes += 1;
+        this.resource.user_voted = true;
+        this.axios.post('/api/useful_resources/' + this.resource.id + '/vote_for')
+      },
+      remove_vote: function () {
+        this.resource.votes -= 1;
+        this.resource.user_voted = false;
+        this.axios.post('/api/useful_resources/' + this.resource.id + '/remove_vote')
+      },
     }
   };
 </script>
 <style>
+  .votes {
+    display: block;
+    flex-direction: column;
+    align-items: center;
+    min-width: 5em;
+    float: left;
+  }
 </style>

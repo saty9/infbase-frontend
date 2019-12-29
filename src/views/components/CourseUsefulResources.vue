@@ -76,7 +76,13 @@
         this.axios.get('/api/useful_resources', {
           params: params
         }).then(function (response) {
-          v.resources = response.data;
+          v.resources = response.data[0];
+          response.data[1].forEach(function(user_vote) {
+            let r = v.resources.filter(resource => resource.id == user_vote.useful_resource_id);
+            if (r.length){
+              r[0].user_voted = true
+            }
+          });
         });
       },
       add_resource: function () {
