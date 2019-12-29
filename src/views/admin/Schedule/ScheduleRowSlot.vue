@@ -9,8 +9,13 @@
     {{ session.tutor_f_name }}
   </base-button>
   <span v-else-if="session" class="course-button d-inline-block p-1" @click="emitClick">
-    <badge type="success" v-for="(course, idx) in session.courses" :key="idx">
-      {{ course }}
+    <span v-if="session.courses.length">
+      <badge type="success" v-for="(course, idx) in session.courses" :key="idx">
+        {{ course }}
+      </badge>
+    </span>
+    <badge v-else>
+      NO COURSES SET
     </badge>
   </span>
   <base-button
