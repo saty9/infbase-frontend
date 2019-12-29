@@ -1,11 +1,13 @@
 <template>
   <div>
     <Schedule></Schedule>
+    <!--
     <div>
       <h5 class="text-primary mb-5 d-inline-block">Forecast busyness</h5>
       <br>
       <BusynessDisplay/>
     </div>
+    -->
   </div>
 </template>
 
