@@ -19,12 +19,10 @@
               id="loginForm"
               role="form"
       >
-              <textarea
-                      class="form-control"
-                      rows="3"
-                      v-model="newresourcebody"></textarea>
+        <Editor style="min-width: 100%" v-bind:options="editor_options" v-model="newresourcebody"/>
         <br>
         <base-checkbox v-model="newresourcerestricted">Tutor Only?</base-checkbox>
+        <br>
         <base-button type="success" @click="submit_new_resource">Submit</base-button>
         <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a>
       </form>
@@ -37,12 +35,15 @@
 <script>
   import UsefulResource from "./UsefulResource";
   import BaseButton from "../../components/BaseButton";
+  import default_editor_options from "../../default_editor_options";
+  import Editor from '@toast-ui/vue-editor/src/Editor.vue';
 
   export default {
     name: "course_useful_resources",
     components: {
       UsefulResource,
-      BaseButton
+      BaseButton,
+      Editor
     },
     props: {
       course_id: {
@@ -58,6 +59,7 @@
         show_add_form: false,
         newresourcebody: null,
         newresourcerestricted: false,
+        editor_options: default_editor_options
       }
     },
     watch: {

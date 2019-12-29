@@ -2,11 +2,7 @@
   <div class="container">
     <div v-if="$store.state.userRole == 'tutor' || $store.state.userRole == 'admin'">
       <div v-if="edit_mode">
-        <textarea
-                class="form-control"
-                rows="3"
-                v-model="edit_resource_body">
-        </textarea>
+        <Editor style="min-width: 100%" v-bind:options="editor_options" v-model="edit_resource_body"/>
         <base-checkbox v-model="resource.restricted">Tutor Only?</base-checkbox>
         <attachment_list ref="attachments" v-bind:attachments="resource.useful_resource_attachments" v-bind:edit_mode="edit_mode"/>
         <br/>
@@ -32,13 +28,16 @@
   import VueMarkdown from "vue-markdown/src/VueMarkdown";
   import BaseButton from "../../components/BaseButton";
   import Attachment_list from "./AttachmentList";
+  import default_editor_options from "../../default_editor_options";
+  import Editor from '@toast-ui/vue-editor/src/Editor.vue';
 
   export default {
     name: "useful_resource",
     components: {
       Attachment_list,
       VueMarkdown,
-      BaseButton
+      BaseButton,
+      Editor
     },
     props: {
       resource: {
@@ -52,6 +51,7 @@
       return {
         edit_mode: false,
         edit_resource_body: this.resource.body,
+        editor_options: default_editor_options,
       }
     },
     methods: {
