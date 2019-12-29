@@ -137,7 +137,7 @@ export default {
   position: relative;
   .middle {
     transition: 0.5s ease;
-    opacity: 0;
+    opacity: 0.3;
     position: absolute;
     top: 50%;
     left: 50%;
