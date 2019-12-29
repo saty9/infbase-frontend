@@ -71,6 +71,10 @@ export default {
       type: Object,
       default: null,
       description: "Object of the session at this slot"
+    },
+    forecast_basis: {
+      type: String,
+      description: "Which forecast dataset to display"
     }
   },
   methods: {
@@ -85,7 +89,7 @@ export default {
     c_style: function() {
       let colour = "";
       if (this.session){
-        colour = busyness_map[Math.min(this.session.forecast_busyness['interest'], 9)]
+        colour = busyness_map[Math.min(this.session.forecast_busyness[this.forecast_basis], 9)]
       } else {
         colour = ""
       }

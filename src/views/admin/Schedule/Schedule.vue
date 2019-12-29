@@ -20,6 +20,11 @@
       </a>
     </base-dropdown>
 
+    <div class="float-right d-inline-block">
+      <label for="dataset-picker">Forecast Based on:</label>
+      <input id="dataset-picker" type="button" class="btn btn-sm" @click="swap_forecast" :value="forecast_basis_display">
+    </div>
+
     <section v-if="errored">
       <p>
         We're sorry, we're not able to retrieve this information at the moment,
@@ -35,6 +40,7 @@
           :sessions="sessions"
           :hour="hour"
           :range="calendar_range"
+          :forecast_basis="forecast_basis"
           @clicked="sessionClicked"
         />
       </tbody>
@@ -89,7 +95,9 @@ export default {
       tutors: [],
       session: null,
       day: null,
-      hour: null
+      hour: null,
+      forecast_basis: "previous_session_attendance",
+      forecast_basis_display: "Previous Attendance"
     };
   },
   mounted() {
@@ -165,6 +173,15 @@ export default {
     },
     closeModal() {
       this.modal = false;
+    },
+    swap_forecast() {
+      if (this.forecast_basis == 'interest') {
+        this.forecast_basis = 'previous_session_attendance';
+        this.forecast_basis_display = "Previous Attendance";
+      } else {
+        this.forecast_basis = 'interest';
+        this.forecast_basis_display = "Students Interested";
+      }
     }
   }
 };

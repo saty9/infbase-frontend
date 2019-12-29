@@ -6,6 +6,7 @@
         :hour="hour"
         :day="day"
         :session="findSession(day.join('.'))"
+        :forecast_basis="forecast_basis"
         @clicked="emitClick"
       />
     </td>
@@ -35,6 +36,10 @@ export default {
       type: Array,
       default: () => [],
       description: "Day range to show"
+    },
+    forecast_basis: {
+      type: String,
+      description: "Which forecast dataset to display"
     }
   },
   methods: {
