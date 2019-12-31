@@ -60,14 +60,16 @@
         </v-select>
         <br />
         <br />
-        <div v-if="selected_session_start == null">
+        <div v-if="selected_session_start == null"
+             :class="form_validity.teaching_session == false ? 'has-danger is-invalid' : ''">
           <base-button type="secondary" v-on:click="session_modal_open = true">
             Select a Session
           </base-button>
         </div>
         <div v-else>
           {{ selected_session_start }}
-          <base-button class="ml-2" v-on:click="selected_session_start = null"
+          <base-button class="ml-2"
+                       v-on:click="selected_session_start = null; form_data.question.teaching_session_id = null"
             >Reset</base-button
           >
         </div>
@@ -131,7 +133,8 @@ export default {
         body: null,
         course: null,
         teaching_session_id: 1,
-        course_id: 0
+        course_id: 0,
+        teaching_session: null
       },
       form_data: {
         question: {
@@ -139,7 +142,7 @@ export default {
           body: "",
           anonymous: false,
           course: null,
-          teaching_session_id: 1,
+          teaching_session_id: null,
           course_id: ""
         },
         tags: [],
@@ -190,6 +193,7 @@ export default {
         this.form_validity.course = this.form_data.question.course ? null : false;
         this.form_validity.interest = (this.form_data.interest >= 0 && this.form_data.interest != null)  ? null : false;
         this.form_validity.answer = this.form_data.answer != "Answer" ? null : false;
+        this.form_validity.teaching_session = this.form_data.question.teaching_session_id != null;
       }
     },
     form_valid: function () {
@@ -198,6 +202,7 @@ export default {
       return (this.form_data.question.title != "" &&
         this.form_data.question.body != "" &&
         this.form_data.course_id != "" &&
+        this.teaching_session_id &&
         tutor_satisfied
       )
     },
