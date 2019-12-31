@@ -4,10 +4,7 @@
       <a slot="brand" class="navbar-brand mr-lg-5" href="https://www.ed.ac.uk/" v-if="$route.meta.lightHeader">
         <img src="../assets/images/logo.png" />
       </a>
-      <a slot="brand" class="navbar-brand mr-lg-5" href="https://www.ed.ac.uk/" v-else>
-        InfBase
-      </a>
-      <router-link to="/" v-else>
+      <router-link slot="brand" to="/" class="navbar-brand mr-lg-5" v-else>
         <b>InfBase</b>
       </router-link>
 
