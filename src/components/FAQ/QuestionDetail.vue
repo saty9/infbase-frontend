@@ -100,6 +100,10 @@
         </div>
       </div>
     </div>
+    <question-followups v-bind:followup_questions="question.question_followups"
+                        v-if="question.question_followups"
+                        @submit_followup="submit_followup"
+    />
   </div>
 </template>
 <script>
@@ -107,13 +111,15 @@
   import VueMarkdown from "vue-markdown/src/VueMarkdown";
   import default_editor_options from "../../default_editor_options";
   import Editor from '@toast-ui/vue-editor/src/Editor.vue';
+  import QuestionFollowups from "./QuestionFollowups";
 
   export default {
     name: "question-detail",
     components: {
       BaseDropdown,
       VueMarkdown,
-      Editor
+      Editor,
+      QuestionFollowups
     },
     props: {
       question_id: Number,
@@ -216,6 +222,18 @@
           self.watch_key += 1;
         });
       },
+      submit_followup: function(event) {
+        let self = this;
+        this.axios.post('/api/question_followups/', {
+          question_followup: {
+            question_id: this.question_id,
+            body: event.body,
+            question_followup_id: event.parent_id
+          }
+        }).then(response => {
+          self.question.question_followups.push(response.data);
+        });
+      }
     }
   };
 </script>
