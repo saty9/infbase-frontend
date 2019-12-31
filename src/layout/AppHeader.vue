@@ -4,6 +4,9 @@
       <a slot="brand" class="navbar-brand mr-lg-5" href="https://www.ed.ac.uk/" v-if="$route.meta.lightHeader">
         <img src="../assets/images/logo.png" />
       </a>
+      <a slot="brand" class="navbar-brand mr-lg-5" href="https://www.ed.ac.uk/" v-else>
+        InfBase
+      </a>
       <router-link to="/" v-else>
         <b>InfBase</b>
       </router-link>
@@ -116,5 +119,8 @@ export default {
   }
   .navbar-nav .nav-item {
     margin-right: 0px;
+  }
+  .navbar-transparent {
+    background-color: #6b7bea;
   }
 </style>
