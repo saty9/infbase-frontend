@@ -175,6 +175,18 @@ let router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: "/useful_resources_by_topic/:topic_id",
+      name: "useful_resources_by_topic",
+      components: {
+        header: AppHeader,
+        default: UsefulResourcesView,
+        footer: AppFooter
+      },
+      meta: {
+        requiresAuth: true
+      }
     }
   ],
   scrollBehavior: to => {

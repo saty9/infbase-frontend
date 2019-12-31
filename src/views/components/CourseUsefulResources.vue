@@ -3,12 +3,12 @@
     <div class="section" v-if="resources.length">
       <div class="container" v-for="resource in resources">
         <UsefulResource v-bind:resource="resource"
+                        v-bind:tags="tags"
                         v-on:delete-resource="delete_resource"
-                        v-on:update-resource="update_resource"></UsefulResource>
+                        v-on:update-resource="update_resource"
+                        @option:created="addTopic"
+        />
         <br>
-      </div>
-      <div class="container" v-if="$store.state.userRole == 'tutor' || $store.state.userRole == 'admin'">
-        <base-button type="success" @click="add_resource">Add Useful Resource</base-button>
       </div>
     </div>
     <div class="section text-center" v-else>
@@ -21,13 +21,28 @@
       >
         <Editor style="min-width: 100%" v-bind:options="editor_options" v-model="newresourcebody"/>
         <br>
+        <v-select
+                ref="tag_select"
+                class="w-100"
+                label="name"
+                :options="tags"
+                v-model="newresourcetags"
+                multiple
+                taggable
+                placeholder="Tags"
+                @search:focus="fix_readonly"
+                @option:created="addTopic"
+                v-b-tooltip.hover.top
+                title="select a tag or start typing and press enter to add a tag. (tags that dont already exist will be created when you submit the form)"
+        />
+        <br>
         <base-checkbox v-model="newresourcerestricted">Tutor Only?</base-checkbox>
         <br>
         <base-button type="success" @click="submit_new_resource">Submit</base-button>
         <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a>
       </form>
     </div>
-    <div class="section text-center" v-else-if="$store.state.userRole == 'tutor' || $store.state.userRole == 'admin'">
+    <div class="section text-center" v-else-if="course_mode && ($store.state.userRole == 'tutor' || $store.state.userRole == 'admin')">
       <base-button type="success" @click="add_resource">Add Useful Resource</base-button>
     </div>
   </section>
@@ -37,9 +52,13 @@
   import BaseButton from "../../components/BaseButton";
   import default_editor_options from "../../default_editor_options";
   import Editor from '@toast-ui/vue-editor/src/Editor.vue';
+  import BTooltip from "bootstrap-vue/es/directives/tooltip/tooltip";
 
   export default {
     name: "course_useful_resources",
+    directives: {
+      BTooltip
+    },
     components: {
       UsefulResource,
       BaseButton,
@@ -47,11 +66,15 @@
     },
     props: {
       course_id: {
-        type: Number
+        type: String
       },
+      topic_id: {
+        type: String
+      }
     },
     mounted: function () {
-      this.fetchData()
+      this.fetchData();
+      this.getTopics();
     },
     data: function () {
       return {
@@ -59,19 +82,23 @@
         show_add_form: false,
         newresourcebody: null,
         newresourcerestricted: false,
-        editor_options: default_editor_options
+        newresourcetags: [],
+        editor_options: default_editor_options,
+        tags: [],
+        course_mode: Boolean(this.course_id),
       }
     },
     watch: {
       course_id: function () {
-        this.fetchData()
+        this.fetchData();
       }
     },
     methods: {
       fetchData: function () {
         let v = this;
         let params = {
-          course_id: this.course_id
+          course_id: this.course_id,
+          topic_id: this.topic_id,
         };
         this.axios.get('/api/useful_resources', {
           params: params
@@ -84,6 +111,7 @@
             }
           });
         });
+
       },
       add_resource: function () {
         this.newresourcebody = "# Title\n" +
@@ -92,15 +120,18 @@
         this.show_add_form = true;
       },
       submit_new_resource: function () {
+        let self = this;
         this.axios.post("/api/useful_resources", {
           useful_resource: {
             body: this.newresourcebody,
             course_id: this.course_id,
-            restricted: this.newresourcerestricted
-          }
+            restricted: this.newresourcerestricted,
+          },
+          tags: this.newresourcetags,
         })
           .then(response => {
             this.show_add_form = false;
+            response.data.topics = self.newresourcetags;
             this.resources.push(response.data);
           })
           .catch(error => this.$store.commit("ADD_ALERT", "something went wrong"));
@@ -118,11 +149,24 @@
         this.axios.patch("/api/useful_resources/" + event.id, {
           useful_resource: {
             body: updated_body,
-            restricted: event.restricted
-          }
+            restricted: event.restricted,
+          },
+          tags: event.topics,
         }).then(response => {
           this.resources.find(res => res.id == event.id).body = updated_body;
         });
+      },
+      getTopics: function() {
+        let v = this;
+        this.axios.get("/api/topics").then(function (response) {
+          v.tags = response.data;
+        });
+      },
+      fix_readonly: function () {
+        this.$refs.tag_select.$refs.search.readOnly = false
+      },
+      addTopic: function (event) {
+        this.tags.push(event)
       },
     }
   };
