@@ -103,6 +103,7 @@
     <question-followups v-bind:followup_questions="question.question_followups"
                         v-if="question.question_followups"
                         @submit_followup="submit_followup"
+                        @delete="delete_followup"
     />
   </div>
 </template>
@@ -232,6 +233,16 @@
           }
         }).then(response => {
           self.question.question_followups.push(response.data);
+        });
+      },
+      delete_followup: function(event) {
+        let self = this;
+        let id = event.id;
+        this.axios.delete('/api/question_followups/' + String(id)).then(response => {
+          const index = self.question.question_followups.indexOf(event);
+          if (index > -1) {
+            self.question.question_followups.splice(index, 1);
+          }
         });
       }
     }

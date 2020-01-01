@@ -5,11 +5,19 @@
         {{ depth | dashes}}
         <vue-markdown v-bind:source="q.body" :html="false"/>
         <a href="javascript:void(0);" @click="reply_body=''">Reply</a>
+        &nbsp;
+        <a
+                href="javascript:void(0);"
+                v-if="$store.state.userRole!='student'"
+                style="color: red"
+                @click="$emit('delete',q)"
+        >Delete</a>
       </div>
       <QuestionFollowups v-bind:followup_questions="followup_questions"
                          v-bind:parent_id="q.id"
                          v-bind:depth="depth+1"
                          v-bubble:submit_followup
+                         v-bubble:delete
       />
       <div v-if="reply_body!=null">
         {{ depth + 1 | dashes}}
