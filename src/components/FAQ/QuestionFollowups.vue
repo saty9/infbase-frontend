@@ -1,10 +1,10 @@
 <template>
   <div>
     <div v-for="q in followups">
-      <div class="row">
-        {{ depth | dashes}}
+      <div class="row" :key="reply_key">
+        {{ depth | dashes}}&nbsp;
         <vue-markdown v-bind:source="q.body" :html="false"/>
-        <a href="javascript:void(0);" @click="reply_body=''">Reply</a>
+        <a href="javascript:void(0);" @click="q.reply_body=''; reply_key +=1">Reply</a>
         &nbsp;
         <a
                 href="javascript:void(0);"
@@ -19,11 +19,11 @@
                          v-bubble:submit_followup
                          v-bubble:delete
       />
-      <div v-if="reply_body!=null">
-        {{ depth + 1 | dashes}}
-        <textarea v-model="reply_body"></textarea>
-        <base-button class="btn-sm" @click="reply_body=null">Cancel</base-button>
-        <base-button class="btn-sm" @click="submit(reply_body, q.id); reply_body = null">Submit</base-button>
+      <div v-if="q.reply_body!=null">
+        {{ depth + 1 | dashes}}&nbsp;
+        <textarea v-model="q.reply_body"></textarea>
+        <base-button class="btn-sm" @click="q.reply_body=null; reply_key +=1">Cancel</base-button>
+        <base-button class="btn-sm" @click="submit(q.reply_body, q.id); q.reply_body = null; reply_key +=1">Submit</base-button>
       </div>
     </div>
     <div v-if="!depth">
@@ -68,10 +68,11 @@
       } else {
         filtered = filtered.filter(x => x.question_followup_id == null)
       }
+      filtered.map(x => x.reply_body = null);
       return {
         followups: filtered,
-        reply_body: null,
-        new_followup: ""
+        reply_key: 0,
+        new_followup: null
       }
     },
     watch: {
