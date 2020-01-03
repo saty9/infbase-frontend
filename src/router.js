@@ -79,6 +79,15 @@ let router = new Router({
       }
     },
     {
+      path: "/profile/:id",
+      name: "profile",
+      components: {
+        header: AppHeader,
+        default: Profile,
+        footer: AppFooter
+      }
+    },
+    {
       path: "/admin-panel",
       name: "admin panel",
       components: {
