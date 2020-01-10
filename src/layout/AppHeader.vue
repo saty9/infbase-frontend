@@ -77,6 +77,7 @@
         {{ message }}
       </base-alert>
     </div>
+    <br/>
   </header>
 </template>
 <script>
