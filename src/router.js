@@ -21,6 +21,7 @@ import QuestionSummaries from "./views/admin/Questions/QuestionSummaries";
 import UsefulResourcesView from "./views/UsefulResourcesView";
 import AdminSchedule from "./views/admin/Schedule/AdminSchedule";
 import UsefulResourcesAdmin from "./views/admin/UsefulResourcesAdmin";
+import UserProfile from "./views/UserProfile";
 
 let router = new Router({
   mode: "history",
@@ -80,10 +81,10 @@ let router = new Router({
     },
     {
       path: "/profile/:id",
-      name: "profile",
+      name: "user_profile",
       components: {
         header: AppHeader,
-        default: Profile,
+        default: UserProfile,
         footer: AppFooter
       }
     },

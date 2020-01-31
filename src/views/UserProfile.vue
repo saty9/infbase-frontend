@@ -4,36 +4,17 @@
       <h3>Profile</h3>
       <div
         class="text-center avatar-image"
-        v-if="$store.state.userRole == 'tutor'"
+        v-if="avatar"
       >
         <img
           :src="avatar"
           class="rounded-circle shadow shadow-lg--hover"
           alt=""
         />
-        <div class="middle">
-          <base-button type="secondary" @click="show = true"
-            >Change avatar
-          </base-button>
-        </div>
       </div>
-      <my-upload
-        v-if="$store.state.userRole == 'tutor'"
-        @crop-upload-success="cropUploadSuccess"
-        v-model="show"
-        :width="300"
-        :height="300"
-        :headers="header"
-        url="/api/signup"
-        method="put"
-        field="user[avatar]"
-        lang-type="en"
-        img-format="png"
-      >
-      </my-upload>
       <br /><br />
-      <base-input label="First name" v-model="first_name"></base-input>
-      <base-input label="Last name" v-model="last_name"></base-input>
+      <base-input label="First name" v-model="first_name" disabled></base-input>
+      <base-input label="Last name" v-model="last_name" disabled></base-input>
       <label for="biography">Biography</label>
       <textarea
         id="biography"
@@ -42,13 +23,8 @@
         rows="10"
         label="Biography"
         v-model="biography"
+        disabled
       ></textarea>
-      <base-button type="primary" class="float-right mt-3" @click="submit">
-        Update
-      </base-button>
-    </card>
-    <card v-if="$store.state.userRole == 'tutor'">
-    <expertise-list/>
     </card>
   </div>
 </template>
@@ -64,10 +40,6 @@ export default {
   data() {
     return {
       show: false,
-      params: {
-        token: "123456798",
-        name: "avatar"
-      },
       headers: {
         smail: "*_~"
       },
@@ -75,14 +47,12 @@ export default {
       first_name: "",
       last_name: "",
       biography: "",
-      header: { Authorization: window.$cookies.get("jwt") }
+      avatar: "",
     };
   },
   beforeMount() {
     this.axios
-      .get("/api/profile", {
-        headers: { Authorization: window.$cookies.get("jwt") }
-      })
+      .get("/api/profile/" + this.$route.params.id,)
       .then(response => {
         this.user = response.data;
         this.first_name = this.user.first_name;
@@ -96,36 +66,6 @@ export default {
       .finally(() => (this.loading = false));
   },
   methods: {
-    submit() {
-      this.axios
-        .put("/api/signup", {
-          headers: { Authorization: window.$cookies.get("jwt") },
-          user: {
-            first_name: this.first_name,
-            last_name: this.last_name,
-            biography: this.biography
-          }
-        })
-        .then(response => {
-          this.user = response.data;
-          this.$store.commit("ADD_ALERT", [
-            "Your account was successfully updated!",
-            "success"
-          ]);
-        })
-        .catch(() => {
-          this.errored = true;
-        })
-        .finally(() => (this.loading = false));
-    },
-    cropUploadSuccess(jsonData, field) {
-      this.show = false;
-      this.avatar = jsonData.avatar;
-      this.$store.commit("ADD_ALERT", [
-        "Avatar updated successfully!!",
-        "success"
-      ]);
-    }
   }
 };
 </script>
