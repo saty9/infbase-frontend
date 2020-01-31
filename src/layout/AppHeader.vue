@@ -32,30 +32,23 @@
           <router-link
             v-if="signedIn && userRole == 'admin'"
             to="/admin-panel/schedule"
-            class="btn"
-            :class="
-              $route.meta.lightHeader ? 'btn-primary' : 'btn-primary-link'
-            "
+            class="btn btn-primary active"
           >
             Admin panel
           </router-link>
           <router-link
             v-if="signedIn && userRole == 'tutor'"
             to="/admin-panel/schedule"
-            class="btn"
-            :class="
-              $route.meta.lightHeader ? 'btn-primary' : 'btn-primary-link'
-            "
+            class="btn btn-primary active"
           >
             Tutor panel
           </router-link>
         </li>
         <base-dropdown tag="li" v-if="signedIn" class="ml-3">
           <base-button
-            :outline="!$route.meta.lightHeader"
+            type="primary"
             slot="title"
-            :type="$route.meta.lightHeader ? 'secondary' : 'primary'"
-            class="dropdown-toggle"
+            class="dropdown-toggle btn-primary active"
           >
             Account
           </base-button>
