@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row justify-content-md-center">
         <div class="col">
-          <router-link style="display: block" to="/faq/ask" class="btn btn-success">
+          <router-link style="display: block" to="/faq/ask" class="btn btn-success btn-lg">
             {{add_q_button_string}}
           </router-link>
         </div>
