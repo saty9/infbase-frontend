@@ -3,24 +3,26 @@
     <div>
       <h4 class="text-primary text-center">{{ title_string }}</h4>
       <form>
-        <div v-if="suggestions.length">
-          <h6>Questions that may answer your query:</h6>
-          <div v-for="suggestion in suggestions" :key="suggestion">
-            <router-link
-              :to="{ name: 'faq_detail', params: { id: suggestion.id } }"
-            >
-              {{ suggestion.title }}
-            </router-link>
-          </div>
-          <br />
-          <br />
-        </div>
         <BaseInput
           placeholder="Question Title"
           v-model="form_data.question.title"
           :valid="form_validity.title"
           @input="title_changed"
         ></BaseInput>
+        <transition name="fade">
+          <div v-if="suggestions.length">
+            <h6>Questions that may answer your query:</h6>
+            <div v-for="suggestion in suggestions" :key="suggestion">
+              <router-link
+                      :to="{ name: 'faq_detail', params: { id: suggestion.id } }"
+              >
+                {{ suggestion.title }}
+              </router-link>
+            </div>
+            <br />
+            <br />
+          </div>
+        </transition>
         <div :class="form_validity.body == false ? 'has-danger is-invalid' : ''">
           <Editor v-bind:options="editor_options" v-model="form_data.question.body"/>
         </div>
@@ -229,3 +231,11 @@ export default {
   }
 };
 </script>
+<style>
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 1s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+</style>
