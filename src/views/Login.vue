@@ -20,8 +20,13 @@
             body-classes="px-lg-5 py-lg-5"
             class="border-0"
           >
+            <div class="text-center">
+              <base-button type="primary" class="my-4" v-on:click="cosignLogin()">
+                Sign In With Cosign
+              </base-button>
+            </div>
             <div class="text-center text-muted mb-3">
-              <small>Sign in</small>
+              <small>Or sign in locally</small>
             </div>
             <base-alert
               type="danger"
@@ -108,6 +113,16 @@ export default {
             remember_me: this.remember_me ? 1 : 0
           }
         })
+        .then(response => {
+          this.loginSuccessful(response);
+        })
+        .catch(error => this.loginFailed(error));
+    },
+    cosignLogin() {
+      this.failure = false;
+
+      this.axios
+        .post("/api/login")
         .then(response => {
           this.loginSuccessful(response);
         })
