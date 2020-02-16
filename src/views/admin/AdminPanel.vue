@@ -43,6 +43,10 @@
                 to="/admin-panel/useful_resources"
                 class="nav-link mb-1"
         >Useful Resources</router-link>
+        <router-link
+                to="/profile"
+                class="nav-link mb-1"
+        >My Profile</router-link>
       </div>
       <fade-transition
         mode="out-in"
