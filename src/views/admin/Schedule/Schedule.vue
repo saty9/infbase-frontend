@@ -31,20 +31,23 @@
         please try back later.
       </p>
     </section>
-    <table class="table text-center" v-else>
-      <ScheduleHead :scope="calendar_scope" @range="changeRange" />
-      <tbody>
-        <ScheduleRow
-          v-for="hour in hours"
-          :key="hour.id"
-          :sessions="sessions"
-          :hour="hour"
-          :range="calendar_range"
-          :forecast_basis="forecast_basis"
-          @clicked="sessionClicked"
-        />
-      </tbody>
-    </table>
+    <template v-else>
+      <div id="legend" ref="legend"></div>
+      <table class="table text-center" ref="table">
+        <ScheduleHead :scope="calendar_scope" @range="changeRange" />
+        <tbody>
+          <ScheduleRow
+            v-for="hour in hours"
+            :key="hour.id"
+            :sessions="sessions"
+            :hour="hour"
+            :range="calendar_range"
+            :forecast_basis="forecast_basis"
+            @clicked="sessionClicked"
+          />
+        </tbody>
+      </table>
+    </template>
     <ScheduleModal
       :tutors="tutors"
       :session_prop="session"
@@ -62,7 +65,7 @@ import ScheduleRow from "./ScheduleRow";
 import ScheduleHead from "@/views/components/Schedule/ScheduleHead";
 import BaseDropdown from "@/components/BaseDropdown";
 import ScheduleModal from "./ScheduleRowSlotModal";
-import BusynessDisplay from "./BusynessDisplay";
+import * as d3 from "d3";
 
 export default {
   components: {
@@ -128,6 +131,13 @@ export default {
         this.errored = true;
       })
       .finally(() => (this.loading = false));
+
+    this.showLegend();
+    window.addEventListener('resize', this.showLegend)
+  },
+  beforeDestroy() {
+    // Unregister the event listener before destroying this Vue instance
+    window.removeEventListener('resize', this.showLegend)
   },
   methods: {
     getSessionsInRange(calendar_range) {
@@ -182,6 +192,70 @@ export default {
         this.forecast_basis = 'interest';
         this.forecast_basis_display = "Students Interested";
       }
+    },
+    showLegend() {
+      this.$refs.legend.innerHTML = "";
+      var w = this.$refs.table.clientWidth, h = 50;
+      var key = d3.select("#legend")
+        .append("svg")
+        .attr("width", w)
+        .attr("height", h);
+
+      var legend = key.append("defs")
+        .append("svg:linearGradient")
+        .attr("id", "gradient")
+        .attr("x1", "0%")
+        .attr("y1", "100%")
+        .attr("x2", "100%")
+        .attr("y2", "100%")
+        .attr("spreadMethod", "pad");
+
+      legend.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "#00BF02")
+        .attr("stop-opacity", 1);
+
+      legend.append("stop")
+        .attr("offset", "33%")
+        .attr("stop-color", "#7BD003")
+        .attr("stop-opacity", 1);
+
+      legend.append("stop")
+        .attr("offset", "66%")
+        .attr("stop-color", "#E1B907")
+        .attr("stop-opacity", 1);
+
+      legend.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "#F23F0B")
+        .attr("stop-opacity", 1);
+
+      key.append("rect")
+        .attr("width", w)
+        .attr("height", h - 30)
+        .style("fill", "url(#gradient)")
+        .attr("transform", "translate(0,10)");
+
+      //var y = d3.scaleOrdinal(["busy", "quiet"])
+      //  .range([3, 0]);
+      var y = d3.scaleOrdinal([])
+        .range([w-30, 30])
+        .domain(["busy", "quiet"]);
+
+      var yAxis = d3.axisBottom()
+        .scale(y)
+        .ticks(2);
+
+      key.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(0,30)")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("axis title");
     }
   }
 };
