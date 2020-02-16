@@ -32,11 +32,17 @@
                 </p>
               </div>
             </div>
+            <div class="btn-toolbar">
+              <a href="#schedule" class="btn btn-secondary">Schedule</a>
+              <a href="#questions" class="btn btn-secondary">Questions</a>
+              <a href="#resources" class="btn btn-secondary">Resources</a>
+              <a href="#team" class="btn btn-secondary">Our Tutors</a>
+            </div>
           </div>
         </div>
       </section>
     </div>
-    <div class="position-relative mt--300">
+    <div class="position-relative mt--300" id="schedule">
       <section class="section section-lg">
         <div class="container">
           <card class="border-0" shadow body-classes="py-2">
@@ -51,7 +57,7 @@
                 <span class="badge mr-3 badge-primary badge-circle">
                   <i class="fa fa-info"></i>
                 </span>
-                Drop in into one of the sessions below. You don’t have to sign up
+                Drop into one of the sessions below. You don’t have to sign up
                 in advance.
               </p>
             </div>
@@ -71,7 +77,7 @@
       </section>
     </div>
 
-    <div class="position-relative">
+    <div class="position-relative" id="questions">
       <section class="section section-lg bg-secondary">
         <div class="container">
           <div class="row justify-content-center text-center mb-lg">
@@ -98,26 +104,7 @@
       </section>
     </div>
 
-    <section class="section section-lg">
-      <div class="container">
-        <div class="row justify-content-center text-center mb-lg">
-          <div class="col-lg-8">
-            <h2 class="display-3">The amazing Team</h2>
-          </div>
-        </div>
-        <div class="row" v-if="$store.state.userId">
-          <tutor-info v-for="tutor in tutors" :tutor="tutor" :key="tutor.id"/>
-        </div>
-        <div v-else class="text-center">
-          <base-button type="primary" tag="a" outline href="/login"
-            >Log in</base-button
-          >
-          to see the <b>tutors</b>.
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-lg">
+    <section class="section section-lg" id="resources">
       <div class="container">
         <div class="row justify-content-center text-center mb-lg">
           <div class="col-lg-8">
@@ -138,6 +125,25 @@
           >Log in</base-button
           >
           to see <b>useful resources</b>.
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-lg" id="team">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-lg">
+          <div class="col-lg-8">
+            <h2 class="display-3">The amazing Tutors</h2>
+          </div>
+        </div>
+        <div class="row" v-if="$store.state.userId">
+          <tutor-info v-for="tutor in tutors" :tutor="tutor" :key="tutor.id"/>
+        </div>
+        <div v-else class="text-center">
+          <base-button type="primary" tag="a" outline href="/login"
+            >Log in</base-button
+          >
+          to see the <b>tutors</b>.
         </div>
       </div>
     </section>
