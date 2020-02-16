@@ -12,7 +12,7 @@
         <transition name="fade">
           <div v-if="suggestions.length">
             <h6>Questions that may answer your query:</h6>
-            <div v-for="suggestion in suggestions" :key="suggestion">
+            <div v-for="suggestion in suggestions" :key="'s'+suggestion.id">
               <router-link
                       :to="{ name: 'faq_detail', params: { id: suggestion.id } }"
               >
@@ -34,7 +34,7 @@
           Ask Anonymously
         </BaseCheckbox>
         <br />
-        <label for="course_options" class="font-weight-bold">Course:</label>
+        <label for="course_options" class="font-weight-bold">Course (required):</label>
         <div class="row" id="course_options">
           <div v-for="course in courses" class="col-sm-4" :key="course.name">
             <base-radio
@@ -65,7 +65,7 @@
         <div v-if="selected_session_start == null"
              :class="form_validity.teaching_session == false ? 'has-danger is-invalid' : ''">
           <base-button type="secondary" v-on:click="session_modal_open = true">
-            Select a Session
+            Select a Session (required)
           </base-button>
         </div>
         <div v-else>
@@ -203,8 +203,8 @@ export default {
         (parseInt(this.form_data.interest) >= 0 && this.form_data.answer != "Answer"));
       return (this.form_data.question.title != "" &&
         this.form_data.question.body != "" &&
-        this.form_data.course_id != "" &&
-        this.teaching_session_id &&
+        this.form_data.question.course_id != "" &&
+        this.form_data.question.teaching_session_id &&
         tutor_satisfied
       )
     },
