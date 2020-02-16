@@ -67,6 +67,6 @@ export default {
 
 <style scoped>
 table tbody tr:first-child td {
-  margin-top: 10px;
+  padding-top: 10px;
 }
 </style>

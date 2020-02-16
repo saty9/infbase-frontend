@@ -12,7 +12,6 @@
         class="col"
         v-for="date in calendar_range"
         :key="date.join('.')"
-        :class="{'bg-warning': date.join('.') == today.join('.')}"
       >
         {{ toFormattedDate(date) }}
       </th>
@@ -56,7 +55,11 @@ export default {
         day: "numeric"
       };
 
-      if (format == "rails") options["year"] = "numeric";
+      if (format == "rails") {
+        options["year"] = "numeric"
+      } else if (date.toDateString() === (new Date).toDateString()){
+        return "Today"
+      }
 
       return date.toLocaleDateString("en-UK", options);
     },

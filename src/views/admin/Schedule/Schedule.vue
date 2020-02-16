@@ -196,4 +196,8 @@ table >>> tr td {
   justify-content: center; /* align horizontal */
   align-items: center; /* align vertical */
 }
+  table >>> th:not(:first-child):not(:last-child),
+  table >>> tr td:not(:first-child):not(:last-child) {
+    border-right: 0.225rem solid #dee2e6 !important;
+  }
 </style>
