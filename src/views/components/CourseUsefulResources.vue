@@ -19,6 +19,7 @@
               id="loginForm"
               role="form"
       >
+        <b>Finish adding a resource and then edit it to upload files</b>
         <Editor style="min-width: 100%" v-bind:options="editor_options" v-model="newresourcebody"/>
         <br>
         <v-select
