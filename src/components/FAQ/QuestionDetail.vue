@@ -100,6 +100,8 @@
         </div>
       </div>
     </div>
+    <br>
+    <h3>Followup Questions</h3>
     <question-followups v-bind:followup_questions="question.question_followups"
                         v-if="question.question_followups"
                         @submit_followup="submit_followup"
