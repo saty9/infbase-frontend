@@ -1,5 +1,12 @@
 <template>
   <div class="container" v-if="questions.length">
+
+    <ul class="legend__list text-center col">
+      <li class="legend__item">
+        <span class="badge" style="background: #ffffff">Answered</span>
+        <span class="badge" style="background: #fb6340ad">Un-Answered</span>
+      </li>
+    </ul>
     <div class="container" v-for="question in questions">
       <question-list-item :question="question" @refresh="$emit('refresh', $event)"></question-list-item>
     </div>
@@ -103,4 +110,19 @@
   };
 </script>
 <style>
+
+  .legend__item {
+    float: none;
+    width: 100%;
+    text-align: center;
+  }
+  .legend__list {
+    font-family: inherit;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+  }
 </style>
