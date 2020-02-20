@@ -82,6 +82,8 @@
           <div class="col">
             {{answer.created_at | moment("MMM Do YYYY, HH:mm")}}
             <span v-if="answer.updated_at != answer.created_at">Updated: {{answer.updated_at | moment("MMM Do YYYY, HH:mm")}}</span>
+            <br/>
+            <span>Source: {{answer.user_role}}</span>
           </div>
         </div>
       </div>
@@ -125,7 +127,7 @@
       QuestionFollowups
     },
     props: {
-      question_id: Number,
+      question_id: String,
     },
     data() {
       return {
@@ -222,6 +224,8 @@
         }).then(response => {
           console.log(response);
           answer.editing = false;
+          answer.user_role = response.data.user_role;
+          answer.updated_at = response.data.updated_at;
           self.watch_key += 1;
         });
       },
