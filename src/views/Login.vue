@@ -126,7 +126,10 @@ export default {
         .then(response => {
           this.loginSuccessful(response);
         })
-        .catch(error => this.loginFailed(error));
+        .catch(error => {
+          this.failure = true;
+          this.response = "Unable to verify using CoSign";
+        });
     },
     loginSuccessful(response) {
       this.$store.dispatch("signedIn", [
