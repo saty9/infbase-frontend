@@ -109,7 +109,7 @@
     }
   };
 </script>
-<style>
+<style scoped>
 
   .legend__item {
     float: none;

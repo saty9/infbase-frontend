@@ -1,10 +1,16 @@
 <template>
   <div>
-    <div id="chart"></div>
-    <div id="dataset-picker">
-      <input type="button" @click="draw_chart(datasets[0])" value="previous attendance">
-      <input type="button" @click="draw_chart(datasets[1])" value="students interested">
-    </div>
+    <form>
+      <label for="range">Average based on the last</label>
+      <input id="range" type="number" v-model="range"> Months reports
+      <input type="button" value="Update" @click="fetch_data">
+    </form>
+    <ul class="legend__list">
+      <li style="list-style: none">
+        <span class="badge" style="background: #8f9294">No Data</span>
+      </li>
+    </ul>
+    <div id="chart" ref="chart"></div>
   </div>
 </template>
 
@@ -19,7 +25,9 @@
     data: function(){
       return {
         datasets: [[], []],
-        draw_chart: function () {}
+        draw_chart: function () {},
+        range: 1,
+        data_pattern: new RegExp("\\[(\\d), 2000-01-01 (\\d\\d?):00:00 UTC\\]")
       }
     },
     mounted: function () {
@@ -27,6 +35,7 @@
     },
     methods: {
       draw_data: function () {
+        this.$refs.chart.innerHTML = "";
         var margin = {top: 50, right: 0, bottom: 100, left: 30},
           width = 960 - margin.left - margin.right,
           height = 430 - margin.top - margin.bottom,
@@ -79,9 +88,7 @@
 
         var heatmapChart = function (data) {
           var colorScale = d3.scaleQuantile()
-            .domain([0, buckets - 1, d3.max(data, function (d) {
-              return d.value;
-            })])
+            .domain([0, buckets - 1, 15])
             .range(colors);
 
           var cards = svg.selectAll(".hour")
@@ -99,17 +106,17 @@
               return (d.day - 1) * gridSize;
             })
             .style("fill", function (d) {
-              return colorScale(d.value);
+              if (d.value) {
+                return colorScale(d.value);
+              } else {
+                return "#8f9294"
+              }
             })
             .attr("rx", 4)
             .attr("ry", 4)
             .attr("class", "hour bordered")
             .attr("width", gridSize)
             .attr("height", gridSize);
-
-          cards.style("fill", function (d) {
-              return colorScale(d.value);
-            });
 
           cards.select("title").text(function (d) {
             return d.value;
@@ -150,25 +157,9 @@
 
         };
 
-        heatmapChart(this.datasets[1]);
-        heatmapChart(this.datasets[1]);
+        heatmapChart(this.datasets[0]);
+        heatmapChart(this.datasets[0]);
         this.draw_chart = heatmapChart
-
-        /*var datasetpicker = d3.select("#dataset-picker").selectAll(".dataset-button")
-          .data(this.datasets);
-
-        datasetpicker.enter()
-          .append("input")
-          .attr("value", function (d) {
-            return "Dataset " + d
-          })
-          .attr("type", "button")
-          .attr("class", "dataset-button")
-          .on("click", function (d) {
-            heatmapChart(d);
-          });
-         */
-
       },
       fetch_data: function () {
         let d = new Date();
@@ -177,38 +168,31 @@
         let monday = new Date(d.setDate(diff));
 
         let v = this;
-        this.axios.get("/api/teaching_sessions/forecast", {params: {first_day: monday}}).then(function (response) {
+        this.axios.get("/api/teaching_sessions/history", {params: {range: this.range}}).then(function (response) {
           console.log(response);
+          Object.keys(response.data).forEach(function(key) {
+            let matches = key.match(v.data_pattern);
+            var newkey = matches[1] + "-" + matches[2];
+            response.data[newkey] = response.data[key];
+            delete response.data[key];
+          });
+          v.datasets[0] = [];
           for (let x = 1; x <= 5; x++) {
             for (let y = 9; y <= 17; y++) {
-              var current = response.data.find(function (e) {
-                let dow = new Date(monday);
-                dow.setDate(dow.getDate() + x - 1);
-                return e.start_hour == y && (new Date(e.start_date)).getDate() == dow.getDate();
-              });
+
+              var current = response.data[x + "-" + y];
               if (current) {
                 v.datasets[0].push({
                   day: x,
                   hour: y,
-                  value: current.forecast_busyness.previous_session_attendance
+                  value: current
                 });
-                v.datasets[1].push({
-                  day: x,
-                  hour: y,
-                  value: current.forecast_busyness.interest
-                })
               } else {
                 v.datasets[0].push({
                   day: x,
                   hour: y,
-                  value: 0
+                  value: null
                 });
-                v.datasets[1].push({
-                  day: x,
-                  hour: y,
-                  value: 0
-                })
-
               }
             }
           }
