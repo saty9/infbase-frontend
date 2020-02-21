@@ -6,17 +6,15 @@
       :type="session.tutor_id == $store.state.userId ? 'warning' : 'secondary'"
       v-if="session && (userRole == 'admin' || userRole == 'tutor')"
       @click="emitClick"
-      v-b-tooltip.hover :title="session.forecast_busyness[forecast_basis] + ' Students Expected'"
     >
       {{ session.tutor_f_name }}
     </base-button>
     <span v-else-if="session"
           class="course-button d-inline-block p-1"
           @click="emitClick"
-          v-b-tooltip.hover :title="session.forecast_busyness[forecast_basis] + ' Students Expected'"
     >
       <span v-if="session.courses.length">
-        <badge type="success" v-for="(course, idx) in session.courses" :key="idx">
+        <badge type="secondary" v-for="(course, idx) in session.courses" :key="idx">
           {{ course }}
         </badge>
       </span>
@@ -124,6 +122,9 @@ export default {
 }
 .badge-default{
   background-color: rgba(52, 98, 175, 0.9);
+}
+.badge-secondary{
+  background-color: rgba(255, 255, 255, 0.9);
 }
 .btn-outline-warning{
   background-color: whitesmoke;

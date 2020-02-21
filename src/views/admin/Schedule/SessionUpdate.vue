@@ -7,6 +7,9 @@
     <base-alert type="warning" v-if="errors">
       {{ errors }}
     </base-alert>
+    <div class="col">
+      {{session_prop.forecast_busyness["previous_session_attendance"]}} students attended last week expected, {{session_prop.forecast_busyness["interest"]}} planning to attend
+    </div>
     <vSelect
       v-if="tutors"
       v-model="tutor"

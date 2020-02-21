@@ -7,6 +7,9 @@
   >
     <div class="row">
       <tutor-info :tutor="tutor" />
+      <div class="col">
+      {{session_prop.forecast_busyness["previous_session_attendance"]}} students attended last week expected, {{session_prop.forecast_busyness["interest"]}} planning to attend
+      </div>
       <div class="col text-right pr-4" v-if="session_prop">
         <h3>{{ hour_prop.start }} - {{ hour_prop.end }}</h3>
         <h4 class="text-muted">
