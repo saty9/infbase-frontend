@@ -108,6 +108,7 @@
                         v-if="question.question_followups"
                         @submit_followup="submit_followup"
                         @delete="delete_followup"
+                        @resolve_followup="resolve_followup"
     />
   </div>
 </template>
@@ -248,6 +249,27 @@
           const index = self.question.question_followups.indexOf(event);
           if (index > -1) {
             self.question.question_followups.splice(index, 1);
+          }
+        });
+      },
+      resolve_followup: function(q_id) {
+        let self = this;
+        this.axios.post('/api/question_followups/' + String(q_id) + '/resolve').then(response => {
+          self.question.question_followups.some(q => {
+            if (q.id == q_id) {
+              q.resolved=true;
+              self.recursively_resolve_children(q_id);
+              return true;
+            }
+          });
+        });
+      },
+      recursively_resolve_children: function(parent_q_id) {
+        let self = this;
+        self.question.question_followups.forEach(q => {
+          if (q.question_followup_id == parent_q_id) {
+            q.resolved=true;
+            self.recursively_resolve_children(q.id);
           }
         });
       }

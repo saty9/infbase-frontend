@@ -12,12 +12,19 @@
                 style="color: red"
                 @click="$emit('delete',q)"
         >Delete</a>
+        &nbsp;
+        <a href="javascript:void(0);"
+           style="color: green"
+           v-if="$store.state.userRole != 'student' && !q.resolved"
+           @click="markResolved(q)"
+        >Mark Resolved</a>
       </div>
       <QuestionFollowups v-bind:followup_questions="followup_questions"
                          v-bind:parent_id="q.id"
                          v-bind:depth="depth+1"
                          v-bubble:submit_followup
                          v-bubble:delete
+                         v-bubble:resolve_followup
       />
       <div v-if="q.reply_body!=null">
         {{ depth + 1 | dashes}}&nbsp;
@@ -99,6 +106,11 @@
               body: body,
               parent_id: replying_to_id
             });
+        }
+      },
+      markResolved: function(question) {
+        if (confirm("this will mark any replies as resolved too")){
+          this.$emit("resolve_followup", question.id)
         }
       }
     }
