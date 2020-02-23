@@ -25,7 +25,8 @@
         v-model="biography"
         disabled
       ></textarea>
-      <Schedule v-bind:filter_id="user.id" v-if="user.role='tutor'"></Schedule>
+      <br/>
+      <Schedule v-bind:filter_id="user.id" v-if="user.role='tutor'" id="schedule"></Schedule>
     </card>
   </div>
 </template>
@@ -68,7 +69,16 @@ export default {
       })
       .finally(() => (this.loading = false));
   },
+  mounted: function()
+  {
+    // From testing, without a brief timeout, it won't work.
+    setTimeout(() => this.scrollFix(this.$route.hash), 1);
+  },
   methods: {
+    scrollFix: function(hashbang)
+    {
+      location.hash = hashbang;
+    }
   }
 };
 </script>

@@ -87,7 +87,7 @@
             <br/>
             <span v-if="answer.user_role == 'tutor'">
               <template v-if="answer.user_id">
-                Source: Tutor <router-link :to="{name: 'user_profile', params: { id: answer.user_id }}">(Schedule)</router-link>
+                Source: Tutor <router-link :to="{name: 'user_profile', params: { id: answer.user_id }, hash: '#schedule'}">(Schedule)</router-link>
               </template>
               <template v-else>
                 Source: Former Tutor
@@ -218,7 +218,7 @@
         });
       },
       can_edit_answer: function (answer) {
-        return this.$store.state.userRole != "student" || this.$store.state.userId == answer.user.id;
+        return this.$store.state.userRole != "student" || this.$store.state.userId == answer.user_id;
       },
       edit_answer: function (answer) {
         if (answer.editing) {
