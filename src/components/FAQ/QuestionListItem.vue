@@ -9,6 +9,9 @@
           {{topic.name}}
         </a>
       </div>
+      <div v-if="$store.state.userRole != 'student' && unresolved_followups" style="color: red">
+        Unresolved Followups
+      </div>
       <br/>
       <div>{{question.created_at | moment("hh:mm MMM Do YYYY")}}</div>
     </div>
@@ -33,6 +36,9 @@
           narrow: true,
           "unresolved-warning": !this.question.resolved,
         }
+      },
+      unresolved_followups: function() {
+        return this.question.question_followups.some(q => !q.resolved)
       }
     },
     methods: {
