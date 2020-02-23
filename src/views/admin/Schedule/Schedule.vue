@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4 class="text-primary mb-5 d-inline-block">Schedule</h4>
+    <h4 class="text-primary mb-5 d-inline-block"><span v-if="filter_id">Tutors </span>Schedule</h4>
     <base-dropdown class="float-right d-inline-block">
       <base-button
         outline
@@ -84,6 +84,10 @@ export default {
       type: Function,
       default: null,
       description: "Optional function to call when slot is selected"
+    },
+    filter_id: {
+      type: Number,
+      default: null
     }
   },
   data() {
@@ -141,6 +145,7 @@ export default {
   },
   methods: {
     getSessionsInRange(calendar_range) {
+      let self = this;
       this.loading = true;
 
       this.axios
@@ -149,7 +154,11 @@ export default {
           params: { range: calendar_range }
         })
         .then(response => {
-          this.sessions = response.data;
+          if (self.filter_id) {
+            self.sessions = response.data.filter(s => s.tutor_id == self.filter_id);
+          } else {
+            self.sessions = response.data;
+          }
         })
         .catch(error => {
           this.errored = true;

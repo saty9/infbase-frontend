@@ -25,15 +25,18 @@
         v-model="biography"
         disabled
       ></textarea>
+      <Schedule v-bind:filter_id="user.id" v-if="user.role='tutor'"></Schedule>
     </card>
   </div>
 </template>
 <script>
 import myUpload from "vue-image-crop-upload";
 import ExpertiseList from "./Expertise/ExpertiseList"
+import Schedule from "./admin/Schedule/Schedule";
 
 export default {
   components: {
+    Schedule,
     myUpload,
     ExpertiseList
   },

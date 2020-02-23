@@ -5,7 +5,9 @@
     </div>
     <div class="row">
       <div class="tags" v-for="topic in question.topics">
-        <router-link :to="{name: 'faq_index', params: { tag: topic }}" class="badge badge-pill badge-primary">{{topic.name}}</router-link>
+        <router-link :to="{name: 'faq_index', params: { tag: topic }}" class="badge badge-pill badge-primary">
+          {{topic.name}}
+        </router-link>
       </div>
     </div>
     <div class="row">
@@ -83,7 +85,17 @@
             {{answer.created_at | moment("MMM Do YYYY, HH:mm")}}
             <span v-if="answer.updated_at != answer.created_at">Updated: {{answer.updated_at | moment("MMM Do YYYY, HH:mm")}}</span>
             <br/>
-            <span>Source: {{answer.user_role}}</span>
+            <span v-if="answer.user_role == 'tutor'">
+              <template v-if="answer.user_id">
+                Source: Tutor <router-link :to="{name: 'user_profile', params: { id: answer.user_id }}">(Schedule)</router-link>
+              </template>
+              <template v-else>
+                Source: Former Tutor
+              </template>
+            </span>
+            <span v-else>
+              Source: {{answer.user_role}}
+            </span>
           </div>
         </div>
       </div>
@@ -182,11 +194,11 @@
           self.question.answers.push(response.data);
         });
       },
-      can_edit_question: function(){
+      can_edit_question: function () {
         return this.$store.state.userRole != "student" || this.$store.state.userId == this.question.user_id;
       },
       edit_question: function () {
-        if (this.editing){
+        if (this.editing) {
           this.question.body = this.question.old_body;
         }
         this.question.old_body = this.question.body;
@@ -205,11 +217,11 @@
           self.watch_key += 1;
         });
       },
-      can_edit_answer: function(answer){
+      can_edit_answer: function (answer) {
         return this.$store.state.userRole != "student" || this.$store.state.userId == answer.user.id;
       },
       edit_answer: function (answer) {
-        if (answer.editing){
+        if (answer.editing) {
           answer.body = answer.old_body;
         }
         answer.old_body = answer.body;
@@ -230,7 +242,7 @@
           self.watch_key += 1;
         });
       },
-      submit_followup: function(event) {
+      submit_followup: function (event) {
         let self = this;
         this.axios.post('/api/question_followups/', {
           question_followup: {
@@ -242,7 +254,7 @@
           self.question.question_followups.push(response.data);
         });
       },
-      delete_followup: function(event) {
+      delete_followup: function (event) {
         let self = this;
         let id = event.id;
         this.axios.delete('/api/question_followups/' + String(id)).then(response => {
@@ -252,26 +264,32 @@
           }
         });
       },
-      resolve_followup: function(q_id) {
+      resolve_followup: function (q_id) {
         let self = this;
         this.axios.post('/api/question_followups/' + String(q_id) + '/resolve').then(response => {
           self.question.question_followups.some(q => {
             if (q.id == q_id) {
-              q.resolved=true;
+              q.resolved = true;
               self.recursively_resolve_children(q_id);
               return true;
             }
           });
         });
       },
-      recursively_resolve_children: function(parent_q_id) {
+      recursively_resolve_children: function (parent_q_id) {
         let self = this;
         self.question.question_followups.forEach(q => {
           if (q.question_followup_id == parent_q_id) {
-            q.resolved=true;
+            q.resolved = true;
             self.recursively_resolve_children(q.id);
           }
         });
+      },
+      display_answer_role: function (answer) {
+        if (answer.user_role == 'tutor' && answer.user_id) {
+          return "Current Tutor"
+        }
+        return answer.user_role
       }
     }
   };
