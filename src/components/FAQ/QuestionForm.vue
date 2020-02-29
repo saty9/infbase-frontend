@@ -62,6 +62,7 @@
         </v-select>
         <br />
         <br />
+        <template v-if="!session_id">
         <div v-if="selected_session_start == null"
              :class="form_validity.teaching_session == false ? 'has-danger is-invalid' : ''">
           <base-button type="secondary" v-on:click="session_modal_open = true">
@@ -75,6 +76,7 @@
             >Reset</base-button
           >
         </div>
+        </template>
         <br />
         <div v-if="$store.state.userRole != 'student'">
           <BaseInput
@@ -126,7 +128,12 @@ export default {
   directives: {
     BTooltip
   },
+  props: {
+    session_id: Number
+  },
   data() {
+    let t_id = null;
+    if (this.session_id) t_id = this.session_id ;
     return {
       courses: [],
       tags: [],
@@ -144,7 +151,7 @@ export default {
           body: "",
           anonymous: false,
           course: null,
-          teaching_session_id: null,
+          teaching_session_id: t_id,
           course_id: ""
         },
         tags: [],

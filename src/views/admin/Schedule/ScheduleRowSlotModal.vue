@@ -45,7 +45,7 @@ export default {
       description: "Array of all tutors"
     },
     day_prop: {
-      type: Array,
+      type: Date,
       default: () => [],
       description: "Date of the session slot"
     },

@@ -22,7 +22,7 @@
     </div>
 
     <template slot="footer" class="text-center">
-      <base-button outline type="primary" class="" @click="closeModal">
+      <base-button outline type="primary" class="" @click="askQ">
         Ask in advance
       </base-button>
       <base-button
@@ -61,7 +61,7 @@ export default {
       description: "Array of all tutors"
     },
     day_prop: {
-      type: Array,
+      type: Date,
       default: () => [],
       description: "Date of the session slot"
     },
@@ -88,6 +88,9 @@ export default {
     closeModal() {
       this.$emit("closeModal");
       this.interests = [];
+    },
+    askQ() {
+      this.$router.push({name:"faq_ask", params: { session_id: this.session_prop.id }})
     },
     toFormattedDate(date, format) {
       date = new Date(Date.UTC(date[0], date[1] - 1, date[2]));
@@ -119,7 +122,7 @@ export default {
   computed: {
     dayOfWeek() {
       if (this.day_prop)
-        return new Date(this.day_prop).toLocaleDateString("en-uk", {
+        return this.day_prop.toLocaleDateString("en-uk", {
           weekday: "long"
         });
       else return false;

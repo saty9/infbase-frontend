@@ -160,7 +160,8 @@ let router = new Router({
       },
       meta: {
         requiresAuth: true
-      }
+      },
+      props: true
     },
     {
       path: "/faq/:id",
