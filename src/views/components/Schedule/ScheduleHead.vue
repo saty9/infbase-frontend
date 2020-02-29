@@ -11,7 +11,7 @@
       <th
         class="col"
         v-for="date in calendar_range"
-        :key="date.join('.')"
+        :key="date.toDateString()"
       >
         {{ toFormattedDate(date) }}
       </th>
@@ -37,8 +37,8 @@ export default {
   },
   data() {
     return {
-      today: this.toArrayDate(new Date()),
-      calendar_start: this.toArrayDate(new Date()),
+      today: new Date(),
+      calendar_start: new Date(),
       calendar_scope: this.scope,
       calendar_range: null
     };
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     toFormattedDate(date, format) {
-      date = new Date(Date.UTC(date[0], date[1] - 1, date[2]));
+      //date = new Date(Date.UTC(date[0], date[1] - 1, date[2]));
       let options = {
         weekday: "short",
         month: "short",
@@ -71,17 +71,22 @@ export default {
       return [year, month, day];
     },
     changeRange(direction) {
+      let self = this;
       // change calendar start
       let d = this.calendar_start;
       if (direction == "prev")
-        this.calendar_start = [d[0], d[1], d[2] - this.calendar_scope];
+        this.calendar_start.setDate(this.calendar_start.getDate() - this.calendar_scope);
       if (direction == "next")
-        this.calendar_start = [d[0], d[1], d[2] + this.calendar_scope];
+        this.calendar_start.setDate(this.calendar_start.getDate() + this.calendar_scope);
 
       // Change the calendar range
       this.calendar_range = Array(this.calendar_scope)
         .fill(this.calendar_start)
-        .map((x, idx) => [x[0], x[1], x[2] + idx]);
+        .map((x, idx) => {
+          let ndate = new Date(this.calendar_start);
+          ndate.setDate(ndate.getDate() + idx);
+          return ndate
+        });
 
       // Update parent
       this.$emit(

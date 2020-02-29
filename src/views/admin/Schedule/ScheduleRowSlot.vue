@@ -61,7 +61,7 @@ export default {
       description: "Start time of the slot"
     },
     day: {
-      type: Array,
+      type: Date,
       default: () => [],
       description: "Date of the slot"
     },

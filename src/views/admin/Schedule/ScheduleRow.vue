@@ -1,11 +1,11 @@
 <template>
   <tr class="row">
     <td class="col-1">{{ hour.start }}</td>
-    <td class="col" v-for="day in range" :key="day[2]">
+    <td class="col" v-for="day in range" :key="day.toDateString()">
       <SessionSlot
         :hour="hour"
         :day="day"
-        :session="findSession(day.join('.'))"
+        :session="findSession(day)"
         :forecast_basis="forecast_basis"
         @clicked="emitClick"
       />
@@ -47,7 +47,7 @@ export default {
       let hour_id = this.hour.id;
 
       return this.sessions.find(
-        session => session.hour_id == hour_id && session.start_date == day
+        session => session.hour_id == hour_id && session.start_date == [day.getFullYear(),day.getMonth()+1,day.getDate()].join(".")
       );
     },
     emitClick(session, day, hour) {
@@ -58,7 +58,7 @@ export default {
     anySessions() {
       let self = this;
       return this.range.reduce(function(answer, day) {
-        return answer || self.findSession(day.join(".")) != undefined;
+        return answer || self.findSession(day) != undefined;
       }, false);
     }
   }
