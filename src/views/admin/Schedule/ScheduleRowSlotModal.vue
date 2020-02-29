@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span v-if="modal">
     <session-update
       v-if="
         $store.state.userRole == 'admin' || $store.state.userRole == 'tutor'

@@ -7,7 +7,7 @@
     <base-alert type="warning" v-if="errors">
       {{ errors }}
     </base-alert>
-    <div class="col">
+    <div class="col" v-if="session_prop">
       {{session_prop.forecast_busyness["previous_session_attendance"]}} students attended last week expected, {{session_prop.forecast_busyness["interest"]}} planning to attend
     </div>
     <vSelect
@@ -59,7 +59,7 @@ export default {
       description: "Array of all tutors"
     },
     day_prop: {
-      type: Array,
+      type: Date,
       default: () => [],
       description: "Date of the session slot"
     },
@@ -92,7 +92,7 @@ export default {
             session: {
               tutor_id: this.tutor.id,
               hour_id: this.hour_prop.id,
-              start_date: this.day_prop.join("-")
+              start_date: [this.day_prop.getFullYear(),this.day_prop.getMonth()+1,this.day_prop.getDate()].join("-")
             },
             occurrence: this.occurrence,
             until: this.until
@@ -108,7 +108,7 @@ export default {
             session: {
               tutor_id: this.tutor.id,
               hour_id: this.hour_prop.id,
-              start_date: this.day_prop.join("-")
+              start_date: [this.day_prop.getFullYear(),this.day_prop.getMonth()+1,this.day_prop.getDate()].join("-")
             },
             occurrence: this.occurrence,
             until: this.until

@@ -1,7 +1,6 @@
 <template>
   <span v-bind:style="c_style">
     <base-button
-      outline
       class="btn-sm"
       :type="session.tutor_id == $store.state.userId ? 'warning' : 'secondary'"
       v-if="session && (userRole == 'admin' || userRole == 'tutor')"
