@@ -77,10 +77,12 @@ export default {
     }
   },
   data() {
+    let tutor_id = this.session_prop.tutor_id;
+    let tutor = this.tutors.find(tutor => tutor.id == tutor_id);
     return {
       errors: null,
       session: this.session_prop,
-      tutor: null,
+      tutor: tutor,
       interests: []
     };
   },
