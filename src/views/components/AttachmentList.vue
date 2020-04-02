@@ -1,8 +1,9 @@
 <template>
   <div>
+    <template v-if="attachments">
     <ul>
       <div v-if="edit_mode">
-        <li v-for="file in file_meta">
+        <li v-for="(file,index) in file_meta">
       <span v-if="file.file" :key="re_render">
         <s v-if="file.deleted">{{ file.file.file.name }}</s>
         <span v-else-if="file.new">{{ file.file.name }}</span>
@@ -10,7 +11,8 @@
         <base-button type="danger" @click="file.deleted=!file.deleted; re_render+=1">Delete</base-button>
       </span>
           <span v-else>
-        New File: <input type="file" @change="processFile($event, file)">
+            New File: <input type="file" @change="processFile($event, file)">
+            <base-button type="danger" @click="file_meta.splice(index,1)">X</base-button>
       </span>
         </li>
       </div>
@@ -21,6 +23,10 @@
       </div>
     </ul>
     <base-button v-if="edit_mode" type="success" @click="add_file">Add file</base-button>
+    </template>
+    <template v-else>
+      Pending...
+    </template>
   </div>
 </template>
 <script>
@@ -34,7 +40,8 @@
     props: {
       attachments: {
         type: Array,
-        description: "attachments to display"
+        description: "attachments to display",
+        optional: true
       },
       edit_mode: {
         type: Boolean
@@ -42,9 +49,18 @@
     },
     mounted: function () {
     },
+    watch: {
+      attachments: function(){
+        let new_meta = [];
+        this.attachments.forEach(x => new_meta.push({file: x}));
+        this.file_meta = new_meta;
+      }
+    },
     data: function () {
       let new_meta = [];
-      this.attachments.forEach(x => new_meta.push({file: x}));
+      if (this.attachments) {
+        this.attachments.forEach(x => new_meta.push({file: x}));
+      }
       return {
         file_meta: new_meta,
         re_render: 0
@@ -54,6 +70,9 @@
       sync: function (resource_id) {
         console.log("syncing resources");
         let that = this;
+
+        let promises = [];
+
         //sends all files that are changed or new
         this.file_meta.forEach(function (x) {
           if (x.new && !x.deleted){
@@ -61,7 +80,7 @@
             formData.append("document", x.file);
             formData.append("useful_resource_id", resource_id);
             console.log(formData);
-            that.axios.post('/api/useful_resource_attachments',
+            promises.push(that.axios.post('/api/useful_resource_attachments',
               formData,
               {
               headers: {
@@ -72,16 +91,21 @@
               x.file.id = response.data.id;
               x.file.file = response.data.file;
               x.new = false;
-            })
+            }))
           } else if (x.deleted) {
-            that.axios.delete("/api/useful_resource_attachments/" + x.file.id).then(function (response) {
+            promises.push(that.axios.delete("/api/useful_resource_attachments/" + x.file.id).then(function (response) {
               let index = that.file_meta.indexOf(x);
               if (index > -1) {
                 that.file_meta.splice(index, 1);
               }
-            })
+            }))
           }
-        })
+        });
+        return Promise.all(promises).then(() => {
+          let out = [];
+          that.file_meta.forEach((item) => {out.push(item.file)});
+          return out
+        }).catch(() => {alert("An error occurred while uploading files")})
       },
       add_file: function () {
         console.log("File add clicked");

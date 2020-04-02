@@ -38,6 +38,7 @@
         />
         <br>
         <base-checkbox v-model="newresourcerestricted">Tutor Only?</base-checkbox>
+        <attachment_list ref="attachments" v-bind:attachments="newresourceattachments" v-bind:edit_mode="true"/>
         <br>
         <base-button type="success" @click="submit_new_resource">Submit</base-button>
         <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a>
@@ -54,6 +55,7 @@
   import default_editor_options from "../../default_editor_options";
   import Editor from '@toast-ui/vue-editor/src/Editor.vue';
   import BTooltip from "bootstrap-vue/es/directives/tooltip/tooltip";
+  import Attachment_list from "./AttachmentList";
 
   export default {
     name: "course_useful_resources",
@@ -63,7 +65,8 @@
     components: {
       UsefulResource,
       BaseButton,
-      Editor
+      Editor,
+      Attachment_list
     },
     props: {
       course_id: {
@@ -84,6 +87,7 @@
         newresourcebody: null,
         newresourcerestricted: false,
         newresourcetags: [],
+        newresourceattachments: [],
         editor_options: default_editor_options,
         tags: [],
         course_mode: Boolean(this.course_id),
@@ -119,6 +123,7 @@
           "normal __Bold__ _italics_ ~~cross~~\n" +
           "**bold** *italics*";
         this.show_add_form = true;
+        this.newresourceattachments = [];
       },
       submit_new_resource: function () {
         let self = this;
@@ -133,7 +138,14 @@
           .then(response => {
             this.show_add_form = false;
             response.data.topics = self.newresourcetags;
-            this.resources.push(response.data);
+            let new_resource = response.data;
+            console.log(new_resource)
+            new_resource.useful_resource_attachments = null;
+            this.$refs.attachments.sync(response.data.id).then( (file_meta) => {
+              new_resource.useful_resource_attachments = file_meta
+            });
+
+            this.resources.push(new_resource);
           })
           .catch(error => this.$store.commit("ADD_ALERT", "something went wrong"));
       },
